@@ -14,11 +14,6 @@ export default function airports(state = initialState, action) {
         ...state,
         succes: action.airportInfo
       };
-    case actionTypes.AIRPORT_ADDIND_ERRORED:
-      return {
-        ...state,
-        errored: action.bool
-      };
     default:
       return state;
   }

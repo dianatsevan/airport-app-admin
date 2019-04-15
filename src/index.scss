@@ -1,0 +1,13 @@
+@import './variables.scss';
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $primaryTextColor;
+  background-image: url('./assets/page-background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: $fontFamily;
+}

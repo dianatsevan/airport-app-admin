@@ -1,0 +1,10 @@
+@import '../../variables.scss';
+
+.side-bar {
+  display: flex;
+
+  &__link {
+    color: $primaryTextColor;
+    text-decoration: none;
+  }
+}

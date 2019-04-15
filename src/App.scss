@@ -1,4 +1,12 @@
+@import './variables.scss';
+
 .app {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  min-height: 500px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: $primaryBoxShadow;
 }

@@ -8,13 +8,6 @@ function addAirport(airportInfo) {
   }
 }
 
-function addAirportErrored(bool) {
-  return {
-    type: actionTypes.AIRPORT_ADDIND_ERRORED,
-    bool,
-  }
-}
-
 export default function sendAirportData(airportInfo) {
   return (dispatch) => {
     return axios.post('/somewhere', airportInfo)
@@ -26,6 +19,6 @@ export default function sendAirportData(airportInfo) {
         return response.json();
       })
       .then(result => dispatch(addAirport(result)))
-      .catch(() => dispatch(addAirportErrored(true)));
+      .catch(err => console.log(err));
   }
 }

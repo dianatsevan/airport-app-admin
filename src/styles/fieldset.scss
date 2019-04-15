@@ -1,0 +1,11 @@
+@import '../variables.scss';
+
+.fieldset {
+  border: 1px solid lightgray;
+  border-radius: 3px;
+}
+
+.legend {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
