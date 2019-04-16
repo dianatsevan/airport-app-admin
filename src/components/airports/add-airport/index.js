@@ -37,7 +37,7 @@ class AddAirportForm extends React.Component {
                   <Field
                     name="name"
                     label="Name"
-                    className="add-airport-form__textfield"
+                    className={classes.textField}
                     component={TextField}
                     variant="outlined"
                   />

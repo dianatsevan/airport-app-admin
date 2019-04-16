@@ -1,0 +1,28 @@
+@import 'src/variables.scss';
+
+.airports-list {
+    margin: 20px 0;
+    height: 200px;
+    overflow-y: scroll;
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    &__header th, &__item td {
+        padding: 5px 10px;
+        border: 1px solid lightgray;
+    }
+
+    &__header {
+        background-color: whitesmoke;
+    }
+
+
+    &__icon {
+        cursor: pointer;
+        text-align: center;
+        color: #5454cc;
+    }
+}
