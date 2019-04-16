@@ -10,15 +10,17 @@ function addAirport(airportInfo) {
 
 export default function sendAirportData(airportInfo) {
   return (dispatch) => {
-    return axios.post('/somewhere', airportInfo)
+    return axios.post('http://localhost:3001/airports', airportInfo)
       .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-
-        return response.json();
+        // if (response.statusCode !== 200) {
+        //   console.log('error');
+        //   throw Error(response.statusText);
+        // }
+        // dispatch(addAirport(airportInfo));
+        // return response.json();
+        return response;
       })
-      .then(result => dispatch(addAirport(result)))
-      .catch(err => console.log(err));
+      .then(response => dispatch(addAirport(response.data)))
+      .catch(err => console.log('err'));
   }
 }

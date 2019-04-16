@@ -1,10 +1,7 @@
 import actionTypes from './actionTypes';
 
 const initialState = {
-  addAirport: {
-    success: {},
-    errored: false
-  }
+  addedAirport: {}
 }
 
 export default function airports(state = initialState, action) {
@@ -12,7 +9,7 @@ export default function airports(state = initialState, action) {
     case actionTypes.AIRPORTS_ADDING_SUCCESS:
       return {
         ...state,
-        succes: action.airportInfo
+        addedAirport: action.airportInfo
       };
     default:
       return state;
