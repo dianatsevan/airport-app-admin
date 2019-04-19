@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Form, Field } from 'react-final-form';
 import { withStyles } from '@material-ui/core/styles';
-import sendAirportData from '.././../../redux/airports/actions';
+// import sendAirportData from '.././../../redux/airports/actions';
 import TextField from '../../material-components/text-field';
 import '../../../styles/button.scss';
 import '../../../styles/fieldset.scss';
@@ -12,7 +12,7 @@ import styles from './material.style';
 class AddAirportForm extends React.Component {
   static propTypes = {};
 
-  onSubmit = values => this.props.sendAirportData(values);
+  // onSubmit = values => this.props.sendAirportData(values);
 
   render() {
     const { classes } = this.props;
@@ -54,7 +54,7 @@ class AddAirportForm extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  sendAirportData: airportInfo => dispatch(sendAirportData(airportInfo)),
+  // sendAirportData: airportInfo => dispatch(sendAirportData(airportInfo)),
 });
 
 export default compose(
