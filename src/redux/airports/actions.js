@@ -1,26 +1,31 @@
-// import actionTypes from './actionTypes';
-// import axios from 'axios';
+import { createActions, handleActions } from 'redux-actions';
+import actionTypes from "./actionTypes";
 
-export function fetchAirportsData(airports) {
-  return {
-    type: 'FETCH_AIRPORTS_DATA',
-    airports
-  }
-}
-
-export function error(bool) {
-  return {
-    type: 'ERROR',
-    bool
-  }
-}
-
-
-// export function requestAirportsData() {
+// export function getAirportsData() {
 //   return {
-//     type: actionTypes.AIRPORTS_FETCH_DATA,
+//     type: actionTypes.GET_AIRPORTS_DATA
 //   }
 // }
+
+// export function setAirportsData(airports) {
+//   return {
+//     type: actionTypes.SET_AIRPORTS_DATA,
+//     airports
+//   }
+// }
+
+// export function getAirportsDataError(bool) {
+//   return {
+//     type: actionTypes.GET_AIRPORTS_DATA_ERROR,
+//     bool
+//   }
+// }
+
+export const { getAirportsData, setAirportsData, getAirportsDataError } = createActions({
+  GET_AIRPORTS_DATA: null,
+  SET_AIRPORTS_DATA: null,
+  GET_AIRPORTS_DATA_ERROR: null,
+});
 
 // function addAirport(airportInfo) {
 //   return {

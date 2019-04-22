@@ -8,7 +8,7 @@ import './index.scss';
 class AirportsList extends React.Component {
   static propTypes = {
     airports: PropTypes.array.isRequired,
-    getAirportsData: PropTypes.func.isRequired
+    // getAirportsData: PropTypes.func.isRequired
   }
 
   // componentDidMount = () => this.props.getAirportsData();

@@ -1,4 +1,6 @@
+import { handleActions } from 'redux-actions';
 import actionTypes from './actionTypes';
+import * as actions from './actions';
 
 const initialState = {
   addedAirport: {},
@@ -6,29 +8,28 @@ const initialState = {
   error: false
 }
 
-export default function airports(state = initialState, action) {
-  switch (actionTypes) {
-    case actionTypes.AIRPORTS_ADDING_SUCCESS:
+// export default function airports(state = initialState, action) {
+//   switch (action.type) {
+//     case actionTypes.SET_AIRPORTS_DATA:
+//       return {
+//         ...state,
+//         airports: action.airports
+//       }
+//     default:
+//       return state;
+//   }
+// }
+
+const reducer = handleActions(
+  {
+    [actions.setAirportsData]: (state = initialState, airports) => {
       return {
         ...state,
-        addedAirport: action.airportInfo
-      };
-    case actionTypes.AIRPORTS_RECEIVE_DATA:
-      return {
-        ...state,
-        airports: action.airports
+        airports: airports
       }
-    case 'FETCH_AIRPORTS_DATA':
-      return {
-        ...state,
-        airports: action.airports
-      }
-    case 'ERROR':
-      return {
-        ...state,
-        error: action.bool
-      }
-    default:
-      return state;
-  }
-}
+    }
+  },
+  initialState
+);
+
+export default reducer;

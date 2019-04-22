@@ -12,7 +12,7 @@ import styles from './material.style';
 class AddAirportForm extends React.Component {
   static propTypes = {};
 
-  // onSubmit = values => this.props.sendAirportData(values);
+  onSubmit = values => console.log(values);
 
   render() {
     const { classes } = this.props;
