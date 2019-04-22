@@ -5,5 +5,5 @@ export default keyMirror({
   AIRPORTS_ADDING_SUCCESS: null,
   GET_AIRPORTS_DATA: null,
   SET_AIRPORTS_DATA: null,
-  ERROR: null,
+  GET_AIRPORTS_DATA_ERROR: null,
 });

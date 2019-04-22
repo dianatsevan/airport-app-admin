@@ -7,10 +7,10 @@ import AirportsList from './airports-list';
 
 class AirportPage extends React.Component {
   static propTypes = {
-    getAirData: PropTypes.func.isRequired
+    getAirportsData: PropTypes.func.isRequired
   }
 
-  componentDidMount = () => this.props.getAirData();
+  componentDidMount = () => this.props.getAirportsData();
 
   render() {
     return (
@@ -23,7 +23,7 @@ class AirportPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getAirData: () => dispatch(getAirportsData())
+  getAirportsData: () => dispatch(getAirportsData())
 });
 
 export default connect(null, mapDispatchToProps)(AirportPage);

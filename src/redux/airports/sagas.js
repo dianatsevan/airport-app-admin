@@ -1,22 +1,24 @@
-import { all, put, call, take } from 'redux-saga/effects';
-import axios from 'axios';
+import { all, put, call, takeEvery } from 'redux-saga/effects';
+import { urls } from '../../urls';
 import actionTypes from './actionTypes';
+import axios from 'axios';
 
-export function* fetchAirportaData() {
+function* fetchAirportsData() {
   try {
-    yield take(actionTypes.GET_AIRPORTS_DATA);
-    const data = yield call(() => axios.get('http://localhost:3001/airports'));
-    yield console.log(data);
-    yield console.log(actionTypes.GET_AIRPORTS_DATA);
-    yield put({ type: actionTypes.SET_AIRPORTS_DATA, airports: data.data });
+    const data = yield call(() => axios.get(urls.getAirportsUrl));
+
+    return yield put({ type: actionTypes.SET_AIRPORTS_DATA, airportsList: data.data });
   } catch (err) {
-    // yield put(error(true));
-    console.log(err);
+    return yield put({ type: actionTypes.GET_AIRPORTS_DATA_ERROR, bool: true});
   }
 }
 
-export function* rootSaga() {
+function* watchFetchData() {
+  yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsData);
+}
+
+export function* airportsSaga() {
   yield all([
-    fetchAirportaData()
+    watchFetchData()
   ]);
 }

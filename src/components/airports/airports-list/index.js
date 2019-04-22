@@ -2,17 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
-// import { requestAirportsData } from '../../../redux/airports/actions';
 import './index.scss';
 
 class AirportsList extends React.Component {
   static propTypes = {
-    airports: PropTypes.array.isRequired,
-    // getAirportsData: PropTypes.func.isRequired
+    airportsList: PropTypes.array.isRequired,
   }
 
-  // componentDidMount = () => this.props.getAirportsData();
-  
   render() {
     return (
       <section className="airports-list">
@@ -24,7 +20,7 @@ class AirportsList extends React.Component {
               <th></th>
               <th></th>
             </tr>
-            {this.props.airports.map(({code, name}, index) => (
+            {this.props.airportsList.map(({code, name}, index) => (
               <tr
                 key={index}
                 className="airports-list__item"
@@ -47,11 +43,7 @@ class AirportsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  airports: state.airports.airports
+  airportsList: state.airportsData.airportsList
 });
 
-const mapDispatchToProps = dispatch => ({
-  // getAirportsData: () => dispatch(requestAirportsData())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AirportsList);
+export default connect(mapStateToProps)(AirportsList);
