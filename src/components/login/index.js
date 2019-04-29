@@ -3,37 +3,40 @@ import PropTypes from 'prop-types';
 import { Form, Field } from 'react-final-form';
 import { withRouter, Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { authoriseUser } from '../../redux/user/actions';
+import { FaUserCheck } from 'react-icons/fa';
+// import { withSnackbar } from 'notistack';
+// import { authoriseUser } from '../../redux/user/actions';
 import styles from './material.style';
-import TextField from '../text-field';
+import TextField from '../material-components/text-field';
 import validate from './validate';
 import './index.scss';
-import '../../styles/button.scss';
+// import '../../styles/button.scss';
 
 class Login extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    authoriseUser: PropTypes.func.isRequired,
+    // authoriseUser: PropTypes.func.isRequired,
+    // loggedInUser: PropTypes.bool.isRequired,
   };
+
+  // componentDidUpdate = () => this.props.loggedInUser && this.props.history.goBack();
+
+  // componentDidMount= () => this.props.loggedInUser && this.props.history.goBack();
 
   handleChange = name => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
   onSubmit = (values) => {
-    const newValues = {
-      ...values,
-      role: 'admin',
-    };
-    this.props.authoriseUser(newValues);
-    this.props.history.goBack();
+    this.props.authoriseUser(values);
   };
 
   render() {
     const { classes } = this.props;
+
     return (
       <Form
         onSubmit={this.onSubmit}
@@ -41,6 +44,8 @@ class Login extends React.Component {
         render={({ handleSubmit }) => (
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="login-form__container">
+              <FaUserCheck className="login-form__icon" />
+              <h1 className="login-form__header">Login</h1>
               <Field
                 name="email"
                 component={TextField}
@@ -60,10 +65,10 @@ class Login extends React.Component {
                 variant="outlined"
               />
               <button className="button" type="submit">
-                Log in
+                Login
               </button>
 
-              <Link to="/register">Registration</Link>
+              <Link to="/register" className="login-form__register-link">Registration</Link>
             </div>
           </form>
         )}
@@ -72,12 +77,17 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  authoriseUser: userInfo => dispatch(authoriseUser(userInfo)),
-});
+// const mapStateToProps = state => ({
+//   loggedInUser: state.user.requestInfo.loggedInUser,
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   authoriseUser: userInfo => dispatch(authoriseUser(userInfo)),
+// });
 
 export default compose(
   withRouter,
   withStyles(styles),
-  connect(null, mapDispatchToProps),
+  // connect(mapStateToProps, mapDispatchToProps),
 )(Login);
+// )(withSnackbar(Login));
