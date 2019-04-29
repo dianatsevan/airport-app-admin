@@ -5,6 +5,7 @@ import { getAirportsData } from '../../redux/airports/actions';
 import AddAirportForm from './add-airport';
 import AirportsList from './airports-list';
 
+
 class AirportPage extends React.Component {
   static propTypes = {
     getAirportsData: PropTypes.func.isRequired

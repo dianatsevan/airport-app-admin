@@ -42,6 +42,11 @@ class SideMenu extends React.Component {
                 Airports
               </Link>
             </MenuItem>
+            <MenuItem>
+              <Link to='/dialog' className='side-bar__link'>
+                dialog
+              </Link>
+            </MenuItem>
           </MenuList>
         </Paper>
       </div>
