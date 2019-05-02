@@ -13,8 +13,19 @@ function* fetchAirportsData() {
   }
 }
 
+function* fetchAir() {
+  try {
+    const data = yield call(() => axios.get(urls.getAirportsToAdd));
+
+    return yield put({ type: actionTypes.SET_AIRPORTS_TO_ADD, airportsToAdd: data.data });
+  } catch (err) {
+    return yield put({ type: actionTypes.GET_AIRPORTS_DATA_ERROR, bool: true});
+  }
+}
+
 function* watchFetchData() {
   yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsData);
+  yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAir);
 }
 
 export function* airportsSaga() {
