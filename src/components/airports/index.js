@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAirportsData } from '../../redux/airports/actions';
-import AddAirportForm from './add-airport';
 import AirportsList from './airports-list';
-
+import AddAirportPopup from './add-airport-popup';
 
 class AirportPage extends React.Component {
   static propTypes = {
@@ -16,7 +15,7 @@ class AirportPage extends React.Component {
   render() {
     return (
       <section className="airport-page">
-        <AddAirportForm />
+        <AddAirportPopup />
         <AirportsList />
       </section>
     );
