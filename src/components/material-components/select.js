@@ -61,7 +61,7 @@ class SimpleSelect extends React.Component {
             />
 )}
         >
-          {this.props.items.length && this.props.items.map((item, index) => <MenuItem key={Math.random()} value={index}>{item} {index}</MenuItem>)}
+          {this.props.items.length && this.props.items.map(({label, id}, index) => <MenuItem key={id} value={id}>{label} {id}</MenuItem>)}
         </Select>
         {meta.touched && meta.error && <FormHelperText margin="dense">{meta.error}</FormHelperText>}
       </FormControl>
