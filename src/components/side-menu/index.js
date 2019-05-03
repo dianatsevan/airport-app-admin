@@ -38,7 +38,7 @@ class SideMenu extends React.Component {
         <Paper className={classes.paper}>
           <MenuList>
             <MenuItem>
-              <Link to='/airports' className='side-bar__link'>
+              <Link to='/app/airports' className='side-bar__link'>
                 Airports
               </Link>
             </MenuItem>

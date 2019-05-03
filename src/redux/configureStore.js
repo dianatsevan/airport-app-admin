@@ -1,16 +1,23 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import airports from './airports/reducers';
+import createSagaMiddleware from 'redux-saga';
+import airportsData from './airports/reducers';
+import systemData from './user/reducers';
+import { rootSaga } from './sagas';
 
 const rootReducer = combineReducers({
-  airports,
+  airportsData,
+  systemData
 });
 
 export default function configureStore(initialState) {
-  return createStore(
+  const sagaMiddleware = createSagaMiddleware();
+
+  const store = createStore(
     rootReducer,
     initialState,
-    composeWithDevTools(applyMiddleware(thunk)),
+    composeWithDevTools(applyMiddleware(sagaMiddleware)),
   );
-}
+  sagaMiddleware.run(rootSaga);
+  return store;
+};
