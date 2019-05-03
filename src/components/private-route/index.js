@@ -4,38 +4,38 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from '../loader';
 
-class PrivateRoute extends React.Component {
-  static propTypes = {
+function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage }, props) {
+  PrivateRoute.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
-    isLoadingPage: PropTypes.bool.isRequired
-  }
+    isLoadingPage: PropTypes.bool.isRequired,
+    component: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired
+  };
 
-  render () {
-    const { component: Component, isLoggedIn, isLoadingPage, ...rest } = this.props;
+  const { ...rest } = props;
 
+  const getElem = (props) => {
+    if (isLoadingPage) {
+      return <Loader />;
+    }
+    if (isLoggedIn) {
+      return <Component {...props} />;
+    }
     return (
-      <Route
-        {...rest}
-        render={(props) =>
-          {
-            return isLoadingPage ? (
-              <Loader />
-            ) : (
-              isLoggedIn ? (
-                <Component {...props} />
-              ) : (
-                <Redirect to={{
-                  pathname: '/login',
-                  state: { from: this.props.location }
-                  }}
-                />
-              )
-            )
-          }
-        }
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}
       />
     );
-  }
+  };
+
+  return (
+    <Route
+      {...rest}
+      render={() => getElem(props)}
+    />
+  );
 }
 
 const mapStateToProps = state => ({

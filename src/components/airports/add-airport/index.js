@@ -1,21 +1,25 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Form, Field } from 'react-final-form';
 import { withStyles } from '@material-ui/core/styles';
-import sendAirportData from '.././../../redux/airports/actions';
+import sendAirportData from '../../../redux/airports/actions';
 import TextField from '../../material-components/text-field';
 import '../../../styles/button.scss';
 import '../../../styles/fieldset.scss';
 import styles from './material.style';
 
 class AddAirportForm extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    classes: Proptypes.object.isRequired
+  };
 
-  onSubmit = async (values) => sendAirportData(values);
+  onSubmit = values => sendAirportData(values);
 
   render() {
     const { classes } = this.props;
+
     return (
       <div className="add-airport">
         <Form

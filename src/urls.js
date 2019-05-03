@@ -1,3 +1,5 @@
-export const urls = {
+const urls = {
   checkAuthentication: 'http://localhost:3001/user/check-auth'
 };
+
+export default urls;

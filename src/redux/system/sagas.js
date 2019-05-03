@@ -1,7 +1,7 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
-import { urls } from '../../urls';
-import actionTypes from './actionTypes';
 import axios from 'axios';
+import { put, call, takeEvery } from 'redux-saga/effects';
+import urls from '../../urls';
+import actionTypes from './actionTypes';
 
 function* checkAuth() {
   try {
@@ -17,10 +17,9 @@ function* checkAuth() {
   } catch (err) {
     yield put({ type: actionTypes.IS_LOGGED_IN_USER, bool: false });
     yield put({ type: actionTypes.IS_LOADING_PAGE, bool: false });
-    console.log(err);
-  } 
+  }
 }
 
-export function* watchCheckAuthRequest() {
+export default function* watchCheckAuthRequest() {
   yield takeEvery(actionTypes.AUTHORIZE_USER, checkAuth);
 }

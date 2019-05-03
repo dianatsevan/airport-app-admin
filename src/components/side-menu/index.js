@@ -34,11 +34,11 @@ class SideMenu extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className='side-bar'>
+      <div className="side-bar">
         <Paper className={classes.paper}>
           <MenuList>
             <MenuItem>
-              <Link to='/app/airports' className='side-bar__link'>
+              <Link to="/app/airports" className="side-bar__link">
                 Airports
               </Link>
             </MenuItem>

@@ -1,8 +1,8 @@
 import { all } from 'redux-saga/effects';
-import { watchCheckAuthRequest } from './user/sagas';
+import watchCheckAuthRequest from './system/sagas';
 
 
-export function* rootSaga() {
+export default function* rootSaga() {
   yield all([
     watchCheckAuthRequest()
   ]);

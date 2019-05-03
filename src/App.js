@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { checkAuthentication } from './redux/user/actions';
+import { checkAuthentication } from './redux/system/actions';
 
-import '../src/App.scss';
+import './App.scss';
 import SideMenu from './components/side-menu';
 import AirportPage from './components/airports';
 import Login from './components/login';
@@ -30,14 +30,14 @@ class App extends React.Component {
 
   componentDidMount = () => this.props.checkAuth();
 
-  render () {
+  render() {
     return (
       <div>
         <Router>
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/app" />} />
             <PrivateRoute path="/app" component={MainContent} />
-            <Route path="/login" component={Login} />}
+            <Route path="/login" component={Login} />
           </Switch>
         </Router>
       </div>
