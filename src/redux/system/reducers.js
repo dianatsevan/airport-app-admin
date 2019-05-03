@@ -8,13 +8,20 @@ const initialState = {
 
 const reducers = handleActions(
   {
-    [actionTypes.IS_LOGGED_IN_USER]: (state = initialState, { bool }) => ({
-      ...state,
-      isLoggedInUser: bool
+    [actionTypes.CHECK_AUTH]: (state = initialState) => ({
+      ...state
     }),
-    [actionTypes.IS_LOADING_PAGE]: (state = initialState, { bool }) => ({
+    [actionTypes.IS_LOGGED_IN_USER]: (state = initialState, { payload }) => ({
       ...state,
-      isLoadingPage: bool
+      isLoggedInUser: payload
+    }),
+    [actionTypes.IS_LOADING_PAGE]: (state = initialState, { payload }) => ({
+      ...state,
+      isLoadingPage: payload
+    }),
+    [actionTypes.LOGIN_USER]: (state = initialState, { payload }) => ({
+      ...state,
+      payload
     })
   },
   initialState

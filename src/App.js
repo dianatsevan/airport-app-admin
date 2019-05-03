@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { checkAuthentication } from './redux/system/actions';
+import { checkAuth } from './redux/system/actions';
 
 import './App.scss';
 import SideMenu from './components/side-menu';
@@ -46,7 +46,7 @@ class App extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  checkAuth: () => dispatch(checkAuthentication())
+  checkAuth: () => dispatch(checkAuth())
 });
 
 export default connect(null, mapDispatchToProps)(App);

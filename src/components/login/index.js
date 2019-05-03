@@ -1,31 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Field } from 'react-final-form';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
-// import { FaUserCheck } from 'react-icons/fa';
+import { FaUserCheck } from 'react-icons/fa';
+import { loginUser } from '../../redux/system/actions';
 // import { withSnackbar } from 'notistack';
-// import { authoriseUser } from '../../redux/system/actions';
 import styles from './material.style';
 import TextField from '../material-components/text-field';
 import validate from './validate';
 import './index.scss';
-// import '../../styles/button.scss';
+import '../../styles/button.scss';
 
 class Login extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    // history: PropTypes.object.isRequired
-    // authoriseUser: PropTypes.func.isRequired,
+    // history: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired
   };
 
   handleChange = name => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
-  onSubmit = () => {
+  onSubmit = values => {
+    const newValues = {
+      ...values,
+      role: 'admin'
+    };
+    this.props.loginUser(newValues);
     // this.props.authoriseUser(values);
   };
 
@@ -39,7 +44,7 @@ class Login extends React.Component {
         render={({ handleSubmit }) => (
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="login-form__container">
-              {/* <FaUserCheck className="login-form__icon" /> */}
+              <FaUserCheck className="login-form__icon" />
               <h1 className="login-form__header">Login</h1>
               <Field
                 name="email"
@@ -62,8 +67,6 @@ class Login extends React.Component {
               <button className="button" type="submit">
                 Login
               </button>
-
-              <Link to="/register" className="login-form__register-link">Registration</Link>
             </div>
           </form>
         )}
@@ -72,8 +75,13 @@ class Login extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  loginUser: () => dispatch(loginUser())
+});
+
 export default compose(
   withRouter,
-  withStyles(styles)
+  withStyles(styles),
+  connect(null, mapDispatchToProps)
 )(Login);
 // )(withSnackbar(Login));
