@@ -15,6 +15,13 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     marginTop: 20,
   },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -7,
+    marginLeft: -12
+  }
 });
 
 export default styles;

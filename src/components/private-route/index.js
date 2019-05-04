@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Loader from '../loader';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage }, props) {
+function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage, location }, props) {
   PrivateRoute.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     isLoadingPage: PropTypes.bool.isRequired,
@@ -14,9 +14,9 @@ function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage }, props
 
   const { ...rest } = props;
 
-  const getElem = (props) => {
+  const getElem = () => {
     if (isLoadingPage) {
-      return <Loader />;
+      return <CircularProgress />;
     }
     if (isLoggedIn) {
       return <Component {...props} />;
@@ -24,7 +24,7 @@ function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage }, props
     return (
       <Redirect to={{
         pathname: '/login',
-        state: { from: props.location }
+        state: { from: location }
       }}
       />
     );

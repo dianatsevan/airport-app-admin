@@ -3,7 +3,9 @@ import actionTypes from './actionTypes';
 
 const initialState = {
   isLoggedInUser: false,
-  isLoadingPage: false
+  isLoadingPage: false,
+  isCheckingLoginData: false,
+  isCheckingLoginDataError: false
 };
 
 const reducers = handleActions(
@@ -19,9 +21,16 @@ const reducers = handleActions(
       ...state,
       isLoadingPage: payload
     }),
-    [actionTypes.LOGIN_USER]: (state = initialState, { payload }) => ({
+    [actionTypes.LOGIN_USER]: (state = initialState) => ({
+      ...state
+    }),
+    [actionTypes.IS_CHECKING_LOGIN_DATA]: (state = initialState, { payload }) => ({
       ...state,
-      payload
+      isCheckingLoginData: payload
+    }),
+    [actionTypes.IS_CHECKING_LOGIN_DATA_ERROR]: (state = initialState, { payload }) => ({
+      ...state,
+      isCheckingLoginDataError: payload
     })
   },
   initialState

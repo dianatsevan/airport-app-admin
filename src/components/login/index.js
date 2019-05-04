@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Form, Field } from 'react-final-form';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { FaUserCheck } from 'react-icons/fa';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { loginUser } from '../../redux/system/actions';
-// import { withSnackbar } from 'notistack';
 import styles from './material.style';
 import TextField from '../material-components/text-field';
 import validate from './validate';
@@ -16,13 +17,19 @@ import '../../styles/button.scss';
 
 class Login extends React.Component {
   static propTypes = {
+    isLoggedInUser: PropTypes.bool.isRequired,
     classes: PropTypes.object.isRequired,
-    // history: PropTypes.object.isRequired,
-    loginUser: PropTypes.func.isRequired
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    isCheckingLoginData: PropTypes.bool.isRequired,
+    isCheckingLoginDataError: PropTypes.bool.isRequired
   };
 
-  handleChange = name => (event) => {
-    this.setState({ [name]: event.target.value });
+  componentDidUpdate = () => {
+    const { state } = this.props.location;
+    const fromPath = state ? state.from.pathname : '/app';
+    if (this.props.isLoggedInUser) this.props.history.push(fromPath);
   };
 
   onSubmit = values => {
@@ -30,12 +37,17 @@ class Login extends React.Component {
       ...values,
       role: 'admin'
     };
+
     this.props.loginUser(newValues);
-    // this.props.authoriseUser(values);
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, isCheckingLoginData, isCheckingLoginDataError } = this.props;
+    const buttonClasses = classNames({
+      button: true,
+      button_disabled: isCheckingLoginData,
+      button_errored: isCheckingLoginDataError
+    });
 
     return (
       <Form
@@ -64,9 +76,16 @@ class Login extends React.Component {
                 margin="dense"
                 variant="outlined"
               />
-              <button className="button" type="submit">
-                Login
-              </button>
+              <div className="button-wrapper">
+                <button
+                  className={buttonClasses}
+                  type="submit"
+                  disabled={isCheckingLoginData}
+                >
+                  login
+                </button>
+                {isCheckingLoginData && <CircularProgress size={24} className={classes.loader} />}
+              </div>
             </div>
           </form>
         )}
@@ -75,13 +94,18 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isLoggedInUser: state.systemData.isLoggedInUser,
+  isCheckingLoginData: state.systemData.isCheckingLoginData,
+  isCheckingLoginDataError: state.systemData.isCheckingLoginDataError
+});
+
 const mapDispatchToProps = dispatch => ({
-  loginUser: () => dispatch(loginUser())
+  loginUser: userData => dispatch(loginUser(userData))
 });
 
 export default compose(
   withRouter,
   withStyles(styles),
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(Login);
-// )(withSnackbar(Login));

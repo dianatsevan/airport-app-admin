@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { put, call, takeEvery, takeLatest, delay } from 'redux-saga/effects';
-import { isLoadingPage, isLoggedInUser } from './actions';
+import { put, call, takeEvery, delay } from 'redux-saga/effects';
+import { isLoadingPage, isLoggedInUser, isCheckingLoginData, isCheckingLoginDataError } from './actions';
 import urls from '../../urls';
 import actionTypes from './actionTypes';
 
@@ -21,16 +21,24 @@ function* checkAuth() {
   }
 }
 
-function* loginUser(action) {
+function* loginUser({ payload: userData }) {
   try {
-    console.log(action.payload);
+    yield put(isCheckingLoginData(true));
     yield delay(1000);
+    const requestResponse = yield call(() => axios.post(urls.sendLoginFormData, userData));
+    localStorage.setItem('id', requestResponse.data.id);
+    localStorage.setItem('token', requestResponse.data.token);
+    yield put(isCheckingLoginData(false));
+    yield put(isLoggedInUser(true));
+    yield put(isCheckingLoginDataError(false));
   } catch (err) {
-    console.log(err);
+    yield put(isCheckingLoginData(false));
+    yield put(isLoggedInUser(false));
+    yield put(isCheckingLoginDataError(true));
   }
 }
 
 export default function* watchCheckAuthRequest() {
   yield takeEvery(actionTypes.CHECK_AUTH, checkAuth);
-  yield takeLatest(actionTypes.LOGIN_USER, loginUser);
+  yield takeEvery(actionTypes.LOGIN_USER, loginUser);
 }

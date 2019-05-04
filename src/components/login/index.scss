@@ -16,26 +16,33 @@
     box-shadow: $boxShadow;
     background-color: $loginBackgroundColor;
 
+    .button-wrapper {
+      position: relative;
+    }
+
     .button {
       margin: 20px 0 10px;
       letter-spacing: 1px;
+      font-weight: 500;
+
+      &_errored {
+        background-color: $erroredButtonBackground;
+      }
+
+      &_disabled {
+        background-color: $disabledErrorBackground;
+        color: $disabledButtonText;
+      }
     }
   }
 
-  &__register-link {
-    // color: $secondaryTextColor;
-    font-size: 0.8em;
-  }
-
   &__icon {
-    margin-bottom: 15px;
-    // color:$primaryMaterial;
+    margin-bottom: 5px;
     font-size: 2em;
   }
 
   &__header {
-    margin-bottom: 30px;
-    // color:$primaryMaterial;
+    margin-bottom: 20px;
     font-size: 1.7em;
     font-weight: 450;
     letter-spacing: 1.5px;
