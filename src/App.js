@@ -12,13 +12,12 @@ import PrivateRoute from './components/private-route';
 
 function MainContent() {
   return (
-    <div className="app">
-      <SideMenu />
-      <div className="app-routes">
+    <div>
+      <SideMenu>
         <Switch>
           <Route path="/app/airports" component={AirportPage} />
         </Switch>
-      </div>
+      </SideMenu>
     </div>
   );
 }
