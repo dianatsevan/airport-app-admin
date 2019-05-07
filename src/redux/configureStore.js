@@ -2,10 +2,12 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import airportsData from './airports/reducers';
-import { rootSaga } from './sagas';
+import systemData from './system/reducers';
+import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
   airportsData,
+  systemData
 });
 
 export default function configureStore(initialState) {
@@ -18,4 +20,4 @@ export default function configureStore(initialState) {
   );
   sagaMiddleware.run(rootSaga);
   return store;
-};
+}

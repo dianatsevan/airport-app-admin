@@ -4,12 +4,18 @@ $fontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
 // colors
 $black: rgb(0, 0, 0);
 $white: rgb(255, 255, 255);
+$redError: rgb(244, 67, 54);
+$lightGray: #d1d1d1;
+$gray: #a3a3a3;
 
 // text colors
 $primaryTextColor: $black;
+$disabledButtonText: $gray;
 
 // backgrounds
 $loginBackgroundColor: $white;
+$erroredButtonBackground: $redError;
+$disabledErrorBackground: $lightGray;
 
 // borders
 $borderColor: rgb(211, 211, 211);

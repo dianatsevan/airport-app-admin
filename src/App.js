@@ -1,25 +1,51 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import SideMenu from './components/side-menu';
-import AirportPage from './components/airports';
-import AddAirportPopup from './components/airports/add-airport-popup';
-// import Login from './components/login';
-import '../src/App.scss';
+import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { checkAuth } from './redux/system/actions';
 
-export default function App() {
+import './App.scss';
+import AddAirportPopup from './components/airports/add-airport-popup';
+import SideMenu from './components/side-menu';
+import Login from './components/login';
+import PrivateRoute from './components/private-route';
+
+function MainContent() {
   return (
     <div>
-      <Router>
-        <div className="app">
-          <SideMenu />
-          <div className="app-routes">
-            <Switch> 
-              <Route path="/airports" component={AirportPage} />
-              <Route path="/dialog" component={AddAirportPopup} />
-            </Switch>
-          </div>
-        </div>
-      </Router>
+      <SideMenu>
+        <Switch>
+          <Route path="/app/airports" component={AddAirportPopup} />
+        </Switch>
+      </SideMenu>
     </div>
   );
 }
+
+class App extends React.Component {
+  static propTypes = {
+    checkAuth: PropTypes.func.isRequired
+  };
+
+  componentDidMount = () => this.props.checkAuth();
+
+  render() {
+    return (
+      <div>
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/app" />} />
+            <PrivateRoute path="/app" component={MainContent} />
+            <Route path="/login" component={Login} />
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  checkAuth: () => dispatch(checkAuth())
+});
+
+export default connect(null, mapDispatchToProps)(App);

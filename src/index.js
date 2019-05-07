@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { Provider } from 'react-redux';
+import App from './App';
 import ConfigureStore from './redux/configureStore';
 import './index.scss';
+import './reset.scss';
 
 const store = ConfigureStore();
 

@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import { Form, Field } from 'react-final-form';
 import MaterialDialog from '../../material-components/dialog';
 import Select from '../../material-components/select';
-import validate from './validate';
+// import validate from './validate';
 import styles from './material.style';
 import '../../../styles/button.scss';
 import './index.scss';
@@ -40,7 +40,7 @@ class AddAirportPopup extends React.Component {
         <MaterialDialog title='Add airport'>
           <Form
             onSubmit={this.onSubmit}
-            validate={validate}
+            // validate={validate}
             render={({ handleSubmit }) => (
               <form className="add-airport-form" onSubmit={handleSubmit}>
                 <Field
