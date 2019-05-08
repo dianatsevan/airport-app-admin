@@ -39,7 +39,7 @@ class AddAirportPopup extends React.Component {
 
     return (
       <div className="wrapper">
-        <MaterialDialog title="Add airport" buttonClass={classes.dialogButton}>
+        <MaterialDialog title="Add airport">
           <Form
             onSubmit={this.onSubmit}
             render={({ handleSubmit }) => (

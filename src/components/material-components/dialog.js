@@ -12,6 +12,12 @@ const styles = {
     backgroundColor: blue[100],
     color: blue[600],
   },
+  dialogButton: {
+    backgroundColor: '#efefef',
+    '&:hover': {
+      backgroundColor: '#dbdbdb'
+    }
+  }
 };
 
 class SimpleDialog extends React.Component {
@@ -62,9 +68,11 @@ class MaterialDialog extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        <Button variant="outlined" color="primary" onClick={this.handleClickOpen} className={classes.dialogButton}>
           Add airport
         </Button>
         <SimpleDialogWrapped
@@ -79,4 +87,4 @@ class MaterialDialog extends React.Component {
   }
 }
 
-export default MaterialDialog;
+export default withStyles(styles)(MaterialDialog);
