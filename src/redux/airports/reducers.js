@@ -6,7 +6,9 @@ const initialState = {
   airportsList: [],
   airportsToAdd: [],
   addedAirports: [],
-  error: false
+  getAirportsDataError: false,
+  deleteAirportError: false,
+  deleteAirportSuccess: false
 };
 
 const reducer = handleActions(
@@ -20,15 +22,21 @@ const reducer = handleActions(
     }),
     [actions.getAirportsDataError]: (state = initialState, { payload }) => ({
       ...state,
-      error: payload
+      getAirportsDataError: payload
     }),
     [actions.setAirportsToAdd]: (state = initialState, { payload }) => ({
       ...state,
       airportsToAdd: payload
     }),
-    [actions.addAirportsToDb]: (state = initialState, { payload }) => ({
+    [actions.addAirportsToDb]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.deleteAirport]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.deleteAirportError]: (state = initialState, { payload }) => ({
       ...state,
-      addedAirports: payload
+      deleteAirportError: payload
     })
   },
   initialState
