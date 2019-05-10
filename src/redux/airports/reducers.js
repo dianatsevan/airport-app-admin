@@ -8,7 +8,7 @@ const initialState = {
   addedAirports: [],
   getAirportsDataError: false,
   deleteAirportError: false,
-  deleteAirportSuccess: false
+  changeAirportError: false
 };
 
 const reducer = handleActions(
@@ -37,6 +37,13 @@ const reducer = handleActions(
     [actions.deleteAirportError]: (state = initialState, { payload }) => ({
       ...state,
       deleteAirportError: payload
+    }),
+    [actions.changeAirport]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.changeAirportError]: (state = initialState, { payload }) => ({
+      ...state,
+      changeAirportError: payload
     })
   },
   initialState

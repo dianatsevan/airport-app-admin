@@ -10,5 +10,7 @@ export default keyMirror({
   ADD_AIRPORTS_TO_DB: null,
   DELETE_AIRPORT: null,
   DELETE_AIRPORT_SUCCESS: null,
-  DELETE_AIRPORT_ERROR: null
+  DELETE_AIRPORT_ERROR: null,
+  CHANGE_AIRPORT: null,
+  CHANGE_AIRPORT_ERROR: null
 });
