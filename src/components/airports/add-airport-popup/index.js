@@ -4,7 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Form, Field } from 'react-final-form';
-import MaterialDialog from '../../material-components/dialog';
+import Button from '@material-ui/core/Button';
+import MaterialDialog from '../../material-components/dialog-window';
 import Select from '../../material-components/select';
 import styles from './material.style';
 import { addAirportsToDb } from '../../../redux/airports/actions';
@@ -39,7 +40,14 @@ class AddAirportPopup extends React.Component {
 
     return (
       <div className="wrapper">
-        <MaterialDialog title="Add airport">
+        <MaterialDialog
+          title="Add airport"
+          buttonComponent={(
+            <Button variant="outlined" color="primary" className={classes.dialogButton}>
+              Add airport
+            </Button>
+          )}
+        >
           <Form
             onSubmit={this.onSubmit}
             render={({ handleSubmit }) => (
