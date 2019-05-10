@@ -2,23 +2,33 @@
 
 .airports-list {
   margin: 20px 0;
-  height: 200px;
+  height: 70vh;
   overflow-y: scroll;
 
   &__table {
     width: 100%;
     border-collapse: collapse;
+    background-color: $airportsTablebackground;
   }
+
+  &__item:nth-child(2n+1) {
+    background-color: $tableRowBackground;
+  }
+
   &__header th, &__item td {
-    padding: 5px 10px;
-    border: 1px solid lightgray;
+    padding: 10px 10px;
+    text-align: left;
+    border-top: 1px solid $airportsTableBorder;
+    border-bottom: 1px solid $airportsTableBorder;
   }
+
   &__header {
-    background-color: whitesmoke;
+    background-color: $airportsTableHeaderBackground;
   }
+
   &__icon {
     cursor: pointer;
     text-align: center;
-    color: #5454cc;
+    color: $airportsTableIcons;
   }
 }

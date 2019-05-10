@@ -17,12 +17,24 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { FaGlobeAmericas } from 'react-icons/fa';
+import { MdAirplanemodeActive } from 'react-icons/md';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import styles from './material.styles';
+import './index.scss';
+
+const linkList = [{
+  path: '/app/airports',
+  text: 'Airports',
+  icon: <FaGlobeAmericas className="side-menu__icon" />
+},
+{
+  path: '/app/flights',
+  text: 'Flights',
+  icon: <MdAirplanemodeActive className="side-menu__icon" />
+}];
 
 class SideMenu extends React.Component {
   static propTypes = {
@@ -138,17 +150,16 @@ class SideMenu extends React.Component {
           </div>
           <Divider />
           <List>
-            {[{
-              path: '/app/airports',
-              text: 'Airports'
-            },
-            {
-              path: '/app/flights',
-              text: 'Flights'
-            }].map(({ path, text }, index) => (
-              <Link to={path}>
+            {linkList.map(({ path, text, icon }, index) => (
+              <Link
+                key={index + text}
+                to={path}
+                className="side-menu__link"
+              >
                 <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                  <ListItemIcon>
+                    {icon}
+                  </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItem>
               </Link>
@@ -157,7 +168,6 @@ class SideMenu extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          о
           {children}
         </main>
       </div>
