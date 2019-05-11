@@ -4,12 +4,10 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Form, Field } from 'react-final-form';
 import { FaPencilAlt, FaTimes, FaArrowUp } from 'react-icons/fa';
-import { deleteAirport, changeAirport, setAirportsData } from '../../../redux/airports/actions';
+import { deleteAirport, changeAirport, setAirportsData, getAirportsData } from '../../../redux/airports/actions';
 import MaterialDialog from '../../material-components/dialog-window';
-import TextField from '../../material-components/text-field';
-import validate from './validate';
+import DialogForm from './dialog-form';
 import styles from './material.style';
 import './index.scss';
 
@@ -19,7 +17,7 @@ class AirportsList extends React.Component {
     deleteAirport: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     changeAirport: PropTypes.func.isRequired,
-    setAirportsData: PropTypes.func.isRequired,
+    getAirportsData: PropTypes.func.isRequired,
   };
 
   state = {
@@ -30,12 +28,6 @@ class AirportsList extends React.Component {
     sortingByCode: false
   };
 
-  sortFunc = (field, order) => this.props.airportsList.sort((a, b) => {
-    if (a[field] < b[field]) { return order ? 1 : -1; }
-    if (a[field] > b[field]) { return order ? -1 : 1; }
-    return 0;
-  }).slice();
-
   sortByCode = async () => {
     await this.setState(state => ({
       invertedByName: true,
@@ -43,8 +35,11 @@ class AirportsList extends React.Component {
       sortingByName: false,
       sortingByCode: true
     }));
-    const sorted = this.sortFunc('code', this.state.invertedByCode);
-    this.props.setAirportsData(sorted);
+    const values = {
+      orderBy: 'code',
+      direction: this.state.invertedByCode ? -1 : 1
+    };
+    this.props.getAirportsData(values);
   };
 
   sortByName = async () => {
@@ -54,13 +49,28 @@ class AirportsList extends React.Component {
       sortingByName: true,
       sortingByCode: false
     }));
-    const sorted = this.sortFunc('name', this.state.invertedByName);
-    this.props.setAirportsData(sorted);
+    const values = {
+      orderBy: 'name',
+      direction: this.state.invertedByName ? -1 : 1
+    };
+    this.props.getAirportsData(values);
   };
 
   handleDeleteButtonClick = airportId => () => this.props.deleteAirport(airportId);
 
   handleChangeButtonClick = airportId => () => this.setState({ selectedAirportId: airportId });
+
+  codeArrowClassnames = () => classNames({
+    'airports-list__sort-arrow': true,
+    'airports-list__sort-arrow_inverted': this.state.invertedByCode,
+    'airports-list__sort-arrow_hidden': this.state.sortingByName
+  });
+
+  nameArrowClassnames = () => classNames({
+    'airports-list__sort-arrow': true,
+    'airports-list__sort-arrow_inverted': this.state.invertedByName,
+    'airports-list__sort-arrow_hidden': this.state.sortingByCode
+  });
 
   onSubmit = values => {
     const newValues = {
@@ -73,6 +83,7 @@ class AirportsList extends React.Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <section className="airports-list">
         <table className="airports-list__table">
@@ -85,13 +96,7 @@ class AirportsList extends React.Component {
                 >
                   code
                 </span>
-                <FaArrowUp
-                  className={classNames({
-                    'airports-list__sort-arrow': true,
-                    'airports-list__sort-arrow_inverted': this.state.invertedByCode,
-                    'airports-list__sort-arrow_hidden': this.state.sortingByName
-                  })}
-                />
+                <FaArrowUp className={this.codeArrowClassnames()} />
               </th>
               <th>
                 <span
@@ -100,13 +105,7 @@ class AirportsList extends React.Component {
                 >
                   name
                 </span>
-                <FaArrowUp
-                  className={classNames({
-                    'airports-list__sort-arrow': true,
-                    'airports-list__sort-arrow_inverted': this.state.invertedByName,
-                    'airports-list__sort-arrow_hidden': this.state.sortingByCode
-                  })}
-                />
+                <FaArrowUp className={this.nameArrowClassnames()} />
               </th>
               <th />
               <th />
@@ -130,36 +129,11 @@ class AirportsList extends React.Component {
                       />
                     )}
                   >
-                    <Form
+                    <DialogForm
+                      code={code}
+                      airport={name}
+                      classes={classes}
                       onSubmit={this.onSubmit}
-                      validate={validate}
-                      initialValues={{
-                        code,
-                        airport: name
-                      }}
-                      render={({ handleSubmit }) => (
-                        <form className="add-airport-form" onSubmit={handleSubmit}>
-                          <Field
-                            variant="outlined"
-                            name="code"
-                            label="Code"
-                            value={code}
-                            className={classes.texField}
-                            component={TextField}
-                          />
-                          <Field
-                            variant="outlined"
-                            name="airport"
-                            label="Airport"
-                            className={classes.texField}
-                            component={TextField}
-                          />
-
-                          <button className="button" type="submit">
-                            Save changes
-                          </button>
-                        </form>
-                      )}
                     />
                   </MaterialDialog>
                 </td>
@@ -185,7 +159,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   deleteAirport: airportId => dispatch(deleteAirport(airportId)),
   changeAirport: (airportData, airportId) => dispatch(changeAirport(airportData, airportId)),
-  setAirportsData: airportsList => dispatch(setAirportsData(airportsList))
+  setAirportsData: airportsList => dispatch(setAirportsData(airportsList)),
+  getAirportsData: data => dispatch(getAirportsData(data))
 });
 
 export default compose(

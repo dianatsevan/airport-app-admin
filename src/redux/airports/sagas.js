@@ -4,22 +4,25 @@ import { urls } from '../../urls';
 import actionTypes from './actionTypes';
 import { setAirportsData, getAirportsDataError, setAirportsToAdd, deleteAirportError, changeAirportError } from './actions';
 
-function* fetchAirportsData() {
-  try {
-    const data = yield call(() => axios.get(urls.getAirportsUrl));
+function* updateAirportData() {
+  const newAirports = yield call(() => axios.get(urls.getAirportsUrl));
 
-    yield put(setAirportsData(data.data));
-    yield put(getAirportsDataError(false));
-  } catch (err) {
-    yield put(getAirportsDataError(true));
-  }
+  yield put(setAirportsData(newAirports.data));
+  yield put(getAirportsDataError(false));
 }
 
-function* fetchAirportsToAddData() {
+function* fetchAirportsData({ payload }) {
   try {
-    const data = yield call(() => axios.get(urls.getAirportsToAdd));
+    const airports = yield call(() => axios.get(urls.getAirportsUrl, {
+      params: {
+        orderBy: payload ? payload.orderBy : 'name',
+        direction: payload ? payload.direction : 1
+      }
+    }));
+    const airportsToAdd = yield call(() => axios.get(urls.getAirportsToAdd));
 
-    yield put(setAirportsToAdd(data.data));
+    yield put(setAirportsData(airports.data));
+    yield put(setAirportsToAdd(airportsToAdd.data));
     yield put(getAirportsDataError(false));
   } catch (err) {
     yield put(getAirportsDataError(true));
@@ -28,16 +31,12 @@ function* fetchAirportsToAddData() {
 
 function* watchFetchData() {
   yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsData);
-  yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsToAddData);
 }
 
-function* addAirportsToDBsaga(action) {
+function* addAirportsToDBsaga({ payload }) {
   try {
-    yield call(() => axios.post(urls.addAirportToDb, action.payload));
-    const newAirports = yield call(() => axios.get(urls.getAirportsUrl));
-
-    yield put(setAirportsData(newAirports.data));
-    yield put(getAirportsDataError(false));
+    yield call(() => axios.post(urls.addAirportToDb, payload));
+    yield updateAirportData();
   } catch (err) {
     yield put(getAirportsDataError(true));
   }
@@ -47,15 +46,12 @@ function* watchAirportsAdding() {
   yield takeEvery(actionTypes.ADD_AIRPORTS_TO_DB, addAirportsToDBsaga);
 }
 
-function* deleteAirportFromDB(action) {
+function* deleteAirportFromDB({ payload }) {
   try {
-    const url = `${urls.addAirportToDb}/${action.payload}`;
+    const url = `${urls.addAirportToDb}/${payload}`;
 
     yield call(() => axios.delete(url));
-    const newAirports = yield call(() => axios.get(urls.getAirportsUrl));
-
-    yield put(setAirportsData(newAirports.data));
-    yield put(deleteAirportError(false));
+    yield updateAirportData();
   } catch (err) {
     yield put(deleteAirportError(true));
   }
@@ -73,10 +69,7 @@ function* changeAirport({ payload }) {
       code: payload.code,
       name: payload.airport
     }));
-    const newAirports = yield call(() => axios.get(urls.getAirportsUrl));
-
-    yield put(setAirportsData(newAirports.data));
-    yield put(changeAirportError(false));
+    yield updateAirportData();
   } catch (err) {
     yield put(changeAirportError(true));
   }
