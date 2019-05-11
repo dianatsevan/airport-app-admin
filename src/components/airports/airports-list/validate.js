@@ -6,13 +6,12 @@ const validate = (values) => {
     errors.code = 'the length should be equal 3';
   }
 
-  if (values.airport.length > 45) {
-    errors.airport = 'too long airport name';
-  } 
-
   if (!values.airport) {
     errors.airport = 'Required';
+  } else if (values.airport.length > 45) {
+    errors.airport = 'too long airport name';
   }
+
   return errors;
 };
 

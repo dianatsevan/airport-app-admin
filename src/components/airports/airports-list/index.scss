@@ -18,12 +18,33 @@
   &__header th, &__item td {
     padding: 10px 10px;
     text-align: left;
+    vertical-align: middle;
     border-top: 1px solid $airportsTableBorder;
     border-bottom: 1px solid $airportsTableBorder;
   }
 
   &__header {
     background-color: $airportsTableHeaderBackground;
+  }
+
+  &__column-name {
+    letter-spacing: 2px;
+    font-weight: 450;
+    cursor: pointer;
+  }
+
+  &__sort-arrow {
+    margin-left: 5px;
+    padding-top: 2px;
+    font-size: 0.8em;
+
+    &_inverted {
+      transform: rotate(180deg);
+    }
+
+    &_hidden {
+      display: none;
+    }
   }
 
   &__icon {
