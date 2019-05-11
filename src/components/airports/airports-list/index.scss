@@ -17,10 +17,17 @@
 
   &__header th, &__item td {
     padding: 10px 10px;
-    text-align: left;
     vertical-align: middle;
     border-top: 1px solid $airportsTableBorder;
     border-bottom: 1px solid $airportsTableBorder;
+  }
+  
+  &__header th {
+    text-align: left;
+  }
+
+  &__action-icon {
+    text-align: center;
   }
 
   &__header {

@@ -49,9 +49,10 @@ class SimpleSelect extends React.Component {
         </InputLabel>
         <Select
           {...rest}
+          multiple
           name={name}
           inputProps={restInput}
-          value={value}
+          value={value || []}
           onChange={onChange}
           input={(
             <OutlinedInput
@@ -59,9 +60,9 @@ class SimpleSelect extends React.Component {
               name={name}
               id="outlined-age-simple"
             />
-)}
+          )}
         >
-          {this.props.items.length && this.props.items.map(({label, id}, index) => <MenuItem key={id} value={id}>{label} {id}</MenuItem>)}
+          {this.props.items.length && this.props.items.map(({ label, id }, index) => <MenuItem key={id} value={id}>{label}</MenuItem>)}
         </Select>
         {meta.touched && meta.error && <FormHelperText margin="dense">{meta.error}</FormHelperText>}
       </FormControl>

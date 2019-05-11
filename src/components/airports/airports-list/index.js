@@ -119,7 +119,7 @@ class AirportsList extends React.Component {
               >
                 <td>{code}</td>
                 <td>{name}</td>
-                <td>
+                <td className="airports-list__action-icon">
                   <MaterialDialog
                     title="Edit airport"
                     buttonComponent={(
@@ -137,7 +137,7 @@ class AirportsList extends React.Component {
                     />
                   </MaterialDialog>
                 </td>
-                <td>
+                <td className="airports-list__action-icon">
                   <FaTimes
                     className="airports-list__icon"
                     onClick={this.handleDeleteButtonClick(_id)}
