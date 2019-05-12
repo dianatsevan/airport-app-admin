@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import airportsData from './airports/reducers';
@@ -10,14 +12,21 @@ const rootReducer = combineReducers({
   systemData
 });
 
-export default function configureStore(initialState) {
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default () => {
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
-    rootReducer,
-    initialState,
+    persistedReducer,
     composeWithDevTools(applyMiddleware(sagaMiddleware)),
   );
   sagaMiddleware.run(rootSaga);
-  return store;
-}
+  const persistor = persistStore(store);
+  return { store, persistor };
+};
