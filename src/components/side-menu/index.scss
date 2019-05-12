@@ -1,10 +1,11 @@
 @import '../../variables.scss';
 
-.side-bar {
-  display: flex;
-
+.side-menu {
   &__link {
-    color: $primaryTextColor;
     text-decoration: none;
+  }
+
+  &__icon {
+    font-size: 1.5em;
   }
 }

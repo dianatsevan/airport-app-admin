@@ -5,20 +5,19 @@ import { connect } from 'react-redux';
 import { checkAuth } from './redux/system/actions';
 
 import './App.scss';
+import AirportsPage from './components/airports';
 import SideMenu from './components/side-menu';
-import AirportPage from './components/airports';
 import Login from './components/login';
 import PrivateRoute from './components/private-route';
 
 function MainContent() {
   return (
-    <div className="app">
-      <SideMenu />
-      <div className="app-routes">
+    <div>
+      <SideMenu>
         <Switch>
-          <Route path="/app/airports" component={AirportPage} />
+          <Route path="/app/airports" component={AirportsPage} />
         </Switch>
-      </div>
+      </SideMenu>
     </div>
   );
 }
