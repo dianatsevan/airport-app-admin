@@ -11,6 +11,8 @@ module.exports = {
     ],
     "rules": {
       "array-callback-return": "off",
+      "arrow-parens": "off",
+      "comma-dangle": "off",
       "consistent-return": "off",
       "import/extensions": "off",
       "import/no-extraneous-dependencies": "off",
