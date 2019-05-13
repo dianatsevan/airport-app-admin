@@ -1,7 +1,6 @@
 import { createActions } from 'redux-actions';
 import actionTypes from './actionTypes';
 
-
 export const { checkAuth, isLoadingPage, isLoggedInUser, loginUser, isCheckingLoginData, isCheckingLoginDataError } = createActions({
   [actionTypes.CHECK_AUTH]: null,
   [actionTypes.IS_LOADING_PAGE]: null,
