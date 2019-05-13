@@ -1,6 +1,6 @@
 const styles = theme => ({
   textField: {
-    margin: 0,
+    marginBottom: '5px',
     backgroundColor: theme.palette.common.white,
     width: 200,
   },

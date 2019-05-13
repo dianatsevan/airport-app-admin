@@ -5,11 +5,10 @@ import { Form, Field } from 'react-final-form';
 import Button from '@material-ui/core/Button';
 import MaterialDialog from '../../material-components/dialog-window';
 import TextField from '../../material-components/text-field';
+import PlaneLayout from './plane-layout';
 import validate from './validate';
 import styles from './material.style';
 import './index.scss';
-import PlaneSeats from './plane-seats';
-import SeatsSigns from './seats-signs';
 
 export class AddPlanePopup extends Component {
   static propTypes = {
@@ -18,9 +17,8 @@ export class AddPlanePopup extends Component {
 
   state = {
     signs: ['A', 'B', 'C', 'D', 'E', 'F'],
-    text: 'Add plane',
     rows: 8,
-    location: [1, 2, 3, 4, 5, 6, 7]
+    location: ['A', 'B', 'C', '', 'D', 'E', 'F']
   };
 
   onSubmit = (values) => {
@@ -34,7 +32,7 @@ export class AddPlanePopup extends Component {
     values.seats.forEach((elem, index) => {
       array[elem] = this.state.signs[index];
     });
-    this.setState({ location: array });
+    this.setState(state => ({ location: array, rows: +values.rows || state.rows }));
   };
 
   render() {
@@ -43,7 +41,7 @@ export class AddPlanePopup extends Component {
     return (
       <div>
         <MaterialDialog
-          title={this.state.text}
+          title='Add plane'
           buttonComponent={(
             <Button variant="outlined" color="primary" className={classes.dialogButton}>
               Add plane
@@ -54,9 +52,7 @@ export class AddPlanePopup extends Component {
             <Form
               onSubmit={this.onSubmit}
               validate={validate}
-              render={({ handleSubmit, values }) => {
-                // console.log(values);
-                return (
+              render={({ handleSubmit, values }) => (
                   <form className="add-plane-form" onSubmit={handleSubmit}>
                     <div className="add-plane-form__fields-wrapper">
                       <Field
@@ -68,17 +64,15 @@ export class AddPlanePopup extends Component {
                         margin="dense"
                         variant="outlined"
                       />
-                      <div className="rows-field-wrapper">
-                        <Field
-                          name="rows"
-                          component={TextField}
-                          className={classes.textField}
-                          type="text"
-                          label="Rows count"
-                          margin="dense"
-                          variant="outlined"
-                        />
-                      </div>
+                      <Field
+                        name="rows"
+                        component={TextField}
+                        className={classes.textField}
+                        type="text"
+                        label="Rows count"
+                        margin="dense"
+                        variant="outlined"
+                      />
 
                       <div className="add-plane-form__radio-buttons">
                         {this.state.location.map((elem, index) => (
@@ -107,17 +101,9 @@ export class AddPlanePopup extends Component {
                     </button>
 
                   </form>
-                )}}
-              />
-            <div className="add-plane-form__plane-layout">
-              <div className="plane__exit plane__exit_front" />
-              <SeatsSigns signs={this.state.location} />
-              <PlaneSeats
-                rows={this.state.rows}
-                location={this.state.location}
-              />
-              <div className="plane__exit plane__exit_back" />
-            </div>
+              )}
+            />
+            <PlaneLayout rows={this.state.rows} location={this.state.location} />
           </div>
         </MaterialDialog>
       </div>

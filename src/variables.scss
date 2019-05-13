@@ -4,15 +4,18 @@ $fontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
 // colors
 $black: rgb(0, 0, 0);
 $gray: #a3a3a3;
+$green: rgb(0, 127, 0);
 $lightGray: #d1d1d1;
 $redError: rgb(244, 67, 54);
 $white: rgb(255, 255, 255);
 $whitesmoke: rgb(245, 245, 245);
 
 // text colors
-$airportsTableIcons: #5454cc;
+$airportsTableIcons: rgb(84, 84, 204);
 $disabledButtonText: $gray;
+$planeExitTextColor: $white;
 $primaryTextColor: $black;
+$secondaryTextColor: $gray;
 
 // backgrounds
 $airportsTablebackground: $white;
@@ -21,85 +24,14 @@ $erroredButtonBackground: $redError;
 $disabledErrorBackground: $lightGray;
 $loginBackgroundColor: $white;
 $tableRowBackground: $whitesmoke;
+$planeExitBackgrounColor: $green;
+$seatBackgroundColor: rgb(52, 85, 128);
 
 // borders
 $airportsTableBorder: $lightGray;
 $borderColor: rgb(211, 211, 211);
+$planeSchemaBorderColor: rgb(216, 216, 216);
 
 // box-shadows
 $boxShadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
 $primaryBoxShadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12);
-
-//======
-// display sizes
-$mobileSize: 600px;
-$tabletSize: 960px;
-$desktopSize: 1280px;
-
-// colors
-$green: rgb(0, 127, 0);
-$blue: blue;
-$commonBorder: rgb(216, 216, 216);
-
-$borderColor: rgb(211, 211, 211);
-$checkIconColor: rgb(20, 184, 20);
-$dateBorderColor: rgb(225, 225, 225);
-$masterCardColor: rgb(206, 4, 4);
-$notFoundPageLinkColor: rgb(134, 221, 246);
-$orderDetailsDividerColor: $gray;
-$planeSchemaBorderColor: rgb(216, 216, 216);
-$priceColor: rgb(0, 0, 139);
-$selectedPassengerColor: rgb(131, 80, 131);
-$selectedPlaneSeatColor: rgb(118, 200, 252);
-$passengersListBorderColor: $commonBorder;
-$ticketsDetailsBorderColor: $gray;
-$ticketsHeaderBorderColor: $commonBorder;
-$ticketPlaneAnimationColor: $gray;
-$visaCardColor: rgb(247, 170, 29);
-
-// backgrounds
-$cardBackgroundColor: rgb(255, 255, 255);
-$disabledSeatBackground: rgb(190, 190, 190);
-$flightListHeaderBackground: rgba(255, 255, 255, 0.8);
-$loginBackgroundColor: $white;
-$luggageListBackgroundColor: rgb(255, 255, 255);
-$luggageCheckboxBackgroundColor: rgba(211, 211, 211, 0.192);
-$orderDetailsBackground: $white;
-$ordersHistoryPassengersTableBackground: rgba(239, 239, 239, 0.644);
-$ordersHistoryListItemBackground:rgba(255, 255, 255, 0.87);
-$overlayBackgroundColor: rgba(44, 34, 34, 0.5);
-$passengerTableBackgroundColor: $white;
-$paymentBackground: $white;
-$paymentHeaderBackground: rgb(242, 242, 242);
-$paymentCardBackground: rgb(242, 242, 242);
-
-$planeExitBackgrounColor: $green;
-$planeBackgroundColor: $white;
-$printTicketButtonBackgroundColor: rgb(93, 156, 236);
-$printTicketButtonBackgroundColorHover: rgb(93, 156, 236);
-$seatBackgroundColor: rgb(245, 245, 220);
-$seatsRowBackgroundColor: rgb(131, 80, 131);
-$selectedFlightBackgroundColor: rgb(247, 247, 247);
-$selctedLuggageCheckboxBackgroundColor: rgba(75, 134, 223, 0.158);
-$selectedPassengerBackground: rgb(255, 228, 255);
-$sidebarBackgroundColor: $white;
-$ticketsDetailsBackroundColor: $white;
-$ticketsDetailsPassengersInfoBackground: rgb(239, 239, 239);
-$ticketsBackgroundColor: $white;
-$tooltipBackgroundColor: rgb(211, 211, 211);
-
-// text
-$primaryTextColor: rgb(0, 0, 0);
-$primaryTextInvertColor: $white;
-$secondaryTextColor: $gray;
-
-$buttonHoverColor: rgba(0, 0, 0, 0.08);
-$primaryMaterial: rgb(63, 81, 181);
-$primaryMaterialHover: rgb(48, 63, 159);
-$defaultMaterialHover: rgb(231, 231, 231);
-//shadows
-$boxShadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
-$buttonShadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12);
-$sidebarBoxShadow: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
-//fonts
-$fontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
