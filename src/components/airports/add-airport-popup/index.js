@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import MaterialDialog from '../../material-components/dialog-window';
 import Select from '../../material-components/select';
 import styles from './material.style';
-import { addAirportsToDb } from '../../../redux/airports/actions';
+import { getAirportsToAdd, addAirportsToDb } from '../../../redux/airports/actions';
 import '../../../styles/button.scss';
 import './index.scss';
 
@@ -17,7 +17,10 @@ class AddAirportPopup extends React.Component {
     airports: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     addAirportsToDB: PropTypes.func.isRequired,
+    getAirportsToAdd: PropTypes.func.isRequired
   };
+
+  componentDidMount = () => this.props.getAirportsToAdd();
 
   onSubmit = values => {
     const selectedAirports = this.props.airports.filter(airport => values.code.some(code => code === airport.alpha3Code));
@@ -77,7 +80,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addAirportsToDB: data => dispatch(addAirportsToDb(data))
+  addAirportsToDB: data => dispatch(addAirportsToDb(data)),
+  getAirportsToAdd: () => dispatch(getAirportsToAdd())
 });
 
 export default compose(
