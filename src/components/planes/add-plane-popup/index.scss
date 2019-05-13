@@ -1,0 +1,209 @@
+@import 'src/variables';
+
+@mixin cockpit($top) {
+  box-sizing: border-box;
+  height: 120px;
+  position: relative;
+  z-index: -1;
+  text-align: center;
+  background-color: transparent;
+
+  &:before {
+    content: "";
+    background-color: $planeBackgroundColor;
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    top: $top;
+    left: 0;
+    height: 250px;
+    width: 100%;
+    border-radius: 50%;
+    border-right: 5px solid $planeSchemaBorderColor;
+    border-left: 5px solid $planeSchemaBorderColor;
+  }
+}
+
+.plane {
+  &__cockpit {
+    @include cockpit(0);
+  }
+
+  &__cockpit_invert {
+    @include cockpit(-130px);
+  }
+
+  &__exit {
+    background-color: $planeBackgroundColor;
+    position: relative;
+    z-index: 1;
+    height: 50px;
+    border-right: 5px solid $planeSchemaBorderColor;
+    border-left: 5px solid $planeSchemaBorderColor;
+  
+    &_front {
+      border-top: 5px solid $planeSchemaBorderColor;
+    }
+  
+    &_back {
+      border-bottom: 5px solid $planeSchemaBorderColor;
+    }
+  
+    &:before,
+    &:after {
+      content: "EXIT";
+      font-size: 14px;
+      line-height: 18px;
+      padding: 0px 2px;
+      font-family: "Arial Narrow", Arial, sans-serif;
+      display: block;
+      position: absolute;
+      background: $planeExitBackgrounColor;
+      color: $primaryTextInvertColor;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+    &:before {
+      left: 0;
+    }
+    &:after {
+      right: 0;
+    }
+  }
+}
+
+.row {
+  background-color: $planeBackgroundColor;
+  display: flex;
+  padding: 5px 5px;
+  height: 30px;
+}
+
+.seat {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background-color: $seatsRowBackgroundColor;
+  text-align: center;
+  line-height: normal;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+  
+  &:hover .seat-point {
+    display: inline;
+  }
+
+  &:hover .tooltiptext {
+    visibility: visible;
+    cursor: auto;
+  }
+}
+
+.disabled {
+  background-color: $disabledSeatBackground;
+  cursor: auto;
+
+  &:hover .seat-point {
+    display: none;
+  }
+}
+
+.selectedSeat {
+  background-color: $selectedPlaneSeatColor;
+  color: $primaryTextColor;
+  .seat-point {
+    display: inline;
+  }
+}
+
+.sign {
+  background-color: transparent;
+  color: $secondaryTextColor;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+  height: 20px;
+  color: $secondaryTextColor;
+  font-size: 0.6rem;
+  margin-right: 5px;
+}
+
+
+//======
+.add-plane-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 450px;
+    height: auto;
+    padding-bottom: 30px;
+  }
+
+  &__fields-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__radio-buttons {
+    display: flex;
+    padding: 15px;
+
+    .radio-button {
+      margin-right: 9px;
+    }
+  }
+
+  .my-seat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .add-button {
+    width: 100px;
+    margin-left: 8px;
+  }
+
+  &__plane-layout {
+    max-height: 550px;
+    overflow: hidden;
+    // overflow-y: scroll;
+  }
+}
+
+.row-btn {
+  // position: absolute;
+  // top:0;
+  // right: 0;
+  // height: 48.4px;
+  padding: 5px 10px;
+  outline: none;
+  border: none;
+  background-color: rgb(68, 110, 165);
+  color: white;
+  font-weight: 450;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.rows-field-wrapper {
+  position: relative;
+  // border: 1px solid red;
+  padding: 0;
+  margin-top: 10px;
+
+}
