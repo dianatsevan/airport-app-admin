@@ -47,14 +47,15 @@ export class AddPlanePopup extends Component {
   };
 
   getValues = values => () => {
-    if (values.seats && values.rows) {
+    if (values.seats) {
       const array = Array(7).fill('');
       values.seats.sort();
       values.seats.forEach((elem, index) => {
         array[elem] = this.state.signs[index];
       });
-      this.setState({ location: array, rows: +values.rows });
+      this.setState(state => ({ location: array, rows: +values.rows || state.rows }));
     }
+    this.setState(state => ({ location: state.location, rows: +values.rows || state.rows }));
   };
 
   render() {
