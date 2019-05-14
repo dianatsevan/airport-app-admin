@@ -5,12 +5,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import airportsData from './airports/reducers';
 import systemData from './system/reducers';
-import planeData from './planes/reducers';
+import planesData from './planes/reducers';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
   airportsData,
-  planeData,
+  planesData,
   systemData
 });
 

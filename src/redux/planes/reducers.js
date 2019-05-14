@@ -2,7 +2,9 @@ import { handleActions } from 'redux-actions';
 import * as actions from './actions';
 
 const initialState = {
-  addPlaneToDbError: false
+  addPlaneToDbError: false,
+  planesList: [],
+  getPlanesDataError: false
 };
 
 const reducers = handleActions(
@@ -13,6 +15,17 @@ const reducers = handleActions(
     [actions.addPlaneToDbError]: (state = initialState, { payload }) => ({
       ...state,
       addPlaneToDbError: payload
+    }),
+    [actions.getPlanesData]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.setPlanesData]: (state = initialState, { payload }) => ({
+      ...state,
+      planesList: payload
+    }),
+    [actions.getPlanesDataError]: (state = initialState, { payload }) => ({
+      ...state,
+      getPlanesDataError: payload
     })
   },
   initialState
