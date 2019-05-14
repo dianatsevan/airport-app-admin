@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getPlanesData } from '../../redux/planes/actions';
 import AddPlanePopup from './add-plane-popup';
+import PlanesList from './planes-list';
 
 class PlanesPage extends Component {
   static propTypes = {
@@ -15,6 +16,7 @@ class PlanesPage extends Component {
     return (
       <section className="planes-page">
         <AddPlanePopup />
+        <PlanesList />
       </section>
     );
   }
