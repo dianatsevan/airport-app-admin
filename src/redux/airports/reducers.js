@@ -24,6 +24,9 @@ const reducer = handleActions(
       ...state,
       getAirportsDataError: payload
     }),
+    [actions.getAirportsToAdd]: (state = initialState) => ({
+      ...state
+    }),
     [actions.setAirportsToAdd]: (state = initialState, { payload }) => ({
       ...state,
       airportsToAdd: payload

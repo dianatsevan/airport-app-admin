@@ -1,4 +1,4 @@
-import { all, put, call, takeEvery } from 'redux-saga/effects';
+import { all, put, call, take, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { urls } from '../../urls';
 import actionTypes from './actionTypes';
@@ -19,10 +19,8 @@ function* fetchAirportsData({ payload }) {
         direction: payload ? payload.direction : 1
       }
     }));
-    const airportsToAdd = yield call(() => axios.get(urls.getAirportsToAdd));
 
     yield put(setAirportsData(airports.data));
-    yield put(setAirportsToAdd(airportsToAdd.data));
     yield put(getAirportsDataError(false));
   } catch (err) {
     yield put(getAirportsDataError(true));
@@ -31,6 +29,20 @@ function* fetchAirportsData({ payload }) {
 
 function* watchFetchData() {
   yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsData);
+}
+
+function* fetchAirportToAddData() {
+  try {
+    const airportsToAdd = yield call(() => axios.get(urls.getAirportsToAdd));
+    yield put(setAirportsToAdd(airportsToAdd.data));
+    yield put(getAirportsDataError(false));
+  } catch (err) {
+    yield put(getAirportsDataError(true));
+  }
+}
+
+function* watchFetchAirportsToAddData() {
+  yield take(actionTypes.GET_AIRPORTS_TO_ADD, fetchAirportToAddData);
 }
 
 function* addAirportsToDBsaga({ payload }) {
@@ -82,6 +94,7 @@ function* watchAirportChanging() {
 export default function* airportsSaga() {
   yield all([
     watchFetchData(),
+    watchFetchAirportsToAddData(),
     watchAirportsAdding(),
     watchAirportDeleting(),
     watchAirportChanging()
