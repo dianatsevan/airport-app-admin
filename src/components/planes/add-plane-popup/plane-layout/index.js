@@ -23,15 +23,15 @@ export default function PlaneLayout({ rows, location }) {
       </div>
 
       {arrayByRows.map((elem, index) => (
-        <div key={index} className="plane__seats-row">
+        <div key={elem + index} className="plane__seats-row">
           {location.map((place, j) => (place ? (
             <div
               id={index + location[j] + 1}
-              key={index + j}
+              key={index + j + elem}
               className="plane__seat"
             />
           )
-            : <div key={index + j} className="empty">{index + 1}</div>
+            : <div key={index + j + elem} className="empty">{index + 1}</div>
           ))}
         </div>
       ))}

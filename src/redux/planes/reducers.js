@@ -4,7 +4,8 @@ import * as actions from './actions';
 const initialState = {
   addPlaneToDbError: false,
   planesList: [],
-  getPlanesDataError: false
+  getPlanesDataError: false,
+  editPlaneDataError: false
 };
 
 const reducers = handleActions(
@@ -26,6 +27,13 @@ const reducers = handleActions(
     [actions.getPlanesDataError]: (state = initialState, { payload }) => ({
       ...state,
       getPlanesDataError: payload
+    }),
+    [actions.editPlaneData]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.editPlaneDataError]: (state = initialState, { payload }) => ({
+      ...state,
+      editPlaneDataError: payload
     })
   },
   initialState
