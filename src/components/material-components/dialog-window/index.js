@@ -10,12 +10,12 @@ class MaterialDialog extends React.Component {
   }
 
   state = {
-    open: false,
+    opened: false,
   };
 
-  handleClickOpen = () => this.setState({ open: true });
+  handleClickOpen = () => this.setState({ opened: true });
 
-  handleClose = () => this.setState({ open: false });
+  handleClose = () => this.setState({ opened: false });
 
   render() {
     const { buttonComponent: ButtonComponent } = this.props;
@@ -26,7 +26,7 @@ class MaterialDialog extends React.Component {
           {ButtonComponent}
         </span>
         <SimpleDialogWrapped
-          open={this.state.open}
+          open={this.state.opened}
           onClose={this.handleClose}
           title={this.props.title}
         >
