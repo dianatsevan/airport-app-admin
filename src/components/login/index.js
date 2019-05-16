@@ -32,22 +32,29 @@ class Login extends React.Component {
     if (this.props.isLoggedInUser) this.props.history.push(fromPath);
   };
 
-  onSubmit = values => {
+  componentDidMount = () => {
+    const { state } = this.props.location;
+    const fromPath = state ? state.from.pathname : '/app';
+    if (this.props.isLoggedInUser) this.props.history.push(fromPath);
+  };
+
+  onSubmit = async values => {
     const newValues = {
       ...values,
       role: 'admin'
     };
 
-    this.props.loginUser(newValues);
+    await this.props.loginUser(newValues);
   };
 
+  getButtonClassnames = () => classNames({
+    button: true,
+    button_disabled: this.props.isCheckingLoginData,
+    button_errored: this.props.isCheckingLoginDataError
+  })
+
   render() {
-    const { classes, isCheckingLoginData, isCheckingLoginDataError } = this.props;
-    const buttonClasses = classNames({
-      button: true,
-      button_disabled: isCheckingLoginData,
-      button_errored: isCheckingLoginDataError
-    });
+    const { classes, isCheckingLoginData } = this.props;
 
     return (
       <Form
@@ -78,7 +85,7 @@ class Login extends React.Component {
               />
               <div className="button-wrapper">
                 <button
-                  className={buttonClasses}
+                  className={this.getButtonClassnames()}
                   type="submit"
                   disabled={isCheckingLoginData}
                 >
