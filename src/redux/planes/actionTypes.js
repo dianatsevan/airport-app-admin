@@ -7,5 +7,7 @@ export default keyMirror({
   SET_PLANES_DATA: null,
   GET_PLANES_DATA_ERROR: null,
   EDIT_PLANE_DATA: null,
-  EDIT_PLANE_DATA_ERROR: null
+  EDIT_PLANE_DATA_ERROR: null,
+  DELETE_PLANE: null,
+  DELETE_PLANE_ERROR: null,
 });

@@ -1,19 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import MaterialDialog from '../../material-components/dialog-window';
 import AddPlanePopupContent from '../add-plane-popup/add-plane-popup-content';
 import PlaneLayout from '../add-plane-popup/plane-layout';
-import { editPlaneData } from '../../../redux/planes/actions';
+import { editPlaneData, deletePlane } from '../../../redux/planes/actions';
 import validate from './validate';
 import './index.scss';
 
-function PlanesList({ planesList }) {
+function PlanesList({ planesList, editPlaneData, deletePlane }) {
   PlanesList.propTypes = {
     planesList: PropTypes.array.isRequired,
-    editPlaneData: PropTypes.func.isRequired
+    editPlaneData: PropTypes.func.isRequired,
+    deletePlane: PropTypes.func.isRequired
   };
+
+  const handleDeleteButtonClick = id => () => deletePlane(id);
 
   return (
     <section className="planes-list">
@@ -58,11 +61,15 @@ function PlanesList({ planesList }) {
                 seatsInRow={seatsInRow}
                 actionName="edit"
                 buttonName="Edit plane"
-                action={this.props.editPlaneData}
+                action={editPlaneData}
                 validate={validate}
               />
             </MaterialDialog>
-            <button type="button" className="button planes-list-item__buttons">
+            <button
+              type="button"
+              className="button planes-list-item__buttons"
+              onClick={handleDeleteButtonClick(_id)}
+            >
               Delete
               <FaTrashAlt className="planes-list-item__button-icon" />
             </button>
@@ -78,7 +85,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  editPlaneData: planeData => dispatch(editPlaneData(planeData))
+  editPlaneData: planeData => dispatch(editPlaneData(planeData)),
+  deletePlane: planeId => dispatch(deletePlane(planeId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlanesList);

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { put, call, takeEvery } from 'redux-saga/effects';
-import { addPlaneToDbError, setPlanesData, getPlanesDataError, editPlaneDataError } from './actions';
+import { addPlaneToDbError, setPlanesData, getPlanesDataError, editPlaneDataError, deletePlaneError } from './actions';
 import urls from '../../urls';
 import actionTypes from './actionTypes';
 
@@ -35,8 +35,20 @@ function* editPlaneData({ payload }) {
   }
 }
 
+function* deletePlane({ payload: id }) {
+  try {
+    const newUrl = `${urls.getPlanesList}/${id}`;
+    yield call(() => axios.delete(newUrl));
+    yield getPlanesData();
+    yield put(deletePlaneError(false));
+  } catch (err) {
+    yield put(deletePlaneError(true));
+  }
+}
+
 export default function* watchPlaneData() {
   yield takeEvery(actionTypes.ADD_PLANE_TO_DB, addPlaneToDb);
   yield takeEvery(actionTypes.GET_PLANES_DATA, getPlanesData);
   yield takeEvery(actionTypes.EDIT_PLANE_DATA, editPlaneData);
+  yield takeEvery(actionTypes.DELETE_PLANE, deletePlane);
 }

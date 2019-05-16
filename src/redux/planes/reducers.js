@@ -5,7 +5,8 @@ const initialState = {
   addPlaneToDbError: false,
   planesList: [],
   getPlanesDataError: false,
-  editPlaneDataError: false
+  editPlaneDataError: false,
+  deletePlaneError: false
 };
 
 const reducers = handleActions(
@@ -34,6 +35,13 @@ const reducers = handleActions(
     [actions.editPlaneDataError]: (state = initialState, { payload }) => ({
       ...state,
       editPlaneDataError: payload
+    }),
+    [actions.deletePlane]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.deletePlaneError]: (state = initialState, { payload }) => ({
+      ...state,
+      deletePlaneError: payload
     })
   },
   initialState
