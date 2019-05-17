@@ -1,12 +1,29 @@
 import React from 'react';
-import AddAirportForm from './add-airport';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getAirportsData } from '../../redux/airports/actions';
+import AirportsList from './airports-list';
+import AddAirportPopup from './add-airport-popup';
 
-function AirportPage() {
-  return (
-    <section className="airport-page">
-      <AddAirportForm />
-    </section>
-  );
+class AirportPage extends React.Component {
+  static propTypes = {
+    getAirportsData: PropTypes.func.isRequired
+  }
+
+  componentDidMount = () => this.props.getAirportsData();
+
+  render() {
+    return (
+      <section className="airport-page">
+        <AddAirportPopup />
+        <AirportsList />
+      </section>
+    );
+  }
 }
 
-export default AirportPage;
+const mapDispatchToProps = dispatch => ({
+  getAirportsData: () => dispatch(getAirportsData())
+});
+
+export default connect(null, mapDispatchToProps)(AirportPage);

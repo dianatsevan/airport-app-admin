@@ -2,7 +2,7 @@
 
 body {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   color: $primaryTextColor;
   background-image: url('./assets/page-background.jpg');
@@ -10,4 +10,8 @@ body {
   background-attachment: fixed;
   background-size: cover;
   font-family: $fontFamily;
+}
+
+#root {
+  width: 100%;
 }

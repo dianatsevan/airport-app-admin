@@ -1,0 +1,62 @@
+@import 'src/variables.scss';
+
+.airports-list {
+  margin: 20px 0;
+  height: 70vh;
+  overflow-y: scroll;
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: $airportsTablebackground;
+  }
+
+  &__item:nth-child(2n+1) {
+    background-color: $tableRowBackground;
+  }
+
+  &__header th, &__item td {
+    padding: 10px 10px;
+    vertical-align: middle;
+    border-top: 1px solid $airportsTableBorder;
+    border-bottom: 1px solid $airportsTableBorder;
+  }
+  
+  &__header th {
+    text-align: left;
+  }
+
+  &__action-icon {
+    text-align: center;
+  }
+
+  &__header {
+    background-color: $airportsTableHeaderBackground;
+  }
+
+  &__column-name {
+    letter-spacing: 2px;
+    font-weight: 450;
+    cursor: pointer;
+  }
+
+  &__sort-arrow {
+    margin-left: 5px;
+    padding-top: 2px;
+    font-size: 0.8em;
+
+    &_inverted {
+      transform: rotate(180deg);
+    }
+
+    &_hidden {
+      display: none;
+    }
+  }
+
+  &__icon {
+    cursor: pointer;
+    text-align: center;
+    color: $airportsTableIcons;
+  }
+}

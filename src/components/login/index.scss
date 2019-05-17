@@ -1,0 +1,54 @@
+@import 'src/variables.scss';
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    width: 250px;
+    border: 1px solid $borderColor;
+    border-radius: 5px;
+    box-shadow: $boxShadow;
+    background-color: $loginBackgroundColor;
+
+    .button-wrapper {
+      position: relative;
+    }
+
+    .button {
+      margin: 20px 0 10px;
+      letter-spacing: 1px;
+      font-weight: 500;
+
+      &_errored {
+        background-color: $erroredButtonBackground;
+      }
+
+      &_disabled {
+        background-color: $disabledErrorBackground;
+        color: $disabledButtonText;
+      }
+    }
+  }
+
+  &__icon {
+    margin-bottom: 20px;
+    font-size: 2em;
+  }
+
+  &__header {
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    font-weight: 450;
+    letter-spacing: 1.5px;
+  }
+}
