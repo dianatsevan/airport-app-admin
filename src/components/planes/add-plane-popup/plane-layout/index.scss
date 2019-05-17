@@ -1,0 +1,92 @@
+@import 'src/variables';
+
+.plane {
+  max-height: 550px;
+  overflow-y: auto;
+
+  &__exit {
+    position: relative;
+    z-index: 1;
+    height: 50px;
+    border-right: 5px solid $planeSchemaBorderColor;
+    border-left: 5px solid $planeSchemaBorderColor;
+  
+    &_front {
+      border-top: 5px solid $planeSchemaBorderColor;
+    }
+
+    &_back {
+      border-bottom: 5px solid $planeSchemaBorderColor;
+    }
+
+    &:before,
+    &:after {
+      content: "EXIT";
+      display: block;
+      position: absolute;
+      top: 50%;
+      padding: 0px 2px;
+      line-height: 18px;
+      background-color: $planeExitBackgrounColor;
+      color: $planeExitTextColor;
+      transform: translate(0, -50%);
+      font-size: 14px;
+      font-family: "Arial Narrow", Arial, sans-serif;
+    }
+
+    &:before {
+      left: 0;
+    }
+
+    &:after {
+      right: 0;
+    }
+  }
+
+  &__seats-row {
+    display: flex;
+    padding: 5px 5px;
+    height: 30px;
+  }
+
+  &__seat {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: $seatBackgroundColor;
+    text-align: center;
+    line-height: normal;
+    font-size: 0.8rem;
+  
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+    
+    &:hover .seat-point {
+      display: inline;
+    }
+  
+    &:hover .tooltiptext {
+      visibility: visible;
+      cursor: auto;
+    }
+  }
+}
+
+.sign {
+  background-color: transparent;
+  color: $secondaryTextColor;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+  height: 20px;
+  color: $secondaryTextColor;
+  font-size: 0.6rem;
+  margin-right: 5px;
+}
+

@@ -16,6 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { FaGlobeAmericas } from 'react-icons/fa';
 import { MdAirplanemodeActive } from 'react-icons/md';
 import AppHeader from '../app-header';
+
 import styles from './material.styles';
 import './index.scss';
 
@@ -27,7 +28,12 @@ const linkList = [{
 {
   path: '/app/flights',
   text: 'Flights',
-  icon: <MdAirplanemodeActive className="side-menu__icon" />
+  icon: <MdFlightTakeoff className="side-menu__icon" />
+},
+{
+  path: '/app/planes',
+  text: 'Planes',
+  icon: <MdFlight className="side-menu__icon" />
 }];
 
 class SideMenu extends React.Component {
