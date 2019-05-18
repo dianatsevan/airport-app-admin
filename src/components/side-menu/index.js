@@ -14,9 +14,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FaGlobeAmericas } from 'react-icons/fa';
-import { MdAirplanemodeActive } from 'react-icons/md';
+import { MdFlightTakeoff, MdFlight } from 'react-icons/md';
 import AppHeader from '../app-header';
-
 import styles from './material.styles';
 import './index.scss';
 

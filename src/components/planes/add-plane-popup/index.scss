@@ -1,11 +1,15 @@
-@import 'src/variables';
+@import 'src/styles-variables';
 
 .add-plane-form-container {
   display: flex;
   justify-content: space-evenly;
-  width: 450px;
+  min-width: 450px;
   height: auto;
-  padding-bottom: 30px;
+  padding: 0 20px 30px 20px;
+
+  .plane {
+    margin-left: 30px;
+  }
 }
 
 .add-plane-form {
@@ -55,7 +59,7 @@
   }
 
   &__set-button {
-    margin-top: 9px;
+    margin: 9px 0 18px;
     padding: 5px 10px;
     outline: none;
     border: none;
@@ -68,16 +72,22 @@
 
   .add-button {
     width: 135px;
-    margin-left: 8px;
   }
 }
 
 @media only screen and (max-width: $mobileSize) {
   .add-plane-form-container {
+    min-width: 250px;
     flex-direction: column;
     align-items: center;
     width: auto;
     padding: 0 25px;
+
+    .plane {
+      max-height: 100%;
+      margin-left: 0;
+      margin-bottom: 30px;
+    }
   }
 
   .add-plane-form {
@@ -88,10 +98,5 @@
       align-items: center;
       margin-bottom: 30px;
     }
-  }
-
-  .plane {
-    max-height: 100%;
-    margin-bottom: 30px;
   }
 }
