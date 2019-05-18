@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import './index.scss';
 
 function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage, location }, props) {
   PrivateRoute.propTypes = {
@@ -16,7 +17,7 @@ function PrivateRoute({ component: Component, isLoggedIn, isLoadingPage, locatio
 
   const getElem = () => {
     if (isLoadingPage) {
-      return <CircularProgress />;
+      return <div className="loading-circul"><CircularProgress size={50} /></div>;
     }
     if (isLoggedIn) {
       return <Component {...props} />;

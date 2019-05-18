@@ -1,3 +1,8 @@
+// display sizes
+$mobileSize: 600px;
+$tabletSize: 960px;
+$desktopSize: 1280px;
+
 // fonts
 $fontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
 
@@ -16,16 +21,20 @@ $disabledButtonText: $gray;
 $planeExitTextColor: $white;
 $primaryTextColor: $black;
 $secondaryTextColor: $gray;
+$setPlaneValuesButtonText: $white;
 
 // backgrounds
 $airportsTablebackground: $white;
 $airportsTableHeaderBackground: rgb(214, 214, 214);
+$checkedCheckboxBackground: rgb(52, 85, 128);
+$emptyCheckoxBackground: rgb(212, 212, 212);
 $erroredButtonBackground: $redError;
 $disabledErrorBackground: $lightGray;
 $loginBackgroundColor: $white;
 $tableRowBackground: $whitesmoke;
 $planeExitBackgrounColor: $green;
 $seatBackgroundColor: rgb(52, 85, 128);
+$setPlaneValuesButtonBackground: rgb(68, 110, 165);
 
 // borders
 $airportsTableBorder: $lightGray;

@@ -43,16 +43,37 @@ class SideMenu extends React.Component {
   };
 
   state = {
-    open: false
+    opened: false
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
+  drawerClassNames = classes => classNames(classes.drawer, {
+    [classes.drawerOpen]: this.state.opened,
+    [classes.drawerClose]: !this.state.opened,
+  });
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
+  paperClassNames = classes => classNames({
+    [classes.drawerOpen]: this.state.opened,
+    [classes.drawerClose]: !this.state.opened,
+  });
+
+  linkList = () => linkList.map(({ path, text, icon }, index) => (
+    <Link
+      key={index + text}
+      to={path}
+      className="side-menu__link"
+    >
+      <ListItem button key={text}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItem>
+    </Link>
+  ));
+
+  handleDrawerOpen = () => this.setState({ opened: true });
+
+  handleDrawerClose = () => this.setState({ opened: false });
 
   render() {
     const { classes, theme, children } = this.props;
@@ -62,23 +83,15 @@ class SideMenu extends React.Component {
         <CssBaseline />
         <AppHeader
           classes={classes}
-          isOpen={this.state.open}
+          isOpen={this.state.opened}
           handleClick={this.handleDrawerOpen}
         />
 
         <Drawer
           variant="permanent"
-          className={classNames(classes.drawer, {
-            [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open,
-          })}
-          classes={{
-            paper: classNames({
-              [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open,
-            }),
-          }}
-          open={this.state.open}
+          className={this.drawerClassNames(classes)}
+          classes={{ paper: this.paperClassNames(classes) }}
+          open={this.state.opened}
         >
           <div className={classes.toolbar}>
             <IconButton onClick={this.handleDrawerClose}>
@@ -87,20 +100,7 @@ class SideMenu extends React.Component {
           </div>
           <Divider />
           <List>
-            {linkList.map(({ path, text, icon }, index) => (
-              <Link
-                key={index + text}
-                to={path}
-                className="side-menu__link"
-              >
-                <ListItem button key={text}>
-                  <ListItemIcon>
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              </Link>
-            ))}
+            {this.linkList()}
           </List>
         </Drawer>
         <main className={classes.content}>
