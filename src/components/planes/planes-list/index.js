@@ -20,7 +20,7 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
 
   return (
     <section className="planes-list">
-      {planesList.map(({ _id, code, rowsNumber, seatsInRow }, index) => (
+      {planesList.map(({ _id, code, rowsNumber, seatsInRow, columnsNumber }, index) => (
         <section
           key={index}
           className="planes-list-item"
@@ -31,6 +31,9 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
             </span>
             <span className="planes-list-item__info">
               Rows number: <span className="planes-list-item__info-value">{rowsNumber}</span>
+            </span>
+            <span className="planes-list-item__info">
+              Columns number: <span className="planes-list-item__info-value">{columnsNumber}</span>
             </span>
           </div>
 
@@ -58,6 +61,7 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
                 id={_id}
                 code={code}
                 rowsNumber={rowsNumber}
+                columnsNumber={columnsNumber}
                 seatsInRow={seatsInRow}
                 actionName="edit"
                 buttonName="Edit plane"

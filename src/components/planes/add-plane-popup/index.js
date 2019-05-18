@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import MaterialDialog from '../../material-components/dialog-window';
 import AddPlanePopupContent from './add-plane-popup-content';
 import { addPlaneToDb } from '../../../redux/planes/actions';
+import { initialNumberOfRows, initialNumberOfColumns, initislPlaneLayout } from '../../../constants';
 import validate from './validate';
 import styles from './material.style';
 import './index.scss';
@@ -28,6 +29,11 @@ function AddPlanePopup({ addPlaneToDb, classes }) {
         )}
       >
         <AddPlanePopupContent
+          code={'code'}
+          rowsNumber={initialNumberOfRows}
+          columnsNumber={initialNumberOfColumns}
+          seatsInRow={initislPlaneLayout}
+
           actionName="add"
           validate={validate}
           action={addPlaneToDb}

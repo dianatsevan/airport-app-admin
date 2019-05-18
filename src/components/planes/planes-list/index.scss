@@ -1,4 +1,4 @@
-@import 'src/variables.scss';
+@import 'src/styles-variables.scss';
 
 .planes-list {
   display: flex;
@@ -12,7 +12,7 @@
   align-items: center;
   min-width: 230px;
   margin: 7px 14px 7px 0;
-  padding: 15px 0 20px;
+  padding: 15px 15px 15px 20px;
   border-radius: 3px;
   background-color: white;
   box-shadow: $primaryBoxShadow;
@@ -37,9 +37,7 @@
   &__buttons-wrapper {
     display: flex;
     justify-content: space-between;
-    justify-content: space-evenly;
     width: 190px;
-    width: 100%;
   }
 
   &__button-icon {

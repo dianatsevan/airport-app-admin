@@ -4,6 +4,7 @@ import { Form, Field } from 'react-final-form';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '../../../material-components/text-field';
 import PlaneLayout from '../plane-layout';
+import { minSeatsRowsCount, maxSeatsRowsCount, maxSeatsColumnsCount, minSeatsColumnsCount } from '../../../../constants';
 import styles from '../material.style';
 
 class AddPlanePopupContent extends React.Component {
@@ -18,51 +19,93 @@ class AddPlanePopupContent extends React.Component {
   };
 
   state = {
-    signs: ['A', 'B', 'C', 'D', 'E', 'F'],
-    rows: 8,
-    location: ['A', 'B', 'C', '', 'D', 'E', 'F']
+    signs: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    code: this.props.code,
+    columnsNumber: this.props.columnsNumber,
+    rowsNumber: this.props.rowsNumber,
+    seatsInRow: this.props.seatsInRow
   };
 
-  transformArray = seatsArray => {
-    const array = Array(7).fill('');
-    seatsArray.sort();
-    seatsArray.forEach((elem, index) => {
-      array[elem] = this.state.signs[index];
+  convertToRowTemplate = (selectedSeats, columns) => {
+    const rowTemplate = Array(this.state.columnsNumber).fill('');
+    selectedSeats.sort().forEach((elem, index) => {
+      rowTemplate[elem] = this.state.signs[index];
     });
-    return array;
+
+    return rowTemplate.length > columns ? rowTemplate.slice(0, columns) : rowTemplate;
   }
 
-  onSubmit = values => {
+  onSubmit = ({ code, rowsNumber, columnsNumber, seats }) => {
+    const { id, seatsInRow, action } = this.props;
+
     const data = {
-      id: this.props.id,
-      code: values.code,
-      rowsNumber: values.rows,
-      seatsInRow: values.seats ? this.transformArray(values.seats) : this.props.seatsInRow
+      id,
+      code,
+      rowsNumber,
+      columnsNumber,
+      seatsInRow: seats ? this.convertToRowTemplate(seats, columnsNumber) : seatsInRow
     };
-    this.props.action(data);
+
+    action(data);
   };
 
-  getValues = values => () => {
-    if (values.seats) {
-      const transformedArray = this.transformArray(values.seats);
-      this.setState({ location: transformedArray });
+  getValues = ({ code, rowsNumber, columnsNumber, seats}) => async () => {
+    const [rows, columns] = [+rowsNumber, +columnsNumber];
+
+    if (code) {
+      await this.setState({ code });
     }
-    if (values.rows && +values.rows > 4 && +values.rows < 21) {
-      this.setState({ rows: +values.rows });
+    if (columns) {
+      await this.setState({ columnsNumber: columns });
     }
-    if (values.rows && +values.rows > 20) {
-      this.setState({ rows: 20 });
+
+    if (seats) {
+      await this.setState({ seatsInRow: this.convertToRowTemplate(seats, columnsNumber) });
     }
-    if (values.rows && +values.rows < 5) {
-      this.setState({ rows: 5 });
+    if (rows) {
+      this.setState({ rowsNumber: rows });
     }
+    if (rows && rows > maxSeatsRowsCount) {
+      this.setState({ rowsNumber: maxSeatsRowsCount });
+    }
+    if (rows && rows < minSeatsRowsCount) {
+      this.setState({ rowsNumber: minSeatsRowsCount });
+    }
+  };
+
+  drawSeatsRow = columnsNumber => {
+    let columns;
+    if (!columnsNumber) {
+      columns = this.state.columnsNumber;
+    }
+    if (columnsNumber) {
+      columns = columnsNumber;
+    }
+    if (columnsNumber && columnsNumber > maxSeatsColumnsCount) {
+      columns = maxSeatsColumnsCount;
+    }
+    if (columnsNumber && columnsNumber < minSeatsColumnsCount) {
+      columns = minSeatsColumnsCount;
+    }
+
+    return Array(columns).fill('').map((elem, index) => (
+      <Field
+        key={elem + index}
+        name="seats"
+        component="input"
+        type="checkbox"
+        className="checkbox"
+        value={index}
+      />
+    ))
   };
 
   render() {
-    const { classes, actionName, buttonName, validate, code } = this.props;
-    const seatsInRow = this.props.seatsInRow || this.state.location;
-    const planeCode = actionName === 'edit' ? code : '';
-    const rowsNumber = this.props.rowsNumber || this.state.rows;
+    const { classes, buttonName, validate } = this.props;
+    const { code, rowsNumber, seatsInRow, columnsNumber } = this.state;
+    const selectedSeats = seatsInRow.map((elem, index) => {
+      if (elem) return index;
+    });
 
     return (
       <div className="add-plane-form-container">
@@ -70,8 +113,10 @@ class AddPlanePopupContent extends React.Component {
           onSubmit={this.onSubmit}
           validate={validate}
           initialValues={{
-            code: planeCode,
-            rows: rowsNumber
+            code,
+            columnsNumber,
+            rowsNumber,
+            seats: selectedSeats
           }}
           render={({ handleSubmit, values }) => (
             <form className="add-plane-form" onSubmit={handleSubmit}>
@@ -86,11 +131,20 @@ class AddPlanePopupContent extends React.Component {
                   variant="outlined"
                 />
                 <Field
-                  name="rows"
+                  name="rowsNumber"
                   component={TextField}
                   className={classes.textField}
                   type="text"
                   label="Rows count"
+                  margin="dense"
+                  variant="outlined"
+                />
+                <Field
+                  name="columnsNumber"
+                  component={TextField}
+                  className={classes.textField}
+                  type="text"
+                  label="Columns count"
                   margin="dense"
                   variant="outlined"
                 />
@@ -100,17 +154,9 @@ class AddPlanePopupContent extends React.Component {
                 </span>
 
                 <div className="add-plane-form__checkboxes">
-                  {this.state.location.map((elem, index) => (
-                    <Field
-                      key={elem + index}
-                      name="seats"
-                      component="input"
-                      type="checkbox"
-                      className="checkbox"
-                      value={index}
-                    />
-                  ))}
+                  {this.drawSeatsRow(+values.columnsNumber)}
                 </div>
+
                 <button
                   className="add-plane-form__set-button"
                   type="button"
@@ -127,7 +173,7 @@ class AddPlanePopupContent extends React.Component {
             </form>
           )}
         />
-        <PlaneLayout rows={this.state.rows} location={seatsInRow} />
+        <PlaneLayout rows={rowsNumber} location={seatsInRow} />
       </div>
     );
   }
