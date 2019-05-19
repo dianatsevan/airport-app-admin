@@ -49,6 +49,7 @@ function* addAirportsToDBsaga({ payload }) {
   try {
     yield call(() => axios.post(urls.addAirportToDb, payload));
     yield updateAirportData();
+    yield put(getAirportsDataError(false));
   } catch (err) {
     yield put(getAirportsDataError(true));
   }
@@ -64,6 +65,7 @@ function* deleteAirportFromDB({ payload }) {
 
     yield call(() => axios.delete(url));
     yield updateAirportData();
+    yield put(deleteAirportError(false));
   } catch (err) {
     yield put(deleteAirportError(true));
   }
@@ -82,6 +84,7 @@ function* changeAirport({ payload }) {
       name: payload.airport
     }));
     yield updateAirportData();
+    yield put(changeAirportError(false));
   } catch (err) {
     yield put(changeAirportError(true));
   }

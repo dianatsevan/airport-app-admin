@@ -1,0 +1,46 @@
+@import 'src/styles-variables.scss';
+
+.planes-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.planes-list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 230px;
+  margin: 7px 14px 7px 0;
+  padding: 15px 15px 15px 20px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: $primaryBoxShadow;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__info {
+    margin: 5px 0;
+  }
+
+  &__info-value {
+    font-weight: 550;
+  }
+
+  &__plane {
+    margin: 20px 0 25px;
+  }
+
+  &__buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 190px;
+  }
+
+  &__button-icon {
+    margin-left: 5px;
+  }
+}

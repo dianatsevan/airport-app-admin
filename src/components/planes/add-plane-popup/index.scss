@@ -1,0 +1,102 @@
+@import 'src/styles-variables';
+
+.add-plane-form-container {
+  display: flex;
+  justify-content: space-evenly;
+  min-width: 450px;
+  height: auto;
+  padding: 0 20px 30px 20px;
+
+  .plane {
+    margin-left: 30px;
+  }
+}
+
+.add-plane-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__fields-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__checkboxes-header {
+    margin-top: 12px;
+  }
+
+  &__checkboxes {
+    display: flex;
+    padding: 15px 0;
+
+
+    .checkbox {
+      position: relative;
+      margin: 0;
+      margin-right: 12px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        background-color: $emptyCheckoxBackground;
+        text-align: center;
+        line-height: normal;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      &:checked {
+        &::after {
+          background-color: $checkedCheckboxBackground;
+        }
+      }
+    }
+  }
+
+  &__set-button {
+    margin: 9px 0 18px;
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    background-color: $setPlaneValuesButtonBackground;
+    color: $setPlaneValuesButtonText;
+    font-weight: 450;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .add-button {
+    width: 135px;
+  }
+}
+
+@media only screen and (max-width: $mobileSize) {
+  .add-plane-form-container {
+    min-width: 250px;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    padding: 0 25px;
+
+    .plane {
+      max-height: 100%;
+      margin-left: 0;
+      margin-bottom: 30px;
+    }
+  }
+
+  .add-plane-form {
+    align-items: center;
+    margin-bottom: 30px;
+
+    &__fields-wrapper {
+      align-items: center;
+      margin-bottom: 30px;
+    }
+  }
+}

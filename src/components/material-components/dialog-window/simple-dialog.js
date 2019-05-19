@@ -10,19 +10,16 @@ class SimpleDialog extends React.Component {
     children: PropTypes.object.isRequired
   };
 
-  handleClose = () => {
-    this.props.onClose();
-  };
+  handleClose = () => this.props.onClose();;
 
-  handleListItemClick = value => {
-    this.props.onClose(value);
-  };
+  handleListItemClick = value => this.props.onClose(value);
 
   render() {
     const { onClose, title, children, ...other } = this.props;
 
     return (
-      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
+      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}
+      >
         <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
         <div>
           {children}

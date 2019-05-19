@@ -1,8 +1,12 @@
-@import 'src/variables.scss';
+@import 'src/styles-variables.scss';
 
 .login-form {
   display: flex;
   justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   &__container {
     display: flex;
@@ -37,7 +41,7 @@
   }
 
   &__icon {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     font-size: 2em;
   }
 

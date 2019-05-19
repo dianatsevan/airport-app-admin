@@ -26,17 +26,15 @@ class Login extends React.Component {
     isCheckingLoginDataError: PropTypes.bool.isRequired
   };
 
-  componentDidUpdate = () => {
+  goToTheNextPage = () => {
     const { state } = this.props.location;
     const fromPath = state ? state.from.pathname : '/app';
     if (this.props.isLoggedInUser) this.props.history.push(fromPath);
-  };
+  }
 
-  componentDidMount = () => {
-    const { state } = this.props.location;
-    const fromPath = state ? state.from.pathname : '/app';
-    if (this.props.isLoggedInUser) this.props.history.push(fromPath);
-  };
+  componentDidUpdate = () => this.goToTheNextPage();
+
+  componentDidMount = () => this.goToTheNextPage();
 
   onSubmit = async values => {
     const newValues = {

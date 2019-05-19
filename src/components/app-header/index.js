@@ -27,7 +27,7 @@ export default class AppHeader extends React.Component {
 
   render() {
     const { classes, isOpen, handleClick } = this.props;
-    const open = Boolean(this.state.anchorEl);
+    const opened = Boolean(this.state.anchorEl);
 
     return (
       <AppBar
@@ -54,7 +54,7 @@ export default class AppHeader extends React.Component {
 
           <div>
             <IconButton
-              aria-owns={open ? 'menu-appbar' : undefined}
+              aria-owns={opened ? 'menu-appbar' : undefined}
               aria-haspopup="true"
               onClick={this.handleMenu}
               color="inherit"
@@ -72,7 +72,7 @@ export default class AppHeader extends React.Component {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={open}
+              open={opened}
               onClose={this.handleClose}
             >
               <MenuItem onClick={this.handleClose}>Profile</MenuItem>
