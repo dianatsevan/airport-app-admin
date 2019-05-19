@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import MaterialDialog from '../../material-components/dialog-window';
 import AddFlightPopupContent from './add-flight-popup-content';
 import styles from './material.style';
-// import { getAirportsToAdd, addAirportsToDb } from '../../../redux/airports/actions';
-// import './index.scss';
 
 class AddFlightPopup extends Component {
   static propTypes = {

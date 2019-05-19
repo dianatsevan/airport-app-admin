@@ -7,7 +7,18 @@ const styles = theme => ({
   textField: {
     marginBottom: '10px',
     backgroundColor: theme.palette.common.white,
-    width: 200,
+    width: '100%',
+  },
+  dateTimePicker: {
+    marginBottom: '10px',
+    backgroundColor: theme.palette.common.white,
+    width: '50%'
+  },
+  rightNotchedOutline: {
+    borderRadius: '3px 0 0 3px'
+  },
+  leftNotchedOutline: {
+    borderRadius: '0 3px 3px 0'
   },
   dialogButton: {
     backgroundColor: '#efefef',

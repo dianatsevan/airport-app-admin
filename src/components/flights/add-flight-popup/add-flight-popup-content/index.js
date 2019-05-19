@@ -1,20 +1,65 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Field } from 'react-final-form';
 import DateFnsUtils from '@date-io/date-fns';
+import { connect } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MenuItem from '@material-ui/core/MenuItem';
+import { getAirportsData } from '../../../../redux/airports/actions';
+import { getPlanesData } from '../../../../redux/planes/actions';
 import DatePicker from '../../../material-components/date-picker';
 import TimePicker from '../../../material-components/time-picker';
 import TextField from '../../../material-components/text-field';
 import Select from '../../../material-components/select';
+import PlanesSelect from '../../../material-components/planes-select';
+import PlaneLayout from './plane-layout';
+import validate from './validate';
 import '../../index.scss';
 
 class AddFlightPopupContent extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    getAirportsData: PropTypes.func.isRequired,
+    airportsList: PropTypes.array.isRequired,
+    planesList: PropTypes.array.isRequired,
   };
 
   onSubmit = values => console.log(values);
+
+  componentDidMount = () => this.props.getAirportsData();
+
+  transformAirportsArray = () => this.props.airportsList.map(({ _id, name, code }) => ({
+    label: `${name} ${code}`,
+    id: _id
+  }));
+
+  drawMenuItems = () => this.props.planesList.map(({ _id, code, rowsNumber, seatsInRow }) => (
+    <MenuItem
+      style={{
+        height: 'auto'
+      }}
+      key={_id}
+      value={_id}
+      divider
+    >
+      <div className="planes-list-item__header">
+        <div>
+          code: <b>{code}</b>
+        </div>
+        <div>
+          Rows number: <b>{rowsNumber}</b>
+        </div>
+        <div>
+          Plane layout:
+        </div>
+
+        <PlaneLayout
+          rows={1}
+          location={seatsInRow}
+        />
+      </div>
+    </MenuItem>
+  ));
 
   render() {
     const { classes } = this.props;
@@ -23,14 +68,16 @@ class AddFlightPopupContent extends Component {
       <div className="add-flight-form-container">
         <Form
           onSubmit={this.onSubmit}
-          render={({ handleSubmit }) => (
+          validate={validate}
+          render={({ handleSubmit, values }) => (
             <form className="add-flight-form" onSubmit={handleSubmit}>
               <Field
                 name="fromCountry"
                 label="From country"
                 className={classes.selectField}
                 component={Select}
-                items={[{label: 'Abakan', id: 'ABA'}]}
+                multiple={false}
+                items={this.transformAirportsArray()}
               />
 
               <Field
@@ -38,38 +85,69 @@ class AddFlightPopupContent extends Component {
                 label="To country"
                 className={classes.selectField}
                 component={Select}
-                items={[{label: 'Mala Mala', id: 'MAL'}]}
+                items={this.transformAirportsArray(values.fromCountry)}
               />
 
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Field
-                  name="date"
-                  label="Departure date"
-                  className={classes.textField}
-                  component={DatePicker}
-                  variant="outlined"
-                />
+                <div className="pickers-wrapper">
+                  <Field
+                    name="departureDate"
+                    label="Departure date"
+                    className={classes.dateTimePicker}
+                    component={DatePicker}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.rightNotchedOutline
+                      }
+                    }}
+                    variant="outlined"
+                  />
+                  <Field
+                    name="arrivalDate"
+                    label="Arrival date"
+                    className={classes.dateTimePicker}
+                    component={DatePicker}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.leftNotchedOutline
+                      }
+                    }}
+                    variant="outlined"
+                  />
+                </div>
 
-                <Field
-                  name="startTime"
-                  label="Departure time"
-                  className={classes.textField}
-                  component={TimePicker}
-                  variant="outlined"
-                />
+                <div className="pickers-wrapper">
+                  <Field
+                    name="departureTime"
+                    label="Departure time"
+                    className={classes.dateTimePicker}
+                    component={TimePicker}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.rightNotchedOutline
+                      }
+                    }}
+                    variant="outlined"
+                  />
 
-                <Field
-                  name="endTime"
-                  label="Arrival time"
-                  className={classes.textField}
-                  component={TimePicker}
-                  variant="outlined"
-                />
+                  <Field
+                    name="arrivalTime"
+                    label="Arrival time"
+                    className={classes.dateTimePicker}
+                    component={TimePicker}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.leftNotchedOutline
+                      }
+                    }}
+                    variant="outlined"
+                  />
+                </div>
               </MuiPickersUtilsProvider>
 
               <Field
                 name="price"
-                label="Price"
+                label="Price $"
                 component={TextField}
                 className={classes.textField}
                 type="text"
@@ -80,8 +158,8 @@ class AddFlightPopupContent extends Component {
                 name="planeInfo"
                 label="Plane"
                 className={classes.selectField}
-                component={Select}
-                items={[{label: 'planes', id: 'planes'}]}
+                component={PlanesSelect}
+                kids={this.drawMenuItems()}
               />
 
               <button className="button" type="submit">
@@ -91,8 +169,18 @@ class AddFlightPopupContent extends Component {
           )}
         />
       </div>
-    )
+    );
   }
 }
 
-export default AddFlightPopupContent;
+const mapStateToProps = state => ({
+  airportsList: state.airportsData.airportsList,
+  planesList: state.planesData.planesList
+});
+
+const mapDispatchToProps = dispatch => ({
+  getAirportsData: () => dispatch(getAirportsData()),
+  getPlanesData: () => dispatch(getPlanesData())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddFlightPopupContent);
