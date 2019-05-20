@@ -1,4 +1,60 @@
+@import 'src/styles-variables';
+
 .pickers-wrapper {
   display: flex;
+  justify-content: space-evenly;
   max-width: 300px;
+}
+
+.period-pickers-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.schedule-item {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.exp-panel {
+  width: 450px;
+  border: 1px solid lightgray;
+  margin-bottom: 10px;
+}
+
+.checkbox {
+  position: relative;
+  margin: 0;
+  margin-right: 12px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: $emptyCheckoxBackground;
+    text-align: center;
+    line-height: normal;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  &:checked {
+    &::after {
+      background-color: $checkedCheckboxBackground;
+    }
+  }
+}
+
+@media only screen and (max-width: $mobileSize) {
+  .pickers-wrapper {
+    flex-direction: column;
+    width: 150px;
+  }
+
+  .exp-panel {
+    width: auto;
+  }
 }

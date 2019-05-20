@@ -29,7 +29,6 @@ class AddFlightPopup extends Component {
           )}
         >
           <AddFlightPopupContent
-            classes={classes}
             action={this.props.addFlightToDb}
           />
         </MaterialDialog>
