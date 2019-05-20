@@ -22,9 +22,10 @@ class AddFlightPopupContent extends Component {
     getAirportsData: PropTypes.func.isRequired,
     airportsList: PropTypes.array.isRequired,
     planesList: PropTypes.array.isRequired,
+    action: PropTypes.func.isRequired,
   };
 
-  onSubmit = values => console.log(values);
+  onSubmit = values => this.props.action(values);
 
   componentDidMount = () => this.props.getAirportsData();
 
