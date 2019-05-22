@@ -54,9 +54,10 @@ class AddFlightPopupContent extends Component {
 
     selectedDays.sort();
     const schedule = selectedDays.map((elem, index) => ({
-      day: this.state.daysOfWeek[elem],
-      departureTime: values[`${index * 2}-departureTime`],
-      arrivalTime: values[`${index * 2 + 1}-arrivalTime`]
+      // day: this.state.daysOfWeek[elem],
+      day: elem + 1,
+      departureTime: values[`${index}-departureTime`],
+      arrivalTime: values[`${index}-arrivalTime`]
     }));
     flightToAdd.schedule = schedule;
 
