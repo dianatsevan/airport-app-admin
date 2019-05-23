@@ -1,0 +1,37 @@
+.flight-page {
+  padding: 20px;
+
+  &__content-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__content {
+    flex-basis: 60%;
+  }
+
+  &__plane-layout {
+    flex-basis: 30%;
+    background-color: rgba(173, 216, 230, 0.247);
+  }
+
+  &__header {
+    font-size: 1.3em;
+  }
+
+  &__destination {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+  }
+
+  &__country {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__flight-period {
+    display: flex;
+    justify-content: space-between;
+  }
+}

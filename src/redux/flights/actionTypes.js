@@ -6,4 +6,7 @@ export default keyMirror({
   GET_FLIGHTS_DATA: null,
   SET_FLIGHTS_DATA: null,
   GET_FLIGHTS_DATA_ERROR: null,
+  GET_SELECTED_FLIGHT_DATA: null,
+  SET_SELECTED_FLIGHT_DATA: null,
+  GET_SELECTED_FLIGHT_DATA_ERROR: null,
 });
