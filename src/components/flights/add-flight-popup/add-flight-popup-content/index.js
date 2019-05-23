@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DateFnsUtils from '@date-io/date-fns';
+import classNames from 'classnames';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Form, Field } from 'react-final-form';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MenuItem from '@material-ui/core/MenuItem';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getAirportsData } from '../../../../redux/airports/actions';
 import { getPlanesData } from '../../../../redux/planes/actions';
 import DatePicker from '../../../material-components/date-picker';
@@ -14,16 +18,9 @@ import TimePicker from '../../../material-components/time-picker';
 import TextField from '../../../material-components/text-field';
 import Select from '../../../material-components/select';
 import PlanesSelect from '../../../material-components/planes-select';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PlaneLayout from './plane-layout';
 import validate from './validate';
 import styles from './material.style';
-import '../../index.scss';
-import arrayMutators from 'final-form-arrays';
-import { FieldArray } from 'react-final-form-arrays';
+import './index.scss';
 
 class AddFlightPopupContent extends Component {
   static propTypes = {
@@ -39,7 +36,7 @@ class AddFlightPopupContent extends Component {
   };
 
   onSubmit = values => {
-    const { code, fromCountry, toCountry, price, planeInfo, selectedDays, departureDate, arrivalDate } = values;
+    const { code, fromCountry, toCountry, price, planeInfo, selectedDays, startDate, endDate } = values;
     const flightToAdd = {
       code,
       fromCountry,
@@ -47,24 +44,21 @@ class AddFlightPopupContent extends Component {
       price,
       planeInfo,
       flightPeriod: {
-        departureDate,
-        arrivalDate
+        startDate,
+        endDate
       }
     };
 
     selectedDays.sort();
-    const schedule = selectedDays.map((elem, index) => ({
-      // day: this.state.daysOfWeek[elem],
+    const schedule = selectedDays.map((elem) => ({
       day: elem + 1,
-      departureTime: values[`${index}-departureTime`],
-      arrivalTime: values[`${index}-arrivalTime`]
+      departureTime: values[`${elem}-departureTime`],
+      arrivalTime: values[`${elem}-arrivalTime`]
     }));
     flightToAdd.schedule = schedule;
 
-    console.log(flightToAdd);
     this.props.action(flightToAdd);
   }
-  // this.props.action(values);
 
   componentDidMount = () => this.props.getAirportsData();
 
@@ -75,9 +69,7 @@ class AddFlightPopupContent extends Component {
 
   drawMenuItems = () => this.props.planesList.map(({ _id, code, rowsNumber, seatsInRow }) => (
     <MenuItem
-      style={{
-        height: 'auto'
-      }}
+      className={this.props.classes.menuItem}
       key={_id}
       value={_id}
       divider
@@ -89,17 +81,11 @@ class AddFlightPopupContent extends Component {
         <div>
           Rows number: <b>{rowsNumber}</b>
         </div>
-        <div>
-          Plane layout:
-        </div>
-
-        <PlaneLayout
-          rows={1}
-          location={seatsInRow}
-        />
       </div>
     </MenuItem>
   ));
+
+  makeFieldActive = (selectedDays = [], fieldIndex) => selectedDays.some(day => day === fieldIndex);
 
   render() {
     const { classes } = this.props;
@@ -109,16 +95,13 @@ class AddFlightPopupContent extends Component {
         <Form
           onSubmit={this.onSubmit}
           validate={validate}
-          mutators={{
-            ...arrayMutators,
-          }}
           render={({ handleSubmit, values }) => (
             <form className="add-flight-form" onSubmit={handleSubmit}>
               <Field
                 name="code"
                 label="Flight code"
                 component={TextField}
-                className={classes.textField}
+                className={classes.formField}
                 type="text"
                 variant="outlined"
               />
@@ -126,7 +109,7 @@ class AddFlightPopupContent extends Component {
               <Field
                 name="fromCountry"
                 label="From country"
-                className={classes.selectField}
+                className={classes.formField}
                 component={Select}
                 multiple={false}
                 items={this.transformAirportsArray()}
@@ -135,77 +118,75 @@ class AddFlightPopupContent extends Component {
               <Field
                 name="toCountry"
                 label="To country"
-                className={classes.selectField}
+                className={classes.formField}
                 component={Select}
                 items={this.transformAirportsArray(values.fromCountry)}
               />
 
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div className="period-pickers-wrapper">
+                <div className="add-flight-form__date-pickers">
                   <Field
-                    name="departureDate"
-                    label="Departure date"
-                    className={classes.dateTimePicker}
+                    name="startDate"
+                    label="Start date"
+                    className={classNames(classes.datePicker, classes.formField)}
                     component={DatePicker}
                     variant="outlined"
                   />
                   <Field
-                    name="arrivalDate"
-                    label="Arrival date"
-                    className={classes.dateTimePicker}
+                    name="endDate"
+                    label="End date"
+                    className={classNames(classes.datePicker, classes.formField)}
                     component={DatePicker}
                     variant="outlined"
                   />
                 </div>
               </MuiPickersUtilsProvider>
 
-              <ExpansionPanel className="exp-panel" style={{boxShadow: 'none', borderRadius: '3px'}}>
+              <ExpansionPanel
+                className={classes.expPanel}
+              >
                 <ExpansionPanelSummary
                   expandIcon={<ExpandMoreIcon />}
-                  style={{
-                    paddingLeft: '13px',
-                    height: '56px',
-                    // coloe: 'gray'
-                  }}
+                  className={classes.expPanelSummary}
                 >
                   <span>Schedule</span>
                 </ExpansionPanelSummary>
                 <div>
-                  {/* <FieldArray name="information"> */}
                   {this.state.daysOfWeek.map((elem, index) => (
                     <div
                       key={elem}
-                      className="schedule-item"
+                      className="schedule__item"
                     >
-                      <span>{elem}</span>
+                      <span className="schedule__day-name">{elem}</span>
                       <Field
                         key={elem + index}
                         name="selectedDays"
                         component="input"
                         type="checkbox"
-                        className="checkbox"
+                        className="schedule__day-checkbox"
                         value={index}
                       />
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <div className="pickers-wrapper">
+                        <div className="schedule__time-pickers">
                           <Field
+                            disabled={!this.makeFieldActive(values.selectedDays, index)}
                             name={`${index}-departureTime`}
                             label="Departure time"
-                            className={classes.dateTimePicker}
+                            className={classNames(classes.timePicker, classes.formField)}
                             component={TimePicker}
                           />
 
                           <Field
+                            disabled={!this.makeFieldActive(values.selectedDays, index)}
                             name={`${index}-arrivalTime`}
                             label="Arrival time"
-                            className={classes.dateTimePicker}
+                            className={classNames(classes.timePicker, classes.formField)}
                             component={TimePicker}
                           />
                         </div>
                       </MuiPickersUtilsProvider>
                     </div>
                   ))}
-                  {/* </FieldArray> */}
                 </div>
               </ExpansionPanel>
 
@@ -213,7 +194,7 @@ class AddFlightPopupContent extends Component {
                 name="price"
                 label="Price $"
                 component={TextField}
-                className={classes.textField}
+                className={classes.formField}
                 type="text"
                 variant="outlined"
               />
@@ -221,7 +202,7 @@ class AddFlightPopupContent extends Component {
               <Field
                 name="planeInfo"
                 label="Plane"
-                className={classes.selectField}
+                className={classes.formField}
                 component={PlanesSelect}
                 kids={this.drawMenuItems()}
               />

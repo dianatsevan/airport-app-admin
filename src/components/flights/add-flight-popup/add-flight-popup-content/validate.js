@@ -2,9 +2,13 @@ import moment from 'moment';
 
 const validate = (values) => {
   const errors = {};
-  const departureDate = moment(values.departureDate).format('L');
-  const arrivalDate = moment(values.arrivalDate).format('L');
+  const startDate = moment(values.startDate).format('L');
+  const endDate = moment(values.endDate).format('L');
   const today = moment(new Date()).format('L');
+
+  if (!values.code) {
+    errors.code = 'Required';
+  }
 
   if (!values.fromCountry) {
     errors.fromCountry = 'Required';
@@ -16,26 +20,31 @@ const validate = (values) => {
     errors.toCountry = 'Please, choose another country';
   }
 
-  if (!values.departureDate) {
-    errors.departureDate = 'Required';
-  } else if (departureDate < today) {
-    errors.departureDate = 'Please, choose another day';
-    errors.departureDate = 'Departure day should be not less than today';
+  if (!values.startDate) {
+    errors.startDate = 'Required';
+  } else if (startDate < today) {
+    errors.startDate = 'Please, choose another day';
   }
 
-  if (!values.arrivalDate) {
-    errors.arrivalDate = 'Required';
-  } else if (arrivalDate < departureDate) {
-    errors.arrivalDate = 'Please, choose another day';
-    errors.arrivalDate = 'Arrival day should be more than departure';
+  if (!values.endDate) {
+    errors.endDate = 'Required';
+  } else if (endDate < startDate) {
+    errors.endDate = 'Please, choose another day';
   }
 
-  if (!values.departureTime) {
-    errors.departureTime = 'Required';
+  if (!values.selectedDays) {
+    errors.selectedDays = true;
   }
 
-  if (!values.arrivalTime) {
-    errors.arrivalTime = 'Required';
+  if (values.selectedDays) {
+    values.selectedDays.forEach(day => {
+      if (!values[`${day}-departureTime`]) {
+        errors[`${day}-departureTime`] = 'Required';
+      }
+      if (!values[`${day}-arrivalTime`]) {
+        errors[`${day}-arrivalTime`] = 'Required';
+      }
+    });
   }
 
   if (!values.price) {

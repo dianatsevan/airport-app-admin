@@ -1,18 +1,39 @@
 const styles = theme => ({
-  selectField: {
+  formField: {
+    marginBottom: '10px',
     backgroundColor: 'transparent',
     width: '100%',
-    marginBottom: '10px',
   },
-  textField: {
-    marginBottom: '10px',
-    backgroundColor: theme.palette.common.white,
-    width: '100%',
+  menuItem: {
+    height: 'auto'
   },
-  dateTimePicker: {
+  expPanel: {
+    width: 'auto',
+    boxShadow: 'none',
+    borderRadius: '3px',
+    border: '1px solid lightgray',
     marginBottom: '10px',
-    backgroundColor: theme.palette.common.white,
-    width: '50%'
+
+    '&:hover': {
+      border: '1px solid black',
+    }
+  },
+  expPanelSummary: {
+    paddingLeft: '13px',
+    height: '56px',
+    width: 'auto',
+    color: 'gray',
+    fontWeight: '300'
+  },
+  datePicker: {
+    [theme.breakpoints.up('sm')]: {
+      width: '49%',
+    },
+  },
+  timePicker: {
+    [theme.breakpoints.up('sm')]: {
+      width: '40%',
+    },
   },
   rightNotchedOutline: {
     borderRadius: '3px 0 0 3px'
