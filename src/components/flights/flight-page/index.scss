@@ -1,3 +1,5 @@
+@import 'src/styles-variables.scss';
+
 .flight-page {
   padding: 20px;
 
@@ -6,32 +8,64 @@
     justify-content: space-between;
   }
 
-  &__content {
-    flex-basis: 60%;
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    font-size: 1.3em;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .header {
+    &__field {
+      display: flex;
+    }
+
+    &__field-label {
+      display: flex;
+      align-items: center;
+      font-size: 0.6em;
+      color: gray;
+      font-weight: 400;
+    }
+
+    &__field-value {
+      margin-left: 10px;
+    }
+  }
+
+  &__dates {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+
+  &__orders {
+    display: flex;
+    flex-direction: column;    
   }
 
   &__plane-layout {
-    flex-basis: 30%;
-    background-color: rgba(173, 216, 230, 0.247);
-  }
-
-  &__header {
-    font-size: 1.3em;
-  }
-
-  &__destination {
-    display: flex;
-    justify-content: space-between;
-    margin: 15px 0;
-  }
-
-  &__country {
     display: flex;
     flex-direction: column;
-  }
-
-  &__flight-period {
-    display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
+    // background-color: rgba(173, 216, 230, 0.247);
   }
 }
+
+@media only screen and (max-width: $mobileSize) {
+  .flight-page {
+    &__content-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    &__plane-layout {
+//       width: 300px;
+    }
+  }
+} 

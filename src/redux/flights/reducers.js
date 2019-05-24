@@ -5,10 +5,12 @@ const initialState = {
   addFlightToDbError: false,
   flightsList: [],
   selectedFlight: {},
+  flightOrders: [],
   getFlightsDataError: false,
   getSelectedFlightDataError: false,
   editFlightDataError: false,
-  deleteFlightError: false
+  deleteFlightError: false,
+  getFlightOrdersDataError: false
 };
 
 const reducers = handleActions(
@@ -41,6 +43,17 @@ const reducers = handleActions(
     [actions.getSelectedFlightDataError]: (state = initialState, { payload }) => ({
       ...state,
       getSelectedFlightDataError: payload
+    }),
+    [actions.getFlightOrdersData]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.setFlightOrdersData]: (state = initialState, { payload }) => ({
+      ...state,
+      flightOrders: payload
+    }),
+    [actions.getFlightOrdersDataError]: (state = initialState, { payload }) => ({
+      ...state,
+      getFlightOrdersDataError: payload
     }),
   },
   initialState
