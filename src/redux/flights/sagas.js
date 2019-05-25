@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
-import { addFlightToDbError, setFlightsData, getFlightsDataError, setSelectedFlightData, getSelectedFlightDataError, setFlightOrdersData, getFlightOrdersDataError } from './actions';
+import { addFlightToDbError, setFlightsData, getFlightsDataError, setSelectedFlightData, getSelectedFlightDataError, setFlightOrdersData, getFlightOrdersDataError, deleteFlightError } from './actions';
 import urls from '../../urls';
 import actionTypes from './actionTypes';
 
@@ -34,7 +34,6 @@ function* getFlightOrdersData({ payload: id }) {
     yield put(getFlightOrdersDataError(true));
   }
 }
-
 function* addFlightToDb({ payload }) {
   try {
     const dataToAdd = {
@@ -52,9 +51,20 @@ function* addFlightToDb({ payload }) {
   }
 }
 
+function* deleteFlight({ payload: id }) {
+  try {
+    yield call(() => axios.delete(`${urls.flightsUrl}/${id}`));
+    yield put(deleteFlightError(false));
+    yield getFlightsData();
+  } catch (err) {
+    yield put(deleteFlightError(true));
+  }
+}
+
 export default function* watchFlightData() {
   yield takeEvery(actionTypes.ADD_FLIGHT_TO_DB, addFlightToDb);
   yield takeLatest(actionTypes.GET_FLIGHTS_DATA, getFlightsData);
   yield takeLatest(actionTypes.GET_SELECTED_FLIGHT_DATA, getSelectedFlightData);
   yield takeLatest(actionTypes.GET_FLIGHT_ORDERS_DATA, getFlightOrdersData);
+  yield takeLatest(actionTypes.DELETE_FLIGHT, deleteFlight);
 }

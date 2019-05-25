@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions';
 import * as actions from './actions';
+import actionTypes from './actionTypes';
 
 const initialState = {
   addFlightToDbError: false,
@@ -55,6 +56,13 @@ const reducers = handleActions(
       ...state,
       getFlightOrdersDataError: payload
     }),
+    [actions.deleteFlight]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.deleteFlightError]: (state = initialState, { payload }) => ({
+      ...state,
+      deleteFlightError: payload
+    })
   },
   initialState
 );

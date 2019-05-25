@@ -11,7 +11,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { getFlightsData, getSelectedFlightData, getFlightOrdersData } from '../../../redux/flights/actions';
+import { getFlightsData, getSelectedFlightData, getFlightOrdersData, deleteFlight } from '../../../redux/flights/actions';
 import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './tool-bar';
 import styles from './material.style';
@@ -54,6 +54,7 @@ class EnhancedTable extends React.Component {
     getFlightsData: PropTypes.func.isRequired,
     getFlightData: PropTypes.func.isRequired,
     getFlightOrders: PropTypes.func.isRequired,
+    deleteFlight: PropTypes.func.isRequired,
   };
 
   state = {
@@ -117,6 +118,11 @@ class EnhancedTable extends React.Component {
 
   handleChangeRowsPerPage = event => this.setState({ rowsPerPage: event.target.value });
 
+  handleDeleteIconClick = () => {
+    this.state.selected.forEach(oneSelected => this.props.deleteFlight(oneSelected));
+    this.setState({ selected: [] });
+  }
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
@@ -126,7 +132,10 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onTrashBinClick={this.handleDeleteIconClick}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -200,7 +209,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getFlightsData: () => dispatch(getFlightsData()),
   getFlightData: flightId => dispatch(getSelectedFlightData(flightId)),
-  getFlightOrders: flightId => dispatch(getFlightOrdersData(flightId))
+  getFlightOrders: flightId => dispatch(getFlightOrdersData(flightId)),
+  deleteFlight: ids => dispatch(deleteFlight(ids))
 });
 
 export default compose(
