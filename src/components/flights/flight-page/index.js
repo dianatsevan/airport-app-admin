@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { compose } from 'redux';
@@ -16,28 +16,17 @@ import ScheduleTable from './schedule-table/index';
 import OrdersTable from './orders-table/index';
 import ExpPanel from '../../material-components/expansion-panel';
 import PlaneLayout from '../../planes/add-plane-popup/plane-layout';
-import { getSelectedFlightData, getFlightOrdersData } from '../../../redux/flights/actions';
 import styles from './material.style.js';
 import './index.scss';
 
-
-function FlightPage({ selectedFlight, flightOrders, getFlightData, getFlightOrders, history, classes }) {
+function FlightPage({ selectedFlight, flightOrders, classes }) {
   FlightPage.propTypes = {
     selectedFlight: PropTypes.object.isRequired,
     flightOrders: PropTypes.array.isRequired,
-    getFlightData: PropTypes.func.isRequired,
-    getFlightOrders: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
   };
 
   const [selectedDate, setSelectedDate] = useState('');
-
-  useEffect(() => {
-    const flightId = history.location.pathname.slice(13);
-    getFlightData(flightId);
-    getFlightOrders(flightId);
-  }, []);
 
   const handleDateChange = () => console.log('ok');
 
@@ -177,7 +166,7 @@ function FlightPage({ selectedFlight, flightOrders, getFlightData, getFlightOrde
                 <span className="header__field-value">{getSeatsAmount()}</span>
               </div>
             </div>
-            
+
           </div>
         </div>
       </section>
@@ -190,13 +179,8 @@ const mapStateToProps = state => ({
   flightOrders: state.flightsData.flightOrders
 });
 
-const mapDispatchToProps = dispatch => ({
-  getFlightData: flightId => dispatch(getSelectedFlightData(flightId)),
-  getFlightOrders: flightId => dispatch(getFlightOrdersData(flightId))
-});
-
 export default compose(
   withRouter,
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps)
 )(FlightPage);

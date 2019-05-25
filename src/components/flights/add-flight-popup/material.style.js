@@ -1,6 +1,6 @@
 const styles = () => ({
   dialogButton: {
-    backgroundColor: '#efefef',
+    backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#dbdbdb'
     }

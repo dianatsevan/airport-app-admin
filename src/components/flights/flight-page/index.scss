@@ -45,14 +45,13 @@
 
   &__orders {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
   }
 
   &__plane-layout {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    // background-color: rgba(173, 216, 230, 0.247);
   }
 }
 
@@ -62,10 +61,6 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-    }
-
-    &__plane-layout {
-//       width: 300px;
     }
   }
 } 

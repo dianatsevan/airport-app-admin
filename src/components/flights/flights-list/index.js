@@ -1,130 +1,196 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getFlightsData } from '../../../redux/flights/actions';
-import { FaPencilAlt, FaTimes, FaArrowUp } from 'react-icons/fa';
-import AddFlightPopupContent from '../add-flight-popup/add-flight-popup-content';
-import MaterialDialog from '../../material-components/dialog-window';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import { getFlightsData, getSelectedFlightData, getFlightOrdersData } from '../../../redux/flights/actions';
+import EnhancedTableHead from './table-head';
+import EnhancedTableToolbar from './tool-bar';
+import styles from './material.style';
 
-function FlightsList(props) {
-  FlightsList.propTypes = {
-    getFlightsData: PropTypes.func.isRequired,
+function desc(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function stableSort(array, cmp) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = cmp(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map(el => el[0]);
+}
+
+function getSorting(order, orderBy) {
+  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+}
+
+const rows = [
+  { id: 'code', label: 'Flight code' },
+  { id: 'fromCountry', label: 'From' },
+  { id: 'toCountry', label: 'To' },
+];
+
+class EnhancedTable extends React.Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
     flightsList: PropTypes.array.isRequired,
+    history: PropTypes.object.isRequired,
+    getFlightsData: PropTypes.func.isRequired,
+    getFlightData: PropTypes.func.isRequired,
+    getFlightOrders: PropTypes.func.isRequired,
   };
 
-  useEffect(() => {
-    props.getFlightsData();
-  }, []);
+  state = {
+    order: 'asc',
+    orderBy: '',
+    selected: [],
+    page: 0,
+    rowsPerPage: 5
+  };
 
-  return (
-    <section className="airports-list">
+  componentDidMount = () => this.props.getFlightsData();
 
-      <table className="airports-list__table">
-        <thead>
-          <tr className="airports-list__header">
-            <th>#</th>
-            <th>
-              <span
-                className="airports-list__column-name"
-                // onClick={this.sortByCode}
-              >
-                Flight code
-              </span>
-              {/* <FaArrowUp className={this.codeArrowClassnames()} /> */}
-            </th>
-            <th>
-              <span
-                className="airports-list__column-name"
-                // onClick={this.sortByName}
-              >
-                From
-              </span>
-              {/* <FaArrowUp className={this.nameArrowClassnames()} /> */}
-            </th>
-            <th>
-              <span
-                className="airports-list__column-name"
-                // onClick={this.sortByName}
-              >
-                To
-              </span>
-              {/* <FaArrowUp className={this.nameArrowClassnames()} /> */}
-            </th>
-            <th>
-              <span
-                className="airports-list__column-name"
-                // onClick={this.sortByName}
-              >
-                Departure time
-              </span>
-              {/* <FaArrowUp className={this.nameArrowClassnames()} /> */}
-            </th>
-            <th>
-              <span
-                className="airports-list__column-name"
-                // onClick={this.sortByName}
-              >
-                Arrival time
-              </span>
-              {/* <FaArrowUp className={this.nameArrowClassnames()} /> */}
-            </th>
-            <th>
-              <span
-                className="airports-list__column-name"
-                // onClick={this.sortByName}
-              >
-                Date
-              </span>
-              {/* <FaArrowUp className={this.nameArrowClassnames()} /> */}
-            </th>
+  handleRequestSort = (event, property) => {
+    const orderBy = property;
+    let order = 'desc';
 
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody className="airports-list__body">
-          {props.flightsList.map(({ _id, code, name }, index) => (
-            <tr
-              key={_id}
-              className="airports-list__item"
-            >
-              <td>{index + 1}</td>
-              <td>{code}</td>
-              <td>{name}</td>
-              <td>{code}</td>
-              <td>{name}</td>
-              <td>{code}</td>
-              <td>{name}</td>
-              <td className="airports-list__action-icon">
-                <MaterialDialog
-                  title="Edit airport"
-                  buttonComponent={(
-                    <FaPencilAlt
-                      className="airports-list__icon"
-                      // onClick={this.handleChangeButtonClick(_id)}
-                    />
-                  )}
-                >
-                  <AddFlightPopupContent
-                    // code={code}
-                    // airport={name}
-                    // // classes={classes}
-                    // onSubmit={this.onSubmit}
-                  />
-                </MaterialDialog>
-              </td>
-              <td className="airports-list__action-icon">
-                <FaTimes
-                  className="airports-list__icon"
-                  // onClick={this.handleDeleteButtonClick(_id)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
-  );
+    if (this.state.orderBy === property && this.state.order === 'desc') {
+      order = 'asc';
+    }
+
+    this.setState({ order, orderBy });
+  };
+
+  handleSelectAllClick = event => {
+    if (event.target.checked) {
+      this.setState({ selected: this.props.flightsList.map(n => n._id) });
+      return;
+    }
+    this.setState({ selected: [] });
+  };
+
+  handleSelecteOneClick = (event, name) => {
+    const { selected } = this.state;
+    const selectedIndex = this.state.selected.indexOf(name);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    this.setState({ selected: newSelected });
+    event.stopPropagation();
+  }
+
+  handleClick = async (event, id) => {
+    await this.props.getFlightData(id);
+    await this.props.getFlightOrders(id);
+    this.props.history.push(`/app/flights/${id}`);
+  };
+
+  handleChangePage = (event, page) => this.setState({ page });
+
+  handleChangeRowsPerPage = event => this.setState({ rowsPerPage: event.target.value });
+
+  isSelected = id => this.state.selected.indexOf(id) !== -1;
+
+  render() {
+    const { classes, flightsList } = this.props;
+    const { order, orderBy, selected, rowsPerPage, page } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, flightsList.length - page * rowsPerPage);
+
+    return (
+      <Paper className={classes.root}>
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <div className={classes.tableWrapper}>
+          <Table className={classes.table} aria-labelledby="tableTitle">
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={this.handleSelectAllClick}
+              onRequestSort={this.handleRequestSort}
+              rowCount={flightsList.length}
+              rows={rows}
+            />
+            <TableBody>
+              {stableSort(flightsList, getSorting(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map(n => {
+                  const isSelected = this.isSelected(n._id);
+                  return (
+                    <TableRow
+                      hover
+                      onClick={event => this.handleClick(event, n._id)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n._id}
+                      selected={isSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={isSelected}
+                          onClick={event => this.handleSelecteOneClick(event, n._id)}
+                        />
+                      </TableCell>
+                      <TableCell>{n.code}</TableCell>
+                      <TableCell>{n.fromCountry.name}</TableCell>
+                      <TableCell>{n.toCountry.name}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 49 * emptyRows }}>
+                  <TableCell colSpan={7} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={flightsList.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onChangePage={this.handleChangePage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        />
+      </Paper>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
@@ -132,7 +198,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getFlightsData: () => dispatch(getFlightsData())
+  getFlightsData: () => dispatch(getFlightsData()),
+  getFlightData: flightId => dispatch(getSelectedFlightData(flightId)),
+  getFlightOrders: flightId => dispatch(getFlightOrdersData(flightId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlightsList);
+export default compose(
+  withRouter,
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+)(EnhancedTable);
