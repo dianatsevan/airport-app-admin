@@ -11,7 +11,8 @@ const initialState = {
   getSelectedFlightDataError: false,
   editFlightDataError: false,
   deleteFlightError: false,
-  getFlightOrdersDataError: false
+  getFlightOrdersDataError: false,
+  editFlightError: false
 };
 
 const reducers = handleActions(
@@ -62,6 +63,13 @@ const reducers = handleActions(
     [actions.deleteFlightError]: (state = initialState, { payload }) => ({
       ...state,
       deleteFlightError: payload
+    }),
+    [actions.editFlight]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.editFlightError]: (state = initialState, { payload }) => ({
+      ...state,
+      editFlightError: payload
     })
   },
   initialState

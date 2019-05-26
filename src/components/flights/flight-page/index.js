@@ -7,23 +7,28 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
+import { FaPencilAlt } from 'react-icons/fa';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
+import MaterialDialog from '../../material-components/dialog-window';
 import ScheduleTable from './schedule-table/index';
 import OrdersTable from './orders-table/index';
 import ExpPanel from '../../material-components/expansion-panel';
 import PlaneLayout from '../../planes/add-plane-popup/plane-layout';
+import AddFlightPopupContent from '../add-flight-popup/add-flight-popup-content';
+import { editFlight } from '../../../redux/flights/actions';
 import styles from './material.style.js';
 import './index.scss';
 
-function FlightPage({ selectedFlight, flightOrders, classes }) {
+function FlightPage({ selectedFlight, flightOrders, classes, editFlight }) {
   FlightPage.propTypes = {
     selectedFlight: PropTypes.object.isRequired,
     flightOrders: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
+    editFlight: PropTypes.func.isRequired,
   };
 
   const [selectedDate, setSelectedDate] = useState('');
@@ -73,7 +78,27 @@ function FlightPage({ selectedFlight, flightOrders, classes }) {
     return selectedFlight.planeInfo.rowsNumber * columns.length;
   };
 
-  const { code, fromCountry, toCountry, price, planeInfo, flightPeriod, schedule } = selectedFlight;
+  const { _id, code, fromCountry, toCountry, price, planeInfo, flightPeriod, schedule } = selectedFlight;
+
+  const makeInitialValuesObject = () => {
+    const initialValues = {
+      code,
+      fromCountry: fromCountry._id,
+      toCountry: toCountry._id,
+      startDate: moment(flightPeriod.startDate).format(),
+      endDate: moment(flightPeriod.endDate).format(),
+      price,
+      planeInfo: planeInfo._id,
+      selectedDays: schedule.map(({ day }) => day - 1),
+    };
+
+    schedule.forEach(({ day, departureTime, arrivalTime }) => {
+      initialValues[`${day - 1}-departureTime`] = moment(departureTime).format();
+      initialValues[`${day - 1}-arrivalTime`] = moment(arrivalTime).format();
+    });
+
+    return initialValues;
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -148,6 +173,27 @@ function FlightPage({ selectedFlight, flightOrders, classes }) {
                 }
               </div>
             </ExpPanel>
+
+            <MaterialDialog
+              title="Edit plane"
+              buttonComponent={(
+                <button
+                  type="button"
+                  className="button planes-list-item__buttons"
+                >
+                  Edit
+                  <FaPencilAlt className="planes-list-item__button-icon" />
+                </button>
+              )}
+            >
+              <AddFlightPopupContent
+                flightId={_id}
+                initialValues={makeInitialValuesObject()}
+                actionName="edit"
+                buttonName="Edit flight"
+                action={editFlight}
+              />
+            </MaterialDialog>
           </div>
 
           <div className="flight-page__plane-layout">
@@ -179,8 +225,12 @@ const mapStateToProps = state => ({
   flightOrders: state.flightsData.flightOrders
 });
 
+const mapDispatchToProps = dispatch => ({
+  editFlight: newFlightData => dispatch(editFlight(newFlightData))
+});
+
 export default compose(
   withRouter,
   withStyles(styles),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(FlightPage);

@@ -26,9 +26,13 @@ class AddFlightPopupContent extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     getAirportsData: PropTypes.func.isRequired,
+    getPlanesData: PropTypes.func.isRequired,
     airportsList: PropTypes.array.isRequired,
     planesList: PropTypes.array.isRequired,
     action: PropTypes.func.isRequired,
+    initialValues: PropTypes.object,
+    actionName: PropTypes.string,
+    flightId: PropTypes.string,
   };
 
   state = {
@@ -49,6 +53,10 @@ class AddFlightPopupContent extends Component {
       }
     };
 
+    if (this.props.actionName === 'edit') {
+      flightToAdd.id = this.props.flightId;
+    }
+
     selectedDays.sort();
     const schedule = selectedDays.map((elem) => ({
       day: elem + 1,
@@ -60,14 +68,17 @@ class AddFlightPopupContent extends Component {
     this.props.action(flightToAdd);
   }
 
-  componentDidMount = () => this.props.getAirportsData();
+  componentDidMount = () => {
+    this.props.getAirportsData();
+    this.props.getPlanesData();
+  }
 
   transformAirportsArray = () => this.props.airportsList.map(({ _id, name, code }) => ({
     label: `${name} ${code}`,
     id: _id
   }));
 
-  drawMenuItems = () => this.props.planesList.map(({ _id, code, rowsNumber, seatsInRow }) => (
+  drawMenuItems = () => this.props.planesList.map(({ _id, code, rowsNumber }) => (
     <MenuItem
       className={this.props.classes.menuItem}
       key={_id}
@@ -76,7 +87,7 @@ class AddFlightPopupContent extends Component {
     >
       <div className="planes-list-item__header">
         <div>
-          code: <b>{code}</b>
+          Code: <b>{code}</b>
         </div>
         <div>
           Rows number: <b>{rowsNumber}</b>
@@ -95,6 +106,7 @@ class AddFlightPopupContent extends Component {
         <Form
           onSubmit={this.onSubmit}
           validate={validate}
+          initialValues={this.props.initialValues}
           render={({ handleSubmit, values }) => (
             <form className="add-flight-form" onSubmit={handleSubmit}>
               <Field
@@ -220,7 +232,8 @@ class AddFlightPopupContent extends Component {
 
 const mapStateToProps = state => ({
   airportsList: state.airportsData.airportsList,
-  planesList: state.planesData.planesList
+  planesList: state.planesData.planesList,
+  selectedFLight: state.flightsData.selectedFLight
 });
 
 const mapDispatchToProps = dispatch => ({
