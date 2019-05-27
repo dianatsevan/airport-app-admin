@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { getLuggageList } from '../../redux/luggage/actions';
+import { getLuggageList, editLuggageData } from '../../redux/luggage/actions';
 import MaterialDialog from '../material-components/dialog-window';
 import LuggagePopupContent from './luggage-popup-content';
 import './index.scss';
 
-function LuggagePage({ getLuggageList, luggageList }) {
+function LuggagePage({ getLuggageList, luggageList, editLuggageData }) {
   LuggagePage.propTypes = {
     getLuggageList: PropTypes.func.isRequired,
     luggageList: PropTypes.array.isRequired,
+    editLuggageData: PropTypes.func.isRequired,
   };
 
   useEffect(() => {
@@ -19,18 +20,18 @@ function LuggagePage({ getLuggageList, luggageList }) {
 
   return (
     <section className="luggage-list">
-      {luggageList.map((item, index) => (
+      {luggageList.map(({ _id, kg, price }, index) => (
         <div
-          key={item._id}
+          key={_id}
           className="luggage-list-item"
         >
           <div className={`luggage-list-item__${index}-image luggage-list-item__image`} />
 
           <span className="luggage-list-item__info">
-            Kg: <span className="luggage-list-item__info-value">{item.kg}</span>
+            Kg: <span className="luggage-list-item__info-value">{kg}</span>
           </span>
           <span className="luggage-list-item__info">
-            Price: <span className="luggage-list-item__info-value">{item.price}</span>
+            Price: <span className="luggage-list-item__info-value">{price}</span>
           </span>
 
           <div className="luggage-list-item__buttons-wrapper">
@@ -47,9 +48,11 @@ function LuggagePage({ getLuggageList, luggageList }) {
               )}
             >
               <LuggagePopupContent
-                kg={item.kg}
-                price={item.price}
+                id={_id}
+                kg={kg}
+                price={price}
                 buttonName="Edit"
+                action={editLuggageData}
               />
             </MaterialDialog>
             <button
@@ -72,7 +75,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getLuggageList: () => dispatch(getLuggageList())
+  getLuggageList: () => dispatch(getLuggageList()),
+  editLuggageData: luggageData => dispatch(editLuggageData(luggageData))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LuggagePage);

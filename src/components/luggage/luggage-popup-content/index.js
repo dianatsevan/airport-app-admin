@@ -7,17 +7,17 @@ import validate from './validate';
 import styles from './material.style';
 import './index.scss';
 
-function LuggagePopupContent({ kg, price, classes, buttonName }) {
+function LuggagePopupContent({ id, kg, price, classes, buttonName, action }) {
   LuggagePopupContent.propTypes = {
     classes: PropTypes.object.isRequired,
     buttonName: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     kg: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
+    action: PropTypes.func.isRequired,
   };
 
-  const onSubmit = (values) => {
-    console.log(values);
-  };
+  const onSubmit = values => action({ id, ...values });
 
   return (
     <div className="luggage-form-container">

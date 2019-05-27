@@ -4,6 +4,7 @@ import * as actions from './actions';
 const initialState = {
   luggageList: [],
   getLuggageListError: false,
+  editLuggageDataError: false
 };
 
 const reducers = handleActions(
@@ -18,6 +19,13 @@ const reducers = handleActions(
     [actions.getLuggageListError]: (state = initialState, { payload }) => ({
       ...state,
       getLuggageListError: payload
+    }),
+    [actions.editLuggageData]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.editLuggageDataError]: (state = initialState, { payload }) => ({
+      ...state,
+      editLuggageDataError: payload
     }),
   },
   initialState

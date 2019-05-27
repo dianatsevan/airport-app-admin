@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { put, call, takeEvery } from 'redux-saga/effects';
-import { setLuggageList, getLuggageListError } from './actions';
+import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
+import { setLuggageList, getLuggageListError, editLuggageDataError } from './actions';
 import urls from '../../urls';
 import actionTypes from './actionTypes';
 
@@ -14,6 +14,17 @@ function* getLuggageListData() {
   }
 }
 
+function* editLuggageData({ payload }) {
+  try {
+    yield call(() => axios.put(`${urls.luggageList}/${payload.id}`, { ...payload }));
+    yield put(editLuggageDataError(false));
+    yield getLuggageListData();
+  } catch (err) {
+    yield put(editLuggageDataError(true));
+  }
+}
+
 export default function* watchLuggageData() {
   yield takeEvery(actionTypes.GET_LUGGAGE_LIST, getLuggageListData);
+  yield takeLatest(actionTypes.EDIT_LUGGAGE_DATA, editLuggageData);
 }
