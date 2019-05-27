@@ -41,27 +41,13 @@ function FlightPage({ selectedFlight, classes, editFlight, getSelectedFlightData
 
   const handleChange = event => setSelectedDate(event.target.value);
 
+  const unique = (value, index, self) => self.indexOf(value) === index;
+
   const drawDates = () => {
     const dates = selectedFlight.flightOrders.map(({ departureDate }) => moment(departureDate).format('L'));
-    dates
-      .sort((a, b) => {
-        if (a < b) {
-          return -1;
-        }
-        if (a > b) {
-          return 1;
-        }
-        return 0;
-      })
-      .forEach((date, index) => {
-        if (date) {
-          for (let i = index + 1; i < dates.length; i++) {
-            dates[i] = date === dates[i] ? 0 : dates[i];
-          }
-          return date;
-        }
-      });
-    return dates.map(date => (
+    const uniqueDates = dates.filter(unique).sort();
+
+    return uniqueDates.map(date => (
       date && <MenuItem key={date} value={date}>{date}</MenuItem>
     ));
   };

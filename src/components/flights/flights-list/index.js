@@ -64,7 +64,8 @@ class EnhancedTable extends React.Component {
     selected: [],
     page: 0,
     rowsPerPage: 5,
-    selectedFlight: ''
+    selectedFlight: '',
+    isAllFlightsCheckboxSelected: true,
   };
 
   componentDidMount = () => this.props.getFlightsData();
@@ -81,9 +82,9 @@ class EnhancedTable extends React.Component {
   };
 
   handleSelectAllClick = event => {
-    if (event.target.checked) {
+    this.setState(state => ({ isAllFlightsCheckboxSelected: !state.isAllFlightsCheckboxSelected }));
+    if (this.state.isAllFlightsCheckboxSelected && event.target.checked) {
       const availableFlights = this.props.flightsList.filter(flight => flight.flightOrders.length === 0);
-      console.log(availableFlights);
       this.setState({ selected: availableFlights.map(n => n._id) });
       return;
     }
@@ -134,7 +135,6 @@ class EnhancedTable extends React.Component {
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, flightsList.length - page * rowsPerPage);
 
-    console.log(this.state.selected);
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar
@@ -151,6 +151,7 @@ class EnhancedTable extends React.Component {
               onRequestSort={this.handleRequestSort}
               rowCount={flightsList.length}
               rows={rows}
+              flightsList={flightsList}
             />
             <TableBody>
               {stableSort(flightsList, getSorting(order, orderBy))

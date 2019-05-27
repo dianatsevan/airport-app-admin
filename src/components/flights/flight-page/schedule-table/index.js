@@ -8,10 +8,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import styles from './material.style.js';
+import { daysOfWeek } from '../../../../constants';
 
 function ScheduleTable({ classes, schedule }) {
-  const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sut', 'Sun'];
-
   return (
     <Table className={classes.table}>
       <TableHead>
@@ -23,8 +22,8 @@ function ScheduleTable({ classes, schedule }) {
       </TableHead>
       <TableBody>
         {schedule.map(day => (
-          <TableRow key={day.day}>
-            <TableCell>{daysOfWeek[day.day - 1]}</TableCell>
+          <TableRow key={day.dayOfWeek}>
+            <TableCell>{daysOfWeek[day.dayOfWeek - 1]}</TableCell>
             <TableCell>{moment(day.departureTime).format('LT')}</TableCell>
             <TableCell>{moment(day.arrivalTime).format('LT')}</TableCell>
           </TableRow>
