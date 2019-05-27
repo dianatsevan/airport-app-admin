@@ -6,15 +6,13 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 class SimpleSelect extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
     meta: PropTypes.object.isRequired,
-    label: PropTypes.string.isRequired,
-    items: PropTypes.array.isRequired,
+    label: PropTypes.string.isRequired
   };
 
   state = {
@@ -30,7 +28,7 @@ class SimpleSelect extends React.Component {
   render() {
     const {
       input: {
-        name, onChange, value, multiple, ...restInput
+        name, onChange, value, multiple, children, ...restInput
       }, meta, ...rest
     } = this.props;
 
@@ -62,7 +60,7 @@ class SimpleSelect extends React.Component {
             />
           )}
         >
-          {this.props.items.length && this.props.items.map(({ label, id }, index) => <MenuItem key={id} value={id}>{label}</MenuItem>)}
+          {this.props.kids}
         </Select>
         {meta.touched && meta.error && <FormHelperText margin="dense">{meta.error}</FormHelperText>}
       </FormControl>

@@ -1,0 +1,74 @@
+@import 'src/styles-variables';
+
+.add-flight-form-container {
+  min-width: 260px;
+  padding: 15px;
+}
+
+.add-flight-form {
+  display: flex;
+  flex-direction: column;
+
+  &__date-pickers {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.schedule {
+  &__item {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  &__day-name {
+    width: 35px;
+  }
+
+  &__day-checkbox {
+    position: relative;
+    margin: 0;
+    margin-right: 12px;
+  
+    &::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      background-color: $emptyCheckoxBackground;
+      text-align: center;
+      line-height: normal;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+  
+    &:checked {
+      &::after {
+        background-color: $checkedCheckboxBackground;
+      }
+    }
+  }
+
+  &__time-pickers {
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 300px;
+  }
+}
+
+@media only screen and (max-width: $mobileSize) {
+  .add-flight-form {
+    &__schedule {
+      width: auto;
+    }
+  }
+
+  .schedule {
+    &__time-pickers {
+      flex-direction: column;
+      width: 150px;
+    }
+  }
+}
