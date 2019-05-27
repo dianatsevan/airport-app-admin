@@ -5,7 +5,8 @@ export const urls = {
   sendLoginFormData: 'http://localhost:3001/user/login',
   addAirportToDb: 'http://localhost:3001/airports',
   addPlaneToDb: 'http://localhost:3001/plane-layout',
-  getPlanesList: 'http://localhost:3001/plane-layout'
+  getPlanesList: 'http://localhost:3001/plane-layout',
+  luggageList: 'http://localhost:3001/luggage-types'
 };
 
 export default urls;
