@@ -3,10 +3,14 @@ import * as actions from './actions';
 
 const initialState = {
   addFlightToDbError: false,
-  FlightsList: [],
+  flightsList: [],
+  selectedFlight: {},
+  flightOrders: [],
   getFlightsDataError: false,
+  getSelectedFlightDataError: false,
   editFlightDataError: false,
-  deleteFlightError: false
+  deleteFlightError: false,
+  getFlightOrdersDataError: false
 };
 
 const reducers = handleActions(
@@ -23,11 +27,33 @@ const reducers = handleActions(
     }),
     [actions.setFlightsData]: (state = initialState, { payload }) => ({
       ...state,
-      FlightsList: payload
+      flightsList: payload
     }),
     [actions.getFlightsDataError]: (state = initialState, { payload }) => ({
       ...state,
       getFlightsDataError: payload
+    }),
+    [actions.getSelectedFlightData]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.setSelectedFlightData]: (state = initialState, { payload }) => ({
+      ...state,
+      selectedFlight: payload
+    }),
+    [actions.getSelectedFlightDataError]: (state = initialState, { payload }) => ({
+      ...state,
+      getSelectedFlightDataError: payload
+    }),
+    [actions.getFlightOrdersData]: (state = initialState) => ({
+      ...state
+    }),
+    [actions.setFlightOrdersData]: (state = initialState, { payload }) => ({
+      ...state,
+      flightOrders: payload
+    }),
+    [actions.getFlightOrdersDataError]: (state = initialState, { payload }) => ({
+      ...state,
+      getFlightOrdersDataError: payload
     }),
   },
   initialState

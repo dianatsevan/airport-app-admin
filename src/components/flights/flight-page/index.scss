@@ -1,0 +1,66 @@
+@import 'src/styles-variables.scss';
+
+.flight-page {
+  padding: 20px;
+
+  &__content-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    font-size: 1.3em;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .header {
+    &__field {
+      display: flex;
+    }
+
+    &__field-label {
+      display: flex;
+      align-items: center;
+      font-size: 0.6em;
+      color: gray;
+      font-weight: 400;
+    }
+
+    &__field-value {
+      margin-left: 10px;
+    }
+  }
+
+  &__dates {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+
+  &__orders {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__plane-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media only screen and (max-width: $mobileSize) {
+  .flight-page {
+    &__content-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+  }
+} 

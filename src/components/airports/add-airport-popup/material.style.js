@@ -5,7 +5,7 @@ const styles = {
     marginBottom: '15px',
   },
   dialogButton: {
-    backgroundColor: '#efefef',
+    backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#dbdbdb'
     }
