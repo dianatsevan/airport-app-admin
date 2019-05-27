@@ -1,25 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import './index.scss';
 
-export default function PlaneLayout({ rows, location }) {
+export default function PlaneLayout({ rows, location, soldSeats }) {
   PlaneLayout.propTypes = {
     rows: PropTypes.number.isRequired,
     location: PropTypes.array.isRequired,
+    soldSeats: PropTypes.array,
   };
 
   const drawSeatsRows = (arrayByRows) => arrayByRows.map((elem, index) => (
     <div key={elem + index} className="plane__seats-row">
-      {location.map((place, j) => (place
-        ? (
-        <div
-          id={index + location[j] + 1}
-          key={index + j + elem}
-          className="plane__seat"
-        />
-      )
-        : <div key={index + j + elem} className="empty">{index + 1}</div>
-      ))}
+      {location.map((place, j) => {
+        const id = index + 1 + location[j];
+        const isSold = soldSeats && soldSeats.some(seat => seat === id);
+        return (place
+          ? (
+            <div
+              id={id}
+              key={index + j + elem}
+              className={classNames({
+                plane__seat: true,
+                plane__seat_sold: isSold,
+              })}
+              // className="plane__seat"
+            />
+          )
+          : <div key={index + j + elem} className="empty">{index + 1}</div>
+        )
+      })}
     </div>
   ));
 

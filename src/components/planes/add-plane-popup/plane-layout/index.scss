@@ -58,7 +58,12 @@
     text-align: center;
     line-height: normal;
     font-size: 0.8rem;
-  
+
+    &_sold {
+      background-color: rgb(190, 190, 190);;
+      cursor: auto;
+    }
+
     &:not(:last-child) {
       margin-right: 5px;
     }

@@ -6,6 +6,9 @@ export const urls = {
   addAirportToDb: 'http://localhost:3001/airports',
   addPlaneToDb: 'http://localhost:3001/plane-layout',
   getPlanesList: 'http://localhost:3001/plane-layout',
+  flightsUrl: 'http://localhost:3001/tickets',
+  flightOrdersUrl: 'http://localhost:3001/order?selectedFlight=',
+  flightsOrders: 'http://localhost:3001/order',
   luggageList: 'http://localhost:3001/luggage-types'
 };
 

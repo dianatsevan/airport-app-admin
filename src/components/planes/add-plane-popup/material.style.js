@@ -5,7 +5,7 @@ const styles = theme => ({
     width: 200,
   },
   dialogButton: {
-    backgroundColor: '#efefef',
+    backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#dbdbdb'
     }

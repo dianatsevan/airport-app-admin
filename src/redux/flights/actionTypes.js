@@ -1,0 +1,19 @@
+import keyMirror from 'keymirror';
+
+export default keyMirror({
+  ADD_FLIGHT_TO_DB: null,
+  ADD_FLIGHT_TO_DB_ERROR: null,
+  GET_FLIGHTS_DATA: null,
+  SET_FLIGHTS_DATA: null,
+  GET_FLIGHTS_DATA_ERROR: null,
+  GET_SELECTED_FLIGHT_DATA: null,
+  SET_SELECTED_FLIGHT_DATA: null,
+  GET_SELECTED_FLIGHT_DATA_ERROR: null,
+  GET_FLIGHT_ORDERS_DATA: null,
+  SET_FLIGHT_ORDERS_DATA: null,
+  GET_FLIGHT_ORDERS_DATA_ERROR: null,
+  DELETE_FLIGHT: null,
+  DELETE_FLIGHT_ERROR: null,
+  EDIT_FLIGHT: null,
+  EDIT_FLIGHT_ERROR: null
+});
