@@ -13,7 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { FaGlobeAmericas } from 'react-icons/fa';
+import { FaGlobeAmericas, FaSuitcaseRolling } from 'react-icons/fa';
 import { MdFlightTakeoff, MdFlight } from 'react-icons/md';
 import AppHeader from '../app-header';
 import styles from './material.styles';
@@ -33,7 +33,13 @@ const linkList = [{
   path: '/app/planes',
   text: 'Planes',
   icon: <MdFlight className="side-menu__icon" />
-}];
+},
+{
+  path: '/app/luggage',
+  text: 'Luggage',
+  icon: <FaSuitcaseRolling className="side-menu__icon" />
+}
+];
 
 class SideMenu extends React.Component {
   static propTypes = {

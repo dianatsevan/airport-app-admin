@@ -7,6 +7,7 @@ import { checkAuth } from './redux/system/actions';
 import './App.scss';
 import AirportsPage from './components/airports';
 import PlanesPage from './components/planes';
+import LuggagePage from './components/luggage';
 import SideMenu from './components/side-menu';
 import Login from './components/login';
 import PrivateRoute from './components/private-route';
@@ -18,6 +19,7 @@ function MainContent() {
         <Switch>
           <Route path="/app/airports" component={AirportsPage} />
           <Route path="/app/planes" component={PlanesPage} />
+          <Route path="/app/luggage" component={LuggagePage} />
         </Switch>
       </SideMenu>
     </div>

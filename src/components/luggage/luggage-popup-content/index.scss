@@ -1,0 +1,13 @@
+.luggage-form-container {
+  padding: 0 20px 20px 20px;
+}
+
+.luggage-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__button {
+    margin-top: 10px;
+  }
+}
