@@ -11,7 +11,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { getFlightsData, getSelectedFlightData, getFlightOrdersData, deleteFlight } from '../../../redux/flights/actions';
+import { getFlightsData, setFlightsData, setSelectedFlightData, getFlightOrdersData, deleteFlight } from '../../../redux/flights/actions';
 import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './tool-bar';
 import styles from './material.style';
@@ -52,9 +52,10 @@ class EnhancedTable extends React.Component {
     flightsList: PropTypes.array.isRequired,
     history: PropTypes.object.isRequired,
     getFlightsData: PropTypes.func.isRequired,
-    getFlightData: PropTypes.func.isRequired,
+    setSelectedFlightData: PropTypes.func.isRequired,
     getFlightOrders: PropTypes.func.isRequired,
     deleteFlight: PropTypes.func.isRequired,
+    flightOrders: PropTypes.array.isRequired,
   };
 
   state = {
@@ -62,7 +63,8 @@ class EnhancedTable extends React.Component {
     orderBy: '',
     selected: [],
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 5,
+    selectedFlight: ''
   };
 
   componentDidMount = () => this.props.getFlightsData();
@@ -80,7 +82,9 @@ class EnhancedTable extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState({ selected: this.props.flightsList.map(n => n._id) });
+      const availableFlights = this.props.flightsList.filter(flight => flight.flightOrders.length === 0);
+      console.log(availableFlights);
+      this.setState({ selected: availableFlights.map(n => n._id) });
       return;
     }
     this.setState({ selected: [] });
@@ -108,9 +112,9 @@ class EnhancedTable extends React.Component {
     event.stopPropagation();
   }
 
-  handleClick = async (event, id) => {
-    await this.props.getFlightData(id);
-    await this.props.getFlightOrders(id);
+  handleClick = (event, id) => {
+    const selectedFlight = this.props.flightsList.filter(flight => flight._id === id);
+    this.props.setSelectedFlightData(selectedFlight[0]);
     this.props.history.push(`/app/flights/${id}`);
   };
 
@@ -130,6 +134,7 @@ class EnhancedTable extends React.Component {
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, flightsList.length - page * rowsPerPage);
 
+    console.log(this.state.selected);
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar
@@ -150,27 +155,29 @@ class EnhancedTable extends React.Component {
             <TableBody>
               {stableSort(flightsList, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n._id);
+                .map(flight => {
+                  const isSelected = this.isSelected(flight._id);
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n._id)}
+                      onClick={event => this.handleClick(event, flight._id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n._id}
+                      key={flight._id}
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isSelected}
-                          onClick={event => this.handleSelecteOneClick(event, n._id)}
-                        />
+                        {!flight.flightOrders.length && (
+                          <Checkbox
+                            checked={isSelected}
+                            onClick={event => this.handleSelecteOneClick(event, flight._id)}
+                          />
+                        )}
                       </TableCell>
-                      <TableCell>{n.code}</TableCell>
-                      <TableCell>{n.fromCountry.name}</TableCell>
-                      <TableCell>{n.toCountry.name}</TableCell>
+                      <TableCell>{flight.code}</TableCell>
+                      <TableCell>{flight.fromCountry.name}</TableCell>
+                      <TableCell>{flight.toCountry.name}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -203,14 +210,17 @@ class EnhancedTable extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  flightsList: state.flightsData.flightsList
+  flightsList: state.flightsData.flightsList,
+  flightOrders: state.flightsData.flightOrders,
+  selectedFlight: state.flightsData.selectedFlight
 });
 
 const mapDispatchToProps = dispatch => ({
   getFlightsData: () => dispatch(getFlightsData()),
-  getFlightData: flightId => dispatch(getSelectedFlightData(flightId)),
+  setSelectedFlightData: payload => dispatch(setSelectedFlightData(payload)),
   getFlightOrders: flightId => dispatch(getFlightOrdersData(flightId)),
-  deleteFlight: ids => dispatch(deleteFlight(ids))
+  deleteFlight: ids => dispatch(deleteFlight(ids)),
+  setFlightsData: flightsData => dispatch(setFlightsData(flightsData))
 });
 
 export default compose(

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { compose } from 'redux';
@@ -19,26 +19,30 @@ import OrdersTable from './orders-table/index';
 import ExpPanel from '../../material-components/expansion-panel';
 import PlaneLayout from '../../planes/add-plane-popup/plane-layout';
 import AddFlightPopupContent from '../add-flight-popup/add-flight-popup-content';
-import { editFlight } from '../../../redux/flights/actions';
+import { getSelectedFlightData, editFlight } from '../../../redux/flights/actions';
 import styles from './material.style.js';
 import './index.scss';
 
-function FlightPage({ selectedFlight, flightOrders, classes, editFlight }) {
+function FlightPage({ selectedFlight, classes, editFlight, getSelectedFlightData, history }) {
   FlightPage.propTypes = {
     selectedFlight: PropTypes.object.isRequired,
-    flightOrders: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     editFlight: PropTypes.func.isRequired,
+    getSelectedFlightData: PropTypes.func.isRequired,
   };
 
   const [selectedDate, setSelectedDate] = useState('');
+
+  useEffect(() => {
+    getSelectedFlightData(history.location.pathname.slice(13));
+  }, []);
 
   const handleDateChange = () => console.log('ok');
 
   const handleChange = event => setSelectedDate(event.target.value);
 
   const drawDates = () => {
-    const dates = flightOrders.map(({ departureDate }) => moment(departureDate).format('L'));
+    const dates = selectedFlight.flightOrders.map(({ departureDate }) => moment(departureDate).format('L'));
     dates
       .sort((a, b) => {
         if (a < b) {
@@ -64,7 +68,7 @@ function FlightPage({ selectedFlight, flightOrders, classes, editFlight }) {
 
   const soldSeats = () => {
     const seats = [];
-    flightOrders.map(({ departureDate, passengersInfo }) => {
+    selectedFlight.flightOrders.map(({ departureDate, passengersInfo }) => {
       if (selectedDate === moment(departureDate).format('L')) {
         passengersInfo.map(({ selectedSeat }) => seats.push(selectedSeat));
       }
@@ -150,7 +154,7 @@ function FlightPage({ selectedFlight, flightOrders, classes, editFlight }) {
 
             <ExpPanel title="Orders">
               <div className="flight-page__orders">
-                {flightOrders.length
+                {selectedFlight.flightOrders.length
                   ? (
                     <>
                       <FormControl variant="outlined" className={classes.formControl}>
@@ -165,7 +169,7 @@ function FlightPage({ selectedFlight, flightOrders, classes, editFlight }) {
                           {drawDates()}
                         </Select>
                       </FormControl>
-                      <OrdersTable orders={flightOrders} date={selectedDate} />
+                      <OrdersTable orders={selectedFlight.flightOrders} date={selectedDate} />
                     </>
                   ) : (
                     <span>No orders yet</span>
@@ -221,12 +225,12 @@ function FlightPage({ selectedFlight, flightOrders, classes, editFlight }) {
 }
 
 const mapStateToProps = state => ({
-  selectedFlight: state.flightsData.selectedFlight,
-  flightOrders: state.flightsData.flightOrders
+  selectedFlight: state.flightsData.selectedFlight
 });
 
 const mapDispatchToProps = dispatch => ({
-  editFlight: newFlightData => dispatch(editFlight(newFlightData))
+  editFlight: newFlightData => dispatch(editFlight(newFlightData)),
+  getSelectedFlightData: id => dispatch(getSelectedFlightData(id))
 });
 
 export default compose(

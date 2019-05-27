@@ -7,21 +7,18 @@ import actionTypes from './actionTypes';
 function* getFlightsData() {
   try {
     const flightsData = yield call(() => axios.get(urls.flightsUrl));
+    const flightsOrders = yield call(() => axios.get(urls.flightsOrders));
+    flightsOrders.data.forEach(order => {
+      flightsData.data.find((flight) => {
+        if (order.selectedFlight && (order.selectedFlight._id === flight._id)) {
+          flight.flightOrders.push(order);
+        }
+      });
+    });
     yield put(setFlightsData(flightsData.data));
     yield put(getFlightsDataError(false));
   } catch (err) {
     yield put(getFlightsDataError(true));
-  }
-}
-
-function* getSelectedFlightData({ payload: id }) {
-  try {
-    const flightData = yield call(() => axios.get(`${urls.flightsUrl}/${id}`));
-    yield put(setSelectedFlightData(flightData.data));
-    yield put(getSelectedFlightDataError(false));
-    yield getFlightsData();
-  } catch (err) {
-    yield put(getSelectedFlightDataError(true));
   }
 }
 
@@ -34,6 +31,20 @@ function* getFlightOrdersData({ payload: id }) {
     yield put(getFlightOrdersDataError(true));
   }
 }
+
+function* getSelectedFlightData({ payload: id }) {
+  try {
+    const flightData = yield call(() => axios.get(`${urls.flightsUrl}/${id}`));
+    const flightOrders = yield call(() => axios.get(`${urls.flightOrdersUrl}${id}`));
+    yield put(setSelectedFlightData({ ...flightData.data, flightOrders: flightOrders.data }));
+    yield put(getSelectedFlightDataError(false));
+    yield getFlightOrdersData({ payload: id });
+    yield getFlightsData();
+  } catch (err) {
+    yield put(getSelectedFlightDataError(true));
+  }
+}
+
 function* addFlightToDb({ payload }) {
   try {
     const dataToAdd = {
