@@ -35,7 +35,7 @@ const toolbarStyles = theme => ({
 });
 
 const EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
+  const { numSelected, classes, onTrashBinClick } = props;
 
   return (
     <Toolbar
@@ -55,7 +55,10 @@ const EnhancedTableToolbar = props => {
         )}
       </div>
       <div className={classes.spacer} />
-      <div className={classes.actions}>
+      <div
+        className={classes.actions}
+        onClick={onTrashBinClick}
+      >
         {numSelected > 0 && (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
@@ -71,6 +74,7 @@ const EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
+  onTrashBinClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar);

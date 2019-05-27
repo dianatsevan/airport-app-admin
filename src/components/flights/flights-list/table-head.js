@@ -13,17 +13,20 @@ class EnhancedTableHead extends React.Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, rows } = this.props;
+    const { onSelectAllClick, order, orderBy, numSelected, rowCount, rows, flightsList } = this.props;
+    const flightsToDelete = flightsList.filter(flight => flight.flightOrders.length === 0).length;
 
     return (
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
+            {!!flightsToDelete && (
+              <Checkbox
+                indeterminate={numSelected > 0 && numSelected < rowCount}
+                checked={numSelected === rowCount}
+                onChange={onSelectAllClick}
+              />
+            )}
           </TableCell>
           {rows.map(
             row => (
@@ -62,6 +65,7 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
   rows: PropTypes.array.isRequired,
+  flightsList: PropTypes.array.isRequired,
 };
 
 export default EnhancedTableHead;

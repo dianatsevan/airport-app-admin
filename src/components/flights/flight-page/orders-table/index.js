@@ -13,13 +13,13 @@ function OrdersTable({ classes, orders, date }) {
   const drawTableHead = () => ['Code', 'First name', 'Last name', 'Seats']
     .map(name => <TableCell key={name}>{name}</TableCell>);
 
-  const drawTableBody = () => orders.map(({ _id, departureDate, userId, passengersInfo }) => {
+  const drawTableBody = () => orders.map(({ _id, departureDate, user, passengersInfo }) => {
     if (!date || date === moment(departureDate).format('L')) {
       return (
         <TableRow key={_id}>
           <TableCell>{_id.slice(-4)}</TableCell>
-          <TableCell>{userId.firstName}</TableCell>
-          <TableCell>{userId.lastName}</TableCell>
+          <TableCell>{user.firstName}</TableCell>
+          <TableCell>{user.lastName}</TableCell>
           <TableCell>{passengersInfo.map(({ selectedSeat }) => `${selectedSeat} `)}</TableCell>
         </TableRow>
       );

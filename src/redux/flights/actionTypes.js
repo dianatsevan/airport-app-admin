@@ -12,4 +12,8 @@ export default keyMirror({
   GET_FLIGHT_ORDERS_DATA: null,
   SET_FLIGHT_ORDERS_DATA: null,
   GET_FLIGHT_ORDERS_DATA_ERROR: null,
+  DELETE_FLIGHT: null,
+  DELETE_FLIGHT_ERROR: null,
+  EDIT_FLIGHT: null,
+  EDIT_FLIGHT_ERROR: null
 });

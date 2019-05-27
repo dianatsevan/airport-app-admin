@@ -20,19 +20,20 @@ import Select from '../../../material-components/select';
 import PlanesSelect from '../../../material-components/planes-select';
 import validate from './validate';
 import styles from './material.style';
+import { daysOfWeek } from '../../../../constants';
 import './index.scss';
 
 class AddFlightPopupContent extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     getAirportsData: PropTypes.func.isRequired,
+    getPlanesData: PropTypes.func.isRequired,
     airportsList: PropTypes.array.isRequired,
     planesList: PropTypes.array.isRequired,
     action: PropTypes.func.isRequired,
-  };
-
-  state = {
-    daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sut', 'Sun']
+    initialValues: PropTypes.object,
+    actionName: PropTypes.string,
+    flightId: PropTypes.string,
   };
 
   onSubmit = values => {
@@ -49,9 +50,13 @@ class AddFlightPopupContent extends Component {
       }
     };
 
+    if (this.props.actionName === 'edit') {
+      flightToAdd.id = this.props.flightId;
+    }
+
     selectedDays.sort();
     const schedule = selectedDays.map((elem) => ({
-      day: elem + 1,
+      dayOfWeek: elem + 1,
       departureTime: values[`${elem}-departureTime`],
       arrivalTime: values[`${elem}-arrivalTime`]
     }));
@@ -60,14 +65,17 @@ class AddFlightPopupContent extends Component {
     this.props.action(flightToAdd);
   }
 
-  componentDidMount = () => this.props.getAirportsData();
+  componentDidMount = () => {
+    this.props.getAirportsData();
+    this.props.getPlanesData();
+  }
 
   transformAirportsArray = () => this.props.airportsList.map(({ _id, name, code }) => ({
     label: `${name} ${code}`,
     id: _id
   }));
 
-  drawMenuItems = () => this.props.planesList.map(({ _id, code, rowsNumber, seatsInRow }) => (
+  drawMenuItems = () => this.props.planesList.map(({ _id, code, rowsNumber }) => (
     <MenuItem
       className={this.props.classes.menuItem}
       key={_id}
@@ -76,7 +84,7 @@ class AddFlightPopupContent extends Component {
     >
       <div className="planes-list-item__header">
         <div>
-          code: <b>{code}</b>
+          Code: <b>{code}</b>
         </div>
         <div>
           Rows number: <b>{rowsNumber}</b>
@@ -85,7 +93,7 @@ class AddFlightPopupContent extends Component {
     </MenuItem>
   ));
 
-  makeFieldActive = (selectedDays = [], fieldIndex) => selectedDays.some(day => day === fieldIndex);
+  getSelectedDays = (selectedDays = [], fieldIndex) => selectedDays.some(day => day === fieldIndex);
 
   render() {
     const { classes } = this.props;
@@ -95,6 +103,7 @@ class AddFlightPopupContent extends Component {
         <Form
           onSubmit={this.onSubmit}
           validate={validate}
+          initialValues={this.props.initialValues}
           render={({ handleSubmit, values }) => (
             <form className="add-flight-form" onSubmit={handleSubmit}>
               <Field
@@ -152,7 +161,7 @@ class AddFlightPopupContent extends Component {
                   <span>Schedule</span>
                 </ExpansionPanelSummary>
                 <div>
-                  {this.state.daysOfWeek.map((elem, index) => (
+                  {daysOfWeek.map((elem, index) => (
                     <div
                       key={elem}
                       className="schedule__item"
@@ -169,7 +178,7 @@ class AddFlightPopupContent extends Component {
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <div className="schedule__time-pickers">
                           <Field
-                            disabled={!this.makeFieldActive(values.selectedDays, index)}
+                            disabled={!this.getSelectedDays(values.selectedDays, index)}
                             name={`${index}-departureTime`}
                             label="Departure time"
                             className={classNames(classes.timePicker, classes.formField)}
@@ -177,7 +186,7 @@ class AddFlightPopupContent extends Component {
                           />
 
                           <Field
-                            disabled={!this.makeFieldActive(values.selectedDays, index)}
+                            disabled={!this.getSelectedDays(values.selectedDays, index)}
                             name={`${index}-arrivalTime`}
                             label="Arrival time"
                             className={classNames(classes.timePicker, classes.formField)}
@@ -220,7 +229,8 @@ class AddFlightPopupContent extends Component {
 
 const mapStateToProps = state => ({
   airportsList: state.airportsData.airportsList,
-  planesList: state.planesData.planesList
+  planesList: state.planesData.planesList,
+  selectedFLight: state.flightsData.selectedFLight
 });
 
 const mapDispatchToProps = dispatch => ({
