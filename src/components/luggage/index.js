@@ -34,36 +34,26 @@ function LuggagePage({ getLuggageList, luggageList, editLuggageData }) {
             Price: <span className="luggage-list-item__info-value">{price}</span>
           </span>
 
-          <div className="luggage-list-item__buttons-wrapper">
-            <MaterialDialog
-              title="Edit luggage type"
-              buttonComponent={(
-                <button
-                  type="button"
-                  className="button"
-                >
-                  Edit
-                  <FaPencilAlt className="luggage-list-item__button-icon" />
-                </button>
-              )}
-            >
-              <LuggagePopupContent
-                id={_id}
-                kg={kg}
-                price={price}
-                buttonName="Edit"
-                action={editLuggageData}
-              />
-            </MaterialDialog>
-            <button
-              type="button"
-              className="button"
-              // onClick={handleDeleteButtonClick(_id)}
-            >
-              Delete
-              <FaTrashAlt className="planes-list-item__button-icon" />
-            </button>
-          </div>
+          <MaterialDialog
+            title="Edit luggage type"
+            buttonComponent={(
+              <button
+                type="button"
+                className="button"
+              >
+                Edit
+                <FaPencilAlt className="luggage-list-item__button-icon" />
+              </button>
+            )}
+          >
+            <LuggagePopupContent
+              id={_id}
+              kg={kg}
+              price={price}
+              buttonName="Edit"
+              action={editLuggageData}
+            />
+          </MaterialDialog>
         </div>
       ))}
     </section>
