@@ -3,6 +3,7 @@ import axios from 'axios';
 import { urls } from '../../urls';
 import actionTypes from './actionTypes';
 import { setAirportsData, getAirportsDataError, setAirportsToAdd, deleteAirportError, changeAirportError } from './actions';
+import { enqueueSnackbar } from '../notifier/actions';
 
 function* updateAirportData() {
   const newAirports = yield call(() => axios.get(urls.getAirportsUrl));
@@ -27,10 +28,6 @@ function* fetchAirportsData({ payload }) {
   }
 }
 
-function* watchFetchData() {
-  yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsData);
-}
-
 function* fetchAirportToAddData() {
   try {
     const airportsToAdd = yield call(() => axios.get(urls.getAirportsToAdd));
@@ -41,38 +38,61 @@ function* fetchAirportToAddData() {
   }
 }
 
-function* watchFetchAirportsToAddData() {
-  yield take(actionTypes.GET_AIRPORTS_TO_ADD, fetchAirportToAddData);
-}
-
 function* addAirportsToDBsaga({ payload }) {
   try {
     yield call(() => axios.post(urls.addAirportToDb, payload));
     yield updateAirportData();
     yield put(getAirportsDataError(false));
+    yield put(enqueueSnackbar({
+      message: 'Airport was added',
+      options: {
+        variant: 'success'
+      }
+    }));
   } catch (err) {
     yield put(getAirportsDataError(true));
+    yield put(enqueueSnackbar({
+      message: 'Something was wrong...',
+      options: {
+        variant: 'success'
+      }
+    }));
   }
-}
-
-function* watchAirportsAdding() {
-  yield takeEvery(actionTypes.ADD_AIRPORTS_TO_DB, addAirportsToDBsaga);
 }
 
 function* deleteAirportFromDB({ payload }) {
   try {
     const url = `${urls.addAirportToDb}/${payload}`;
+    const fromCountryFlights = yield call(() => axios.get(`${urls.flightsUrl}?fromCountry=${payload}`));
+    const toCountryFlights = yield call(() => axios.get(`${urls.flightsUrl}?toCountry=${payload}`));
 
-    yield call(() => axios.delete(url));
-    yield updateAirportData();
-    yield put(deleteAirportError(false));
+    if (fromCountryFlights.data.length || toCountryFlights.data.length) {
+      yield put(enqueueSnackbar({
+        message: 'Airport has already used in flights',
+        options: {
+          variant: 'info'
+        }
+      }));
+    } else {
+      yield call(() => axios.delete(url));
+      yield updateAirportData();
+      yield put(deleteAirportError(false));
+      yield put(enqueueSnackbar({
+        message: 'Airport was deleted',
+        options: {
+          variant: 'success'
+        }
+      }));
+    }
   } catch (err) {
     yield put(deleteAirportError(true));
+    yield put(enqueueSnackbar({
+      message: 'Something was wrong...',
+      options: {
+        variant: 'success'
+      }
+    }));
   }
-}
-
-function* watchAirportDeleting() {
-  yield takeEvery(actionTypes.DELETE_AIRPORT, deleteAirportFromDB);
 }
 
 function* changeAirport({ payload }) {
@@ -90,16 +110,10 @@ function* changeAirport({ payload }) {
   }
 }
 
-function* watchAirportChanging() {
+export default function* watchFetchData() {
+  yield takeEvery(actionTypes.GET_AIRPORTS_DATA, fetchAirportsData);
+  yield takeEvery(actionTypes.GET_AIRPORTS_TO_ADD, fetchAirportToAddData);
+  yield takeEvery(actionTypes.ADD_AIRPORTS_TO_DB, addAirportsToDBsaga);
+  yield takeEvery(actionTypes.DELETE_AIRPORT, deleteAirportFromDB);
   yield takeEvery(actionTypes.CHANGE_AIRPORT, changeAirport);
-}
-
-export default function* airportsSaga() {
-  yield all([
-    watchFetchData(),
-    watchFetchAirportsToAddData(),
-    watchAirportsAdding(),
-    watchAirportDeleting(),
-    watchAirportChanging()
-  ]);
 }

@@ -23,7 +23,8 @@ class AddAirportPopup extends React.Component {
   componentDidMount = () => this.props.getAirportsToAdd();
 
   onSubmit = values => {
-    const selectedAirports = this.props.airports.filter(airport => values.code.some(code => code === airport.alpha3Code));
+    // const selectedAirports = this.props.airports.filter(airport => values.code.some(code => code === airport.alpha3Code));
+    const selectedAirports = this.props.airports.filter(airport => values.code === airport.alpha3Code);
     const transformedAirports = selectedAirports.map(({ name, alpha3Code }) => ({ name, code: alpha3Code }));
     this.props.addAirportsToDB(transformedAirports);
   };
