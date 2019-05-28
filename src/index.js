@@ -13,7 +13,13 @@ const { store, persistor } = ConfigureStore();
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <SnackbarProvider>
+      <SnackbarProvider
+        preventDuplicate
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+      >
         <App />
       </SnackbarProvider>
     </PersistGate>

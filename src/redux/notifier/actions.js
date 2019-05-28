@@ -4,7 +4,11 @@ export const enqueueSnackbar = notification => ({
   type: actionTypes.ENQUEUE_SNACKBAR,
   notification: {
     key: new Date().getTime() + Math.random(),
-    ...notification,
+    message: notification.message,
+    options: {
+      autoHideDuration: 1700,
+      variant: notification.variant
+    }
   },
 });
 
