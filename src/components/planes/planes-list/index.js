@@ -20,7 +20,7 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
 
   return (
     <section className="planes-list">
-      {planesList.map(({ _id, code, rowsNumber, seatsInRow, columnsNumber }, index) => (
+      {planesList.map(({ _id, code, rowsNumber, seatsInRow, columnsNumber, isUsedByFlights }, index) => (
         <section
           key={index}
           className="planes-list-item"
@@ -69,14 +69,16 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
                 validate={validate}
               />
             </MaterialDialog>
-            <button
-              type="button"
-              className="button planes-list-item__buttons"
-              onClick={handleDeleteButtonClick(_id)}
-            >
-              Delete
-              <FaTrashAlt className="planes-list-item__button-icon" />
-            </button>
+            {!isUsedByFlights && (
+              <button
+                type="button"
+                className="button planes-list-item__buttons"
+                onClick={handleDeleteButtonClick(_id)}
+              >
+                Delete
+                <FaTrashAlt className="planes-list-item__button-icon" />
+              </button>
+            )}
           </div>
         </section>
       ))}

@@ -34,26 +34,28 @@ function LuggagePage({ getLuggageList, luggageList, editLuggageData }) {
             Price: <span className="luggage-list-item__info-value">{price}</span>
           </span>
 
-          <MaterialDialog
-            title="Edit luggage type"
-            buttonComponent={(
-              <button
-                type="button"
-                className="button"
-              >
-                Edit
-                <FaPencilAlt className="luggage-list-item__button-icon" />
-              </button>
-            )}
-          >
-            <LuggagePopupContent
-              id={_id}
-              kg={kg}
-              price={price}
-              buttonName="Edit"
-              action={editLuggageData}
-            />
-          </MaterialDialog>
+          {!!kg && (
+            <MaterialDialog
+              title="Edit luggage type"
+              buttonComponent={(
+                <button
+                  type="button"
+                  className="button"
+                >
+                  Edit
+                  <FaPencilAlt className="luggage-list-item__button-icon" />
+                </button>
+              )}
+            >
+              <LuggagePopupContent
+                id={_id}
+                kg={kg}
+                price={price}
+                buttonName="Edit"
+                action={editLuggageData}
+              />
+            </MaterialDialog>
+          )}
         </div>
       ))}
     </section>

@@ -5,11 +5,11 @@ import TextField from '../../material-components/text-field';
 import validate from './validate';
 
 export default function DialogForm({
-  code, airport, classes, onSubmit
+  code, airportName, classes, onSubmit
 }) {
   DialogForm.propTypes = {
     code: PropTypes.string.isRequired,
-    airport: PropTypes.string.isRequired,
+    airportName: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
   };
@@ -20,7 +20,7 @@ export default function DialogForm({
       validate={validate}
       initialValues={{
         code,
-        airport
+        airportName
       }}
       render={({ handleSubmit }) => (
         <form className="add-airport-form" onSubmit={handleSubmit}>
@@ -34,7 +34,7 @@ export default function DialogForm({
           />
           <Field
             variant="outlined"
-            name="airport"
+            name="airportName"
             label="Airport"
             className={classes.texField}
             component={TextField}
