@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,6 +20,11 @@ export default class AppHeader extends React.Component {
 
   state = {
     anchorEl: null
+  };
+
+  logout = () => {
+    localStorage.clear();
+    window.location.reload();
   };
 
   handleMenu = event => this.setState({ anchorEl: event.currentTarget });
@@ -76,7 +82,7 @@ export default class AppHeader extends React.Component {
               onClose={this.handleClose}
             >
               <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+              <MenuItem onClick={this.logout}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>
