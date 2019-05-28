@@ -1,0 +1,29 @@
+@import 'src/styles-variables.scss';
+
+.not-found-page__background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.not-found-page {
+  margin: 140px auto;
+  width: 70%;
+
+  &__main-header {
+    margin-bottom: 20px;
+    font-size: 3em;
+    font-weight: 300;
+  }
+
+  &__proposal {
+    font-size: 2em;
+    font-weight: 300;
+  }
+  &__proposal-link {
+    padding-left: 10px;
+    font-weight: 400;
+  }
+}
