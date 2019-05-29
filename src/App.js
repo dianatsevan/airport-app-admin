@@ -14,6 +14,7 @@ import SideMenu from './components/side-menu';
 import Login from './components/login';
 import PrivateRoute from './components/private-route';
 import Notifier from './components/notifier';
+import NotFoundPage from './components/not-found';
 
 function MainContent() {
   return (
@@ -26,6 +27,7 @@ function MainContent() {
           <Route exact path="/app/flights/:id" component={FlightPage} />
           <Route path="/app/planes" component={PlanesPage} />
           <Route path="/app/luggage" component={LuggagePage} />
+          <Route component={NotFoundPage} />
         </Switch>
       </SideMenu>
     </div>
