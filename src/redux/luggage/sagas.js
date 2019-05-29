@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import { setLuggageList, getLuggageListError, editLuggageDataError } from './actions';
+import { enqueueSnackbar } from '../notifier/actions';
 import urls from '../../urls';
 import actionTypes from './actionTypes';
 
@@ -17,10 +18,12 @@ function* getLuggageListData() {
 function* editLuggageData({ payload }) {
   try {
     yield call(() => axios.put(`${urls.luggageList}/${payload.id}`, { ...payload }));
+    yield put(enqueueSnackbar({ message: 'Saved', variant: 'success' }));
     yield put(editLuggageDataError(false));
     yield getLuggageListData();
   } catch (err) {
     yield put(editLuggageDataError(true));
+    yield put(enqueueSnackbar({ message: err.response.data, variant: 'error' }));
   }
 }
 

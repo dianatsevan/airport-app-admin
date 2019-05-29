@@ -8,6 +8,7 @@ import systemData from './system/reducers';
 import planesData from './planes/reducers';
 import luggageData from './luggage/reducers';
 import flightsData from './flights/reducers';
+import notifications from './notifier/reducers';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   planesData,
   luggageData,
   flightsData,
+  notifications,
   systemData
 });
 

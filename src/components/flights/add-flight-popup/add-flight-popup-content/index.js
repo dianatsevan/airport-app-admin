@@ -208,13 +208,15 @@ class AddFlightPopupContent extends Component {
                 variant="outlined"
               />
 
-              <Field
-                name="planeInfo"
-                label="Plane"
-                className={classes.formField}
-                component={PlanesSelect}
-                kids={this.drawMenuItems()}
-              />
+              {this.props.actionName !== 'edit' && (
+                <Field
+                  name="planeInfo"
+                  label="Plane"
+                  className={classes.formField}
+                  component={PlanesSelect}
+                  kids={this.drawMenuItems()}
+                />
+              )}
 
               <button className="button" type="submit">
                 Add

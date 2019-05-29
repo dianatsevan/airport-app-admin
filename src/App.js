@@ -13,11 +13,13 @@ import LuggagePage from './components/luggage';
 import SideMenu from './components/side-menu';
 import Login from './components/login';
 import PrivateRoute from './components/private-route';
+import Notifier from './components/notifier';
 import NotFoundPage from './components/not-found';
 
 function MainContent() {
   return (
     <div>
+      <Notifier />
       <SideMenu>
         <Switch>
           <Route path="/app/airports" component={AirportsPage} />

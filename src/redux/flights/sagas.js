@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import { addFlightToDbError, setFlightsData, getFlightsDataError, setSelectedFlightData, getSelectedFlightDataError, setFlightOrdersData, getFlightOrdersDataError, deleteFlightError, editFlightError, editFlight } from './actions';
+import { enqueueSnackbar } from '../notifier/actions';
 import urls from '../../urls';
 import actionTypes from './actionTypes';
 
@@ -56,9 +57,11 @@ function* addFlightToDb({ payload }) {
 
     yield call(() => axios.post(urls.flightsUrl, dataToAdd));
     yield put(addFlightToDbError(false));
+    yield put(enqueueSnackbar({ message: 'Added', variant: 'success' }));
     yield getFlightsData();
   } catch (err) {
     yield put(addFlightToDbError(true));
+    yield put(enqueueSnackbar({ message: err.response.data, variant: 'error' }));
   }
 }
 
@@ -69,6 +72,7 @@ function* deleteFlight({ payload: id }) {
     yield getFlightsData();
   } catch (err) {
     yield put(deleteFlightError(true));
+    yield put(enqueueSnackbar({ message: err.response.data, variant: 'error' }));
   }
 }
 
@@ -76,16 +80,18 @@ function* editFLight({ payload }) {
   try {
     yield call(() => axios.put(`${urls.flightsUrl}/${payload.id}`, { ...payload }));
     yield put(editFlightError(false));
+    yield put(enqueueSnackbar({ message: 'Saved', variant: 'success' }));
     yield getFlightsData();
     yield getSelectedFlightData({ payload: payload.id });
   } catch (err) {
     yield put(editFlightError(true));
+    yield put(enqueueSnackbar({ message: err.response.data, variant: 'error' }));
   }
 }
 
 export default function* watchFlightData() {
   yield takeEvery(actionTypes.ADD_FLIGHT_TO_DB, addFlightToDb);
-  yield takeLatest(actionTypes.GET_FLIGHTS_DATA, getFlightsData);
+  yield takeEvery(actionTypes.GET_FLIGHTS_DATA, getFlightsData);
   yield takeLatest(actionTypes.GET_SELECTED_FLIGHT_DATA, getSelectedFlightData);
   yield takeLatest(actionTypes.GET_FLIGHT_ORDERS_DATA, getFlightOrdersData);
   yield takeLatest(actionTypes.DELETE_FLIGHT, deleteFlight);

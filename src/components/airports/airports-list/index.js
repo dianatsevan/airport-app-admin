@@ -112,7 +112,7 @@ class AirportsList extends React.Component {
             </tr>
           </thead>
           <tbody className="airports-list__body">
-            {this.props.airportsList.map(({ _id, code, name }) => (
+            {this.props.airportsList.map(({ _id, code, name, isUsedByFlights }) => (
               <tr
                 key={_id}
                 className="airports-list__item"
@@ -131,17 +131,19 @@ class AirportsList extends React.Component {
                   >
                     <DialogForm
                       code={code}
-                      airport={name}
+                      airportName={name}
                       classes={classes}
                       onSubmit={this.onSubmit}
                     />
                   </MaterialDialog>
                 </td>
                 <td className="airports-list__action-icon">
-                  <FaTimes
-                    className="airports-list__icon"
-                    onClick={this.handleDeleteButtonClick(_id)}
-                  />
+                  {!isUsedByFlights && (
+                    <FaTimes
+                      className="airports-list__icon"
+                      onClick={this.handleDeleteButtonClick(_id)}
+                    />
+                  )}
                 </td>
               </tr>
             ))}

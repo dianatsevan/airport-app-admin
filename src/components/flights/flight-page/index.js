@@ -79,12 +79,12 @@ function FlightPage({ selectedFlight, classes, editFlight, getSelectedFlightData
       endDate: moment(flightPeriod.endDate).format(),
       price,
       planeInfo: planeInfo._id,
-      selectedDays: schedule.map(({ day }) => day - 1),
+      selectedDays: schedule.map(({ dayOfWeek }) => dayOfWeek - 1),
     };
 
-    schedule.forEach(({ day, departureTime, arrivalTime }) => {
-      initialValues[`${day - 1}-departureTime`] = moment(departureTime).format();
-      initialValues[`${day - 1}-arrivalTime`] = moment(arrivalTime).format();
+    schedule.forEach(({ dayOfWeek, departureTime, arrivalTime }) => {
+      initialValues[`${dayOfWeek - 1}-departureTime`] = moment(departureTime).format();
+      initialValues[`${dayOfWeek - 1}-arrivalTime`] = moment(arrivalTime).format();
     });
 
     return initialValues;
