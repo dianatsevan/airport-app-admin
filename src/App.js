@@ -9,6 +9,7 @@ import AirportsPage from './components/airports';
 import FlightsPage from './components/flights';
 import FlightPage from './components/flights/flight-page';
 import PlanesPage from './components/planes';
+import LuggagePage from './components/luggage';
 import SideMenu from './components/side-menu';
 import Login from './components/login';
 import PrivateRoute from './components/private-route';
@@ -23,6 +24,7 @@ function MainContent() {
           <Route exact path="/app/flights" component={FlightsPage} />
           <Route exact path="/app/flights/:id" component={FlightPage} />
           <Route path="/app/planes" component={PlanesPage} />
+          <Route path="/app/luggage" component={LuggagePage} />
           <Route component={NotFoundPage} />
         </Switch>
       </SideMenu>

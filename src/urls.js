@@ -8,7 +8,8 @@ export const urls = {
   getPlanesList: 'http://localhost:3001/plane-layout',
   flightsUrl: 'http://localhost:3001/tickets',
   flightOrdersUrl: 'http://localhost:3001/order?selectedFlight=',
-  flightsOrders: 'http://localhost:3001/order'
+  flightsOrders: 'http://localhost:3001/order',
+  luggageList: 'http://localhost:3001/luggage-types'
 };
 
 export default urls;

@@ -6,12 +6,14 @@ import createSagaMiddleware from 'redux-saga';
 import airportsData from './airports/reducers';
 import systemData from './system/reducers';
 import planesData from './planes/reducers';
+import luggageData from './luggage/reducers';
 import flightsData from './flights/reducers';
 import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
   airportsData,
   planesData,
+  luggageData,
   flightsData,
   systemData
 });
