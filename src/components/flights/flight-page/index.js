@@ -165,7 +165,7 @@ function FlightPage({ selectedFlight, classes, editFlight, getSelectedFlightData
             </ExpPanel>
 
             <MaterialDialog
-              title="Edit plane"
+              title="Edit flight"
               buttonComponent={(
                 <button
                   type="button"

@@ -6,7 +6,7 @@ import MaterialDialog from '../../material-components/dialog-window';
 import AddPlanePopupContent from '../add-plane-popup/add-plane-popup-content';
 import PlaneLayout from '../add-plane-popup/plane-layout';
 import { editPlaneData, deletePlane } from '../../../redux/planes/actions';
-import validate from './validate';
+import validate from '../add-plane-popup/validate';
 import './index.scss';
 
 function PlanesList({ planesList, editPlaneData, deletePlane }) {
@@ -43,33 +43,34 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
               location={seatsInRow}
             />
           </div>
+          {!isUsedByFlights && (
+            <div className="planes-list-item__buttons-wrapper">
+              <MaterialDialog
+                title="Edit plane"
+                buttonComponent={(
+                  <button
+                    type="button"
+                    className="button planes-list-item__buttons"
+                  >
+                    Edit
+                    <FaPencilAlt className="planes-list-item__button-icon" />
+                  </button>
+                )}
+              >
 
-          <div className="planes-list-item__buttons-wrapper">
-            <MaterialDialog
-              title="Edit plane"
-              buttonComponent={(
-                <button
-                  type="button"
-                  className="button planes-list-item__buttons"
-                >
-                  Edit
-                  <FaPencilAlt className="planes-list-item__button-icon" />
-                </button>
-              )}
-            >
-              <AddPlanePopupContent
-                id={_id}
-                code={code}
-                rowsNumber={rowsNumber}
-                columnsNumber={columnsNumber}
-                seatsInRow={seatsInRow}
-                actionName="edit"
-                buttonName="Edit plane"
-                action={editPlaneData}
-                validate={validate}
-              />
-            </MaterialDialog>
-            {!isUsedByFlights && (
+                <AddPlanePopupContent
+                  id={_id}
+                  code={code}
+                  rowsNumber={rowsNumber}
+                  columnsNumber={columnsNumber}
+                  seatsInRow={seatsInRow}
+                  actionName="edit"
+                  buttonName="Edit plane"
+                  action={editPlaneData}
+                  validate={validate}
+                />
+              </MaterialDialog>
+
               <button
                 type="button"
                 className="button planes-list-item__buttons"
@@ -78,8 +79,8 @@ function PlanesList({ planesList, editPlaneData, deletePlane }) {
                 Delete
                 <FaTrashAlt className="planes-list-item__button-icon" />
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </section>
       ))}
     </section>

@@ -22,8 +22,6 @@ const validate = (values) => {
 
   if (!values.startDate) {
     errors.startDate = 'Required';
-  } else if (startDate < today) {
-    errors.startDate = 'Please, choose another day';
   }
 
   if (!values.endDate) {
