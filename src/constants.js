@@ -6,3 +6,7 @@ export const initialNumberOfColumns = 9;
 export const maxSeatsColumnsCount = 12;
 export const initislPlaneLayout = ['A', 'B', '', 'C', 'D', 'E', '', 'F', 'G'];
 export const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sut', 'Sun'];
+export const minLuggageKg = 5;
+export const maxLuggageKg = 45;
+export const minLuggagePrice = 10;
+export const maxLuggagePrice = 35;
