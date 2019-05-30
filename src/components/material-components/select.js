@@ -31,7 +31,7 @@ class SimpleSelect extends React.Component {
     const {
       input: {
         name, onChange, value, multiple, ...restInput
-      }, meta, ...rest
+      }, meta, isMultiple, ...rest
     } = this.props;
 
     return (
@@ -49,7 +49,7 @@ class SimpleSelect extends React.Component {
         </InputLabel>
         <Select
           {...rest}
-          multiple={multiple}
+          multiple={isMultiple}
           name={name}
           inputProps={restInput}
           value={value || []}
