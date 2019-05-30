@@ -12,6 +12,9 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  tableRow: {
+    cursor: 'pointer'
+  }
 });
 
 export default styles;

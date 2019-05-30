@@ -3,6 +3,10 @@
 .flight-page {
   padding: 20px;
 
+  &__content {
+    margin-right: 20px;
+  }
+
   &__content-wrapper {
     display: flex;
     justify-content: space-between;

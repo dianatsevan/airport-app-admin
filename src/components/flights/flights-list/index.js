@@ -167,6 +167,7 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={flight._id}
                       selected={isSelected}
+                      className={classes.tableRow}
                     >
                       <TableCell padding="checkbox">
                         {!flight.flightOrders.length && (
@@ -191,7 +192,7 @@ class EnhancedTable extends React.Component {
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10]}
           component="div"
           count={flightsList.length}
           rowsPerPage={rowsPerPage}

@@ -187,21 +187,25 @@ function FlightPage({ selectedFlight, classes, editFlight, getSelectedFlightData
           </div>
 
           <div className="flight-page__plane-layout">
-            <PlaneLayout
-              rows={selectedFlight.planeInfo.rowsNumber}
-              location={selectedFlight.planeInfo.seatsInRow}
-              soldSeats={soldSeats()}
-            />
             <div className="flight-page__header header">
               <div className="header__field">
                 <span className="header__field-label">Code:</span>
                 <span className="header__field-value">{selectedFlight.planeInfo.code}</span>
               </div>
               <div className="header__field">
+                <span className="header__field-label">Rows:</span>
+                <span className="header__field-value">{selectedFlight.planeInfo.rowsNumber}</span>
+              </div>
+              <div className="header__field">
                 <span className="header__field-label">Seats:</span>
                 <span className="header__field-value">{getSeatsAmount()}</span>
               </div>
             </div>
+            <PlaneLayout
+              rows={selectedFlight.planeInfo.rowsNumber}
+              location={selectedFlight.planeInfo.seatsInRow}
+              soldSeats={soldSeats()}
+            />
 
           </div>
         </div>

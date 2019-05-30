@@ -1,6 +1,6 @@
 const styles = theme => ({
   paper: {
-    width: '850px',
+    width: '815px',
     [theme.breakpoints.down('sm')]: {
       width: 'auto'
     },
