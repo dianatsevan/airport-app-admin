@@ -22,11 +22,11 @@ function MainContent() {
       <Notifier />
       <SideMenu>
         <Switch>
-          <Route path="/app/airports" component={AirportsPage} />
+          <Route exact path="/app/airports" component={AirportsPage} />
           <Route exact path="/app/flights" component={FlightsPage} />
           <Route exact path="/app/flights/:id" component={FlightPage} />
-          <Route path="/app/planes" component={PlanesPage} />
-          <Route path="/app/luggage" component={LuggagePage} />
+          <Route exact path="/app/planes" component={PlanesPage} />
+          <Route exact path="/app/luggage" component={LuggagePage} />
           <Route component={NotFoundPage} />
         </Switch>
       </SideMenu>
@@ -46,7 +46,8 @@ class App extends React.Component {
       <div>
         <Router>
           <Switch>
-            <Route exact path="/" render={() => <Redirect to="/app" />} />
+            <Route exact path="/" render={() => <Redirect to="/app/airports" />} />
+            <Route exact path="/app" render={() => <Redirect to="/app/airports" />} />
             <PrivateRoute path="/app" component={MainContent} />
             <Route path="/login" component={Login} />
           </Switch>
