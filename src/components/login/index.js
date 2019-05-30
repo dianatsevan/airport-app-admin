@@ -36,14 +36,7 @@ class Login extends React.Component {
 
   componentDidMount = () => this.goToTheNextPage();
 
-  onSubmit = async values => {
-    const newValues = {
-      ...values,
-      role: 'admin'
-    };
-
-    await this.props.loginUser(newValues);
-  };
+  onSubmit = values => this.props.loginUser({ ...values, role: 'admin' });
 
   getButtonClassnames = () => classNames({
     button: true,

@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import MaterialDialog from '../../material-components/dialog-window';
 import ScheduleTable from './schedule-table/index';
 import OrdersTable from './orders-table/index';
@@ -91,126 +92,135 @@ function FlightPage({ selectedFlight, classes, editFlight, getSelectedFlightData
   };
 
   return (
-    <Paper className={classes.paper}>
-      <section className="flight-page">
-        <div className="flight-page__content-wrapper">
-          <div className="flight-page__content">
+    <>
+      {!selectedFlight.code
+        ? (
+          <div className="loading-circul"><CircularProgress size={50} /></div>
+        )
+        : (
+          <Paper className={classes.paper}>
+            <section className="flight-page">
+              <div className="flight-page__content-wrapper">
+                <div className="flight-page__content">
 
-            <div className="flight-page__header header">
-              <div className="header__field">
-                <span className="header__field-label">Code:</span>
-                <span className="header__field-value">{code}</span>
-              </div>
-              <div className="header__field">
-                <span className="header__field-label">From:</span>
-                <span className="header__field-value">{fromCountry.name}</span>
-              </div>
-              <div className="header__field">
-                <span className="header__field-label">To:</span>
-                <span className="header__field-value">{toCountry.name}</span>
-              </div>
-            </div>
+                  <div className="flight-page__header header">
+                    <div className="header__field">
+                      <span className="header__field-label">Code:</span>
+                      <span className="header__field-value">{code}</span>
+                    </div>
+                    <div className="header__field">
+                      <span className="header__field-label">From:</span>
+                      <span className="header__field-value">{fromCountry.name}</span>
+                    </div>
+                    <div className="header__field">
+                      <span className="header__field-label">To:</span>
+                      <span className="header__field-value">{toCountry.name}</span>
+                    </div>
+                  </div>
 
-            <ExpPanel title="Flight period">
-              <div className="flight-page__dates">
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker
-                    className={classes.datePicker}
-                    margin="normal"
-                    label="Flight start date"
-                    value={new Date(flightPeriod.startDate)}
-                    onChange={handleDateChange}
+                  <ExpPanel title="Flight period">
+                    <div className="flight-page__dates">
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          className={classes.datePicker}
+                          margin="normal"
+                          label="Flight start date"
+                          value={new Date(flightPeriod.startDate)}
+                          onChange={handleDateChange}
+                        />
+                      </MuiPickersUtilsProvider>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          className={classes.datePicker}
+                          margin="normal"
+                          label="Flight end date"
+                          value={new Date(flightPeriod.endDate)}
+                          onChange={handleDateChange}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </div>
+                  </ExpPanel>
+
+                  <ExpPanel title="Schedule">
+                    <ScheduleTable schedule={schedule} />
+                  </ExpPanel>
+
+                  <ExpPanel title="Orders">
+                    <div className="flight-page__orders">
+                      {selectedFlight.flightOrders.length
+                        ? (
+                          <>
+                            <FormControl variant="outlined" className={classes.formControl}>
+                              <InputLabel htmlFor="outlined-age-simple">Flight date</InputLabel>
+                              <Select
+                                variant="outlined"
+                                value={selectedDate}
+                                className={classes.dateSelect}
+                                onChange={handleChange}
+                              >
+                                <MenuItem value="" selected>All</MenuItem>
+                                {drawDates()}
+                              </Select>
+                            </FormControl>
+                            <OrdersTable orders={selectedFlight.flightOrders} date={selectedDate} />
+                          </>
+                        ) : (
+                          <span>No orders yet</span>
+                        )
+                      }
+                    </div>
+                  </ExpPanel>
+
+                  <MaterialDialog
+                    title="Edit flight"
+                    buttonComponent={(
+                      <button
+                        type="button"
+                        className="button planes-list-item__buttons"
+                      >
+                        Edit
+                        <FaPencilAlt className="planes-list-item__button-icon" />
+                      </button>
+                    )}
+                  >
+                    <AddFlightPopupContent
+                      flightId={_id}
+                      initialValues={makeInitialValuesObject()}
+                      actionName="edit"
+                      buttonName="Edit flight"
+                      action={editFlight}
+                    />
+                  </MaterialDialog>
+                </div>
+
+                <div className="flight-page__plane-layout">
+                  <div className="flight-page__header header">
+                    <div className="header__field">
+                      <span className="header__field-label">Code:</span>
+                      <span className="header__field-value">{selectedFlight.planeInfo.code}</span>
+                    </div>
+                    <div className="header__field">
+                      <span className="header__field-label">Rows:</span>
+                      <span className="header__field-value">{selectedFlight.planeInfo.rowsNumber}</span>
+                    </div>
+                    <div className="header__field">
+                      <span className="header__field-label">Seats:</span>
+                      <span className="header__field-value">{getSeatsAmount()}</span>
+                    </div>
+                  </div>
+                  <PlaneLayout
+                    rows={selectedFlight.planeInfo.rowsNumber}
+                    location={selectedFlight.planeInfo.seatsInRow}
+                    soldSeats={soldSeats()}
                   />
-                </MuiPickersUtilsProvider>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker
-                    className={classes.datePicker}
-                    margin="normal"
-                    label="Flight end date"
-                    value={new Date(flightPeriod.endDate)}
-                    onChange={handleDateChange}
-                  />
-                </MuiPickersUtilsProvider>
-              </div>
-            </ExpPanel>
 
-            <ExpPanel title="Schedule">
-              <ScheduleTable schedule={schedule} />
-            </ExpPanel>
-
-            <ExpPanel title="Orders">
-              <div className="flight-page__orders">
-                {selectedFlight.flightOrders.length
-                  ? (
-                    <>
-                      <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel htmlFor="outlined-age-simple">Flight date</InputLabel>
-                        <Select
-                          variant="outlined"
-                          value={selectedDate}
-                          className={classes.dateSelect}
-                          onChange={handleChange}
-                        >
-                          <MenuItem value="" selected>All</MenuItem>
-                          {drawDates()}
-                        </Select>
-                      </FormControl>
-                      <OrdersTable orders={selectedFlight.flightOrders} date={selectedDate} />
-                    </>
-                  ) : (
-                    <span>No orders yet</span>
-                  )
-                }
+                </div>
               </div>
-            </ExpPanel>
-
-            <MaterialDialog
-              title="Edit flight"
-              buttonComponent={(
-                <button
-                  type="button"
-                  className="button planes-list-item__buttons"
-                >
-                  Edit
-                  <FaPencilAlt className="planes-list-item__button-icon" />
-                </button>
-              )}
-            >
-              <AddFlightPopupContent
-                flightId={_id}
-                initialValues={makeInitialValuesObject()}
-                actionName="edit"
-                buttonName="Edit flight"
-                action={editFlight}
-              />
-            </MaterialDialog>
-          </div>
-
-          <div className="flight-page__plane-layout">
-            <div className="flight-page__header header">
-              <div className="header__field">
-                <span className="header__field-label">Code:</span>
-                <span className="header__field-value">{selectedFlight.planeInfo.code}</span>
-              </div>
-              <div className="header__field">
-                <span className="header__field-label">Rows:</span>
-                <span className="header__field-value">{selectedFlight.planeInfo.rowsNumber}</span>
-              </div>
-              <div className="header__field">
-                <span className="header__field-label">Seats:</span>
-                <span className="header__field-value">{getSeatsAmount()}</span>
-              </div>
-            </div>
-            <PlaneLayout
-              rows={selectedFlight.planeInfo.rowsNumber}
-              location={selectedFlight.planeInfo.seatsInRow}
-              soldSeats={soldSeats()}
-            />
-
-          </div>
-        </div>
-      </section>
-    </Paper>
+            </section>
+          </Paper>
+        )
+      }
+    </>
   );
 }
 
