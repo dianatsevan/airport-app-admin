@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
-import { FaPencilAlt, FaTimes, FaArrowUp } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt, FaArrowUp } from 'react-icons/fa';
 import { deleteAirport, changeAirport, setAirportsData, getAirportsData } from '../../../redux/airports/actions';
 import MaterialDialog from '../../material-components/dialog-window';
 import DialogForm from './dialog-form';
@@ -139,7 +139,7 @@ class AirportsList extends React.Component {
                 </td>
                 <td className="airports-list__action-icon">
                   {!isUsedByFlights && (
-                    <FaTimes
+                    <FaTrashAlt
                       className="airports-list__icon"
                       onClick={this.handleDeleteButtonClick(_id)}
                     />
